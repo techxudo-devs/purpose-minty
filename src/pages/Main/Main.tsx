@@ -8,7 +8,7 @@ import GoalsSection from '@/components/Main/GoalsSection'
 import Hero from '@/components/Main/Hero'
 import PartnersSection from '@/components/Main/PartnersSection'
 import PricingSection from '@/components/Main/PricingSection'
-
+import SurveySection from '@/components/Main/SurveySection'
 const Main = () => {
   return (
     <div>
@@ -19,6 +19,7 @@ const Main = () => {
         <PartnersSection />
         <AppPreviewSection />
         <FeatureHubSection />
+        <SurveySection />
         {/* <GoalsSection /> */}
         <FaqSection />
         <Footer />
