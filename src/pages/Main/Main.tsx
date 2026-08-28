@@ -19,7 +19,7 @@ const Main = () => {
         <PartnersSection />
         <AppPreviewSection />
         <FeatureHubSection />
-        {/* <GoalsSection /> */}
+        <GoalsSection />
         <FaqSection />
         <Footer />
     </div>
