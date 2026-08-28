@@ -63,7 +63,7 @@ export default function DarkSection() {
 
       {/* ================= 2. BOTTOM-RIGHT YELLOW/ORANGE GRADIENT GLOW ================= */}
       <div
-        className="absolute -bottom-40 -right-40 w-[550px] sm:w-[550px] h-[550px] sm:h-[550px] pointer-events-none z-0 rounded-full opacity-70 blur-[90px]"
+        className="absolute -top-50 -right-60 w-[550px] sm:w-[550px] h-[550px] sm:h-[550px] pointer-events-none z-0 rounded-full opacity-70 blur-[90px]"
         style={{
           background:
             "radial-gradient(circle at center, rgba(253, 224, 71, 0.4) 0%, rgba(244, 114, 182, 0.3) 45%, transparent 75%)",
