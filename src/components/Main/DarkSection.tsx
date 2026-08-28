@@ -100,7 +100,7 @@ export default function DarkSection() {
           <CoinBadgeDecor className="absolute -bottom-4 -left-6 z-20" />
 
           {/* 4. Center Letter Card */}
-          <div className="relative rotate-[2.5deg] bg-white text-slate-900 px-8 sm:px-10 py-10 sm:py-12 text-left rounded-2xl border border-slate-200/80">
+          <div className="relative rotate-[2.5deg] bg-white text-slate-900 px-8 sm:px-10 py-10 sm:py-12 text-left rounded-2xl border border-pink-200">
             {/* Security Badge Icon inside letter */}
             <div className="flex items-center justify-between mb-8">
               <p className="text-sm font-play text-slate-950 font-dm">
@@ -145,12 +145,12 @@ export default function DarkSection() {
         </div>
 
         {/* Bottom Call to Action */}
-        <div className="mt-10 max-w-[800px] text-center md:mt-14">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl text-slate-950 font-play tracking-tight">
+        <div className="mt-8 max-w-[800px] text-center md:mt-10">
+          {/* <h2 className="text-2xl sm:text-3xl md:text-4xl text-slate-950 font-play tracking-tight">
             Five levels. FDIC-insured savings.
             <br className="hidden sm:block" /> And a real way forward when
             you&apos;re ready.
-          </h2>
+          </h2> */}
 
           <a
             href="https://minttoprosper.org/purposemint/partner"
