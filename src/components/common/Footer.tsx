@@ -40,7 +40,7 @@ function FooterLink({
   external?: boolean;
 }) {
   const className =
-    "font-dm text-sm text-slate-600 transition-colors hover:text-[#c01763]";
+    "cursor-pointer font-dm text-sm text-slate-600 transition-colors hover:text-[#c01763]";
 
   if (external || href.startsWith("http") || href.startsWith("mailto:")) {
     return (
@@ -83,8 +83,8 @@ export default function Footer() {
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-9">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12 lg:gap-5">
+      <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-9 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-12 lg:gap-5">
           {/* Brand & contact */}
           <div className="lg:col-span-4">
             <Link href="/" className="inline-flex items-center">

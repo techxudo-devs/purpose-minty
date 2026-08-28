@@ -177,18 +177,58 @@ const Features: React.FC = () => {
 
       {/* Top Heading & Short Paragraph */}
       <div className="text-center max-w-4xl mx-auto px-4 mb-10 sm:mb-14 relative z-10">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-play text-slate-950 tracking-tight mb-4">
-          You're not bad with money. <br />You've just been handed bad options.
+        <h2 className="mb-3 font-play text-2xl tracking-tight text-slate-950 sm:mb-4 sm:text-4xl md:text-5xl">
+          You're not bad with money. <br className="hidden sm:block" />You've just been handed bad options.
         </h2>
-        <p className="text-base sm:text-lg text-slate-600 font-dm max-w-xl mx-auto leading-relaxed">
+        <p className="mx-auto max-w-xl font-dm text-sm leading-relaxed text-slate-600 sm:text-base md:text-lg">
           Manage deployments, pipelines, and environments seamlessly in one
           unified platform.
         </p>
       </div>
 
-      {/* Main 5 Cards Arc Container */}
-      <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 mx-auto flex justify-center items-center overflow-x-auto lg:overflow-visible pb-12 pt-4 scrollbar-none relative z-10">
-        <div className="flex items-center -space-x-6 sm:-space-x-8 md:-space-x-10 min-w-[700px] lg:min-w-0 justify-center">
+      {/* Mobile: stacked cards */}
+      <div className="relative z-10 mx-auto grid w-full max-w-md grid-cols-1 gap-4 px-4 sm:max-w-lg sm:gap-5 lg:hidden">
+        {featureCards.map((card) => {
+          const Icon = card.Icon;
+          return (
+            <div
+              key={card.id}
+              className="group relative flex h-auto min-h-[220px] flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-4 sm:p-5"
+            >
+              <svg
+                className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible md:block"
+                viewBox="0 0 160 220"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient id={`grad-mobile-${card.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor={card.gradientFrom} />
+                    <stop offset="100%" stopColor={card.gradientTo} />
+                  </linearGradient>
+                </defs>
+                <path d={card.trackPath} stroke="rgba(0, 0, 0, 0.04)" strokeWidth="14" fill="none" strokeLinecap="round" />
+                <path d={card.arcPath} stroke={`url(#grad-mobile-${card.id})`} strokeWidth="6" fill="none" strokeLinecap="round" />
+              </svg>
+              <div className="relative z-10 flex items-center justify-between gap-2">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-200/80 bg-gradient-to-b from-slate-50 to-white">
+                  <Icon />
+                </div>
+                <h3 className="whitespace-pre-line text-right font-dm text-sm leading-tight tracking-tight text-slate-900">
+                  {card.title}
+                </h3>
+              </div>
+              <div className="relative z-10 mt-auto pt-4">
+                <p className="font-dm text-xs leading-snug text-slate-600">{card.description}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Desktop: arc layout */}
+      <div className="relative z-10 mx-auto hidden w-full max-w-6xl items-center justify-center px-4 pb-12 pt-4 sm:px-6 lg:flex lg:px-8">
+        <div className="flex min-w-0 items-center justify-center -space-x-6 sm:-space-x-8 md:-space-x-10">
           {featureCards.map((card) => {
             const Icon = card.Icon;
             return (

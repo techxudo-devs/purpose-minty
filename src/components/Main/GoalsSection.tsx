@@ -56,14 +56,14 @@ function fillRow(el: HTMLElement, goal: Goal, index: number) {
 function GoalRow({ goal, index, featured }: { goal: Goal; index: number; featured?: boolean }) {
   return (
     <div
-      className={`goal-ticker-row relative flex h-[88px] items-center gap-3.5 border-b border-slate-100/90 px-5 transition-colors duration-500 ${
+      className={`goal-ticker-row relative flex h-[76px] items-center gap-2.5 border-b border-slate-100/90 px-3 transition-colors duration-500 sm:h-[88px] sm:gap-3.5 sm:px-5 ${
         featured ? "bg-gradient-to-r from-[#fff5f8] via-white to-[#fdf8ff]" : "bg-white/80"
       }`}
       data-index={index}
     >
       <span
         data-icon
-        className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-slate-200/80 bg-gradient-to-b from-white to-slate-50 text-[20px] shadow-[0_8px_20px_-12px_rgba(192,23,99,0.35)]"
+        className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200/80 bg-gradient-to-b from-white to-slate-50 text-[18px] shadow-[0_8px_20px_-12px_rgba(192,23,99,0.35)] sm:h-11 sm:w-11 sm:rounded-2xl sm:text-[20px]"
       >
         {goal.icon}
       </span>
@@ -71,16 +71,16 @@ function GoalRow({ goal, index, featured }: { goal: Goal; index: number; feature
       <div className="relative z-10 min-w-0 flex-1">
         <p
           data-title
-          className="truncate font-dm text-[14px] font-semibold text-slate-900 sm:text-[15px]"
+          className="truncate font-dm text-[13px] font-semibold text-slate-900 sm:text-[14px] md:text-[15px]"
         >
           {goal.title}
         </p>
-        <p data-hint className="mt-0.5 truncate font-dm text-[12px] font-medium text-slate-500">
+        <p data-hint className="mt-0.5 truncate font-dm text-[11px] font-medium text-slate-500 sm:text-[12px]">
           {goal.hint}
         </p>
       </div>
 
-      <span className="relative z-10 shrink-0 rounded-full border border-[#c01763]/15 bg-[#fff5f8] px-2.5 py-1 font-dm text-[10px] font-semibold uppercase tracking-[0.08em] text-[#c01763]">
+      <span className="relative z-10 shrink-0 rounded-full border border-[#c01763]/15 bg-[#fff5f8] px-1.5 py-0.5 font-dm text-[8px] font-semibold uppercase tracking-[0.06em] text-[#c01763] sm:px-2.5 sm:py-1 sm:text-[10px]">
         Goal
       </span>
     </div>
@@ -137,6 +137,11 @@ export default function GoalsSection() {
       let busy = false;
       let loopId: number | null = null;
 
+      const getRowHeight = () => {
+        const row = track.querySelector(".goal-ticker-row") as HTMLElement | null;
+        return row?.offsetHeight ?? ROW;
+      };
+
       const highlightTopRow = () => {
         track.querySelectorAll(".goal-ticker-row").forEach((row, i) => {
           const el = row as HTMLElement;
@@ -163,7 +168,7 @@ export default function GoalsSection() {
         track.insertBefore(node, track.firstChild);
         busy = true;
 
-        gsap.set(track, { y: -ROW });
+        gsap.set(track, { y: -getRowHeight() });
         gsap.to(track, {
           y: 0,
           duration: 0.58,
@@ -275,7 +280,7 @@ export default function GoalsSection() {
 
           <h2
             data-reveal
-            className="mt-5 font-play text-3xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl"
+            className="mt-4 font-play text-2xl tracking-tight text-slate-950 sm:mt-5 sm:text-4xl md:text-5xl"
           >
             Real Life Goals
           </h2>
@@ -290,10 +295,10 @@ export default function GoalsSection() {
 
         <article
           ref={cardRef}
-          className="relative mx-auto mt-10 w-full max-w-[500px] overflow-hidden rounded-2xl border border-pink-200/80 bg-white/90 backdrop-blur-sm sm:mt-12"
+          className="relative mx-auto mt-8 w-full max-w-[min(100%,500px)] overflow-hidden rounded-2xl border border-pink-200/80 bg-white/90 backdrop-blur-sm sm:mt-12"
         >
           <div
-            className="relative overflow-hidden px-6 pb-4 pt-5 sm:px-7"
+            className="relative overflow-hidden px-4 pb-3 pt-4 sm:px-6 sm:pb-4 sm:pt-5 md:px-7"
             style={{
               background:
                 "linear-gradient(135deg, #52005c 0%, #2E0F3D 28%, #c01763 58%, #b00f57 78%, #8d0543 100%)",
@@ -310,7 +315,7 @@ export default function GoalsSection() {
 
             <div className="relative z-10 flex items-start justify-between gap-4">
               <div className="text-left">
-                <p className="font-play text-[20px] leading-tight text-white sm:text-[22px] ">
+                <p className="font-play text-lg leading-tight text-white sm:text-[20px] md:text-[22px] ">
                   What you could save for
                 </p>
                 <p className="mt-1 font-dm text-[13px] text-pink-100/85">
@@ -321,11 +326,7 @@ export default function GoalsSection() {
           </div>
 
           <div className="relative">
-            <div
-              ref={viewportRef}
-              className="relative overflow-hidden"
-              style={{ height: ROW * VISIBLE }}
-            >
+            <div ref={viewportRef} className="relative h-[228px] overflow-hidden sm:h-[264px]">
               <div
                 className="pointer-events-none absolute inset-x-0 top-0 z-10 h-10 bg-gradient-to-b from-white to-transparent"
                 aria-hidden
@@ -349,7 +350,7 @@ export default function GoalsSection() {
             &ldquo;See what you could save for with PurposeMint.&rdquo;
           </p>
 
-          <blockquote className="relative mx-auto mt-6 rounded-2xl border border-pink-100/80 bg-white/70 px-6 py-5 backdrop-blur-sm sm:px-8 sm:py-6">
+          <blockquote className="relative mx-auto mt-5 rounded-2xl border border-pink-100/80 bg-white/70 px-4 py-4 backdrop-blur-sm sm:mt-6 sm:px-6 sm:py-5 md:px-8 md:py-6">
             <Quote
               className="pointer-events-none absolute -left-1 -top-3 h-8 w-8 text-[#c01763] sm:-left-2"
               aria-hidden

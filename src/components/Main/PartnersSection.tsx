@@ -68,7 +68,7 @@ function BeatCard({
       custom={index}
       whileHover={{ y: -10, scale: 1.015 }}
       transition={{ type: "spring", stiffness: 320, damping: 22 }}
-      className={`group relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white/90 backdrop-blur-sm transition-colors duration-300 hover:border-pink-200/80 ${beat.rotate} ${beat.offset}`}
+      className={`group relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white/90 backdrop-blur-sm transition-colors duration-300 hover:border-pink-200/80 max-md:rotate-0 ${beat.rotate} ${beat.offset}`}
     >
       <div
         className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${beat.accent} opacity-70 transition-opacity duration-300 group-hover:opacity-100`}
@@ -184,9 +184,10 @@ export default function PartnersSection() {
             For Banking & Credit Union Partners
           </span>
 
-          <h2 className="mt-5 font-play text-3xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
+          <h2 className="mt-5 font-play text-2xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
             Bank the savers you haven&apos;t
-            <br />
+            <br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>
             reached yet.
           </h2>
           <p className="mt-4 max-w-2xl font-dm text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -220,7 +221,7 @@ export default function PartnersSection() {
             href={links.partner}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-9 py-4 text-sm font-medium text-white transition-all duration-200 hover:-translate-y-0.5 hover:opacity-95 active:scale-[0.98] font-dm"
+            className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 text-sm font-medium text-white transition-all duration-200 hover:-translate-y-0.5 hover:opacity-95 active:scale-[0.98] sm:w-auto sm:px-9 sm:py-4 font-dm"
           >
             Partner With Us
             <ArrowUpRight className="h-4 w-4" />

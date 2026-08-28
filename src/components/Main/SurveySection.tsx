@@ -87,10 +87,15 @@ const partnerInterests = [
 ];
 
 const cardClass =
-  "rounded-[28px] border border-slate-200/80 bg-white/90 p-6 backdrop-blur-sm sm:p-8";
+  "rounded-[22px] border border-slate-200/80 bg-white/90 p-4 backdrop-blur-sm sm:rounded-[28px] sm:p-6 md:p-8";
 
 const field =
   "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 font-dm text-[14px] text-slate-800 outline-none placeholder:text-slate-400 focus:border-[#c01763] focus:ring-2 focus:ring-[#c01763]/20";
+
+const choiceGroupClass =
+  "flex flex-col gap-2.5 md:flex-row md:flex-wrap md:gap-3";
+
+const choiceGridClass = "grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-3";
 
 function Choice({
   selected,
@@ -105,7 +110,7 @@ function Choice({
     <button
       type="button"
       onClick={onClick}
-      className={`cursor-pointer rounded-full border px-4 py-2.5 text-left font-dm text-[13px] transition-all duration-200 ${
+      className={`w-full cursor-pointer rounded-full border px-3 py-2.5 text-center font-dm text-[12px] transition-all duration-200 md:w-auto md:px-4 md:text-left md:text-[13px] ${
         selected
           ? "border-[#c01763] bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white"
           : "border-slate-200 bg-white text-slate-700 hover:border-pink-200 hover:bg-[#fff5f8] hover:text-slate-900"
@@ -186,7 +191,7 @@ export default function SurveySection() {
   }
 
   return (
-    <section id="survey" className="relative overflow-hidden bg-[#fdfbf7] py-14 md:py-16">
+    <section id="survey" className="relative overflow-hidden bg-[#fdfbf7] py-10 sm:py-14 md:py-16">
       <div
         className="pointer-events-none absolute inset-0 opacity-50"
         style={{
@@ -214,7 +219,7 @@ export default function SurveySection() {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-[850px] px-4 sm:px-6">
+      <div className="relative z-10 mx-auto max-w-[780px] px-3 sm:px-6">
         <div className="text-center">
           <span
             className="inline-flex rounded-full px-4 py-1.5 font-dm text-[12px] text-slate-700 sm:text-[13px]"
@@ -227,7 +232,7 @@ export default function SurveySection() {
             Your voice matters
           </span>
 
-          <h2 className="mt-5 font-play text-3xl font-normal tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
+          <h2 className="mt-4 font-play text-2xl font-normal tracking-tight text-slate-950 sm:mt-5 sm:text-4xl md:text-5xl">
             Share Your Experience
           </h2>
 
@@ -236,15 +241,15 @@ export default function SurveySection() {
           </p>
         </div>
 
-        <div className="mt-8 flex justify-center">
-          <div className="inline-flex items-center rounded-full border border-slate-200/80 bg-white/90 p-1">
+        <div className="mt-6 flex justify-center sm:mt-8">
+          <div className="flex w-full max-w-xs flex-col gap-3 px-1 md:inline-flex md:max-w-none md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200/80 md:bg-white/90 md:p-1 md:px-0">
             <button
               type="button"
               onClick={() => setTab("user")}
-              className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm transition-all duration-200 ${
+              className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2.5 font-dm text-sm transition-all duration-200 md:w-auto md:px-5 ${
                 tab === "user"
-                  ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white"
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
+                  : "border border-slate-200/80 bg-white text-slate-500 hover:border-pink-200 hover:text-slate-700 md:border-0 md:bg-transparent"
               }`}
             >
               <HiOutlineUser className="h-4 w-4" />
@@ -253,10 +258,10 @@ export default function SurveySection() {
             <button
               type="button"
               onClick={() => setTab("partner")}
-              className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm transition-all duration-200 ${
+              className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2.5 font-dm text-sm transition-all duration-200 md:w-auto md:px-5 ${
                 tab === "partner"
-                  ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white"
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
+                  : "border border-slate-200/80 bg-white text-slate-500 hover:border-pink-200 hover:text-slate-700 md:border-0 md:bg-transparent"
               }`}
             >
               <FaBuilding className="h-4 w-4" />
@@ -288,7 +293,7 @@ export default function SurveySection() {
                   <p className="mb-3 font-dm text-[14px] text-slate-700">
                     How would you describe your experience with the PurposeMint demo?
                   </p>
-                  <div className="mb-8 flex flex-wrap gap-3">
+                  <div className={`mb-8 ${choiceGroupClass}`}>
                     {demoOptions.map((item) => (
                       <Choice key={item.id} selected={demo === item.id} onClick={() => setDemo(item.id)}>
                         {item.emoji} {item.label}
@@ -298,7 +303,7 @@ export default function SurveySection() {
                   <p className="mb-3 font-dm text-[14px] text-slate-700">
                     Which features resonated with you? (Select all that apply)
                   </p>
-                  <div className="mb-8 grid gap-3 sm:grid-cols-2">
+                  <div className={`mb-8 ${choiceGridClass}`}>
                     {featureOptions.map((item) => (
                       <Choice
                         key={item.id}
@@ -329,7 +334,7 @@ export default function SurveySection() {
                   <p className="mb-3 font-dm text-[14px] text-slate-700">
                     How well did the language and examples in PurposeMint reflect your real-life experiences?
                   </p>
-                  <div className="mb-8 flex flex-wrap gap-3">
+                  <div className={`mb-8 ${choiceGroupClass}`}>
                     {cultureOptions.map((item) => (
                       <Choice key={item.id} selected={culture === item.id} onClick={() => setCulture(item.id)}>
                         {item.emoji} {item.label}
@@ -339,7 +344,7 @@ export default function SurveySection() {
                   <p className="mb-3 font-dm text-[14px] text-slate-700">
                     What type of motivation keeps you on track financially? (Select all that apply)
                   </p>
-                  <div className="mb-8 grid gap-3 sm:grid-cols-2">
+                  <div className={`mb-8 ${choiceGridClass}`}>
                     {motivationOptions.map((item) => (
                       <Choice
                         key={item.id}
@@ -371,7 +376,7 @@ export default function SurveySection() {
                   <p className="mb-3 font-dm text-[14px] text-slate-700">
                     Based on what you&apos;ve seen, how likely are you to use PurposeMint when it launches?
                   </p>
-                  <div className="flex flex-wrap gap-3">
+                  <div className={choiceGroupClass}>
                     {likelihoodOptions.map((item) => (
                       <Choice key={item.id} selected={likelihood === item.id} onClick={() => setLikelihood(item.id)}>
                         {item.emoji} {item.label}
@@ -396,7 +401,7 @@ export default function SurveySection() {
                     className={`${field} mb-8`}
                   />
                   <p className="mb-3 font-dm text-[14px] text-slate-700">What type of organization are you?</p>
-                  <div className="mb-8 grid gap-3 sm:grid-cols-2">
+                  <div className={`mb-8 ${choiceGridClass}`}>
                     {partnerTypes.map((item) => (
                       <Choice key={item.id} selected={partnerType === item.id} onClick={() => setPartnerType(item.id)}>
                         {item.label}
@@ -406,7 +411,7 @@ export default function SurveySection() {
                   <p className="mb-3 font-dm text-[14px] text-slate-700">
                     Which communities do you primarily serve? (Select all that apply)
                   </p>
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className={choiceGridClass}>
                     {communities.map((item) => (
                       <Choice
                         key={item.id}
@@ -427,7 +432,7 @@ export default function SurveySection() {
                   <p className="mb-3 font-dm text-[14px] text-slate-700">
                     What partnership opportunities interest you most? (Select all that apply)
                   </p>
-                  <div className="mb-8 grid gap-3 sm:grid-cols-2">
+                  <div className={`mb-8 ${choiceGridClass}`}>
                     {partnerInterests.map((item) => (
                       <Choice
                         key={item.id}
@@ -464,8 +469,8 @@ export default function SurveySection() {
               </>
             )}
 
-            <div className="rounded-[28px] border border-pink-100/80 bg-gradient-to-b from-[#fff5f8] to-white p-6 text-center sm:p-10">
-              <h3 className="font-play text-[20px] text-slate-950 sm:text-[24px]">
+            <div className="rounded-[22px] border border-pink-100/80 bg-gradient-to-b from-[#fff5f8] to-white p-4 text-center sm:rounded-[28px] sm:p-6 md:p-10">
+              <h3 className="font-play text-lg text-slate-950 sm:text-[20px] md:text-[24px]">
                 {tab === "user" ? "Ready to Share Your Voice?" : "Ready to Explore Partnership?"}
               </h3>
               <p className="mt-2 font-dm text-[14px] text-slate-600">

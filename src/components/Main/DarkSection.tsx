@@ -100,7 +100,7 @@ export default function DarkSection() {
           <CoinBadgeDecor className="absolute -bottom-4 -left-6 z-20" />
 
           {/* 4. Center Letter Card */}
-          <div className="relative rotate-[2.5deg] bg-white text-slate-900 px-8 sm:px-10 py-10 sm:py-12 text-left rounded-2xl border border-pink-200">
+          <div className="relative w-full max-w-[420px] rotate-[1.5deg] bg-white px-5 py-8 text-left text-slate-900 rounded-2xl border border-pink-200 sm:max-w-[450px] sm:rotate-[2.5deg] sm:px-8 sm:py-10 md:px-10 md:py-12">
             {/* Security Badge Icon inside letter */}
             <div className="flex items-center justify-between mb-8">
               <p className="text-sm font-play text-slate-950 font-dm">
@@ -156,7 +156,7 @@ export default function DarkSection() {
             href="https://minttoprosper.org/purposemint/partner"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-2 px-9 py-4 rounded-full text-white font-medium text-sm font-dm bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] hover:opacity-95 shadow-sm shadow-pink-600/30 active:scale-95 transition-all duration-200 cursor-pointer"
+            className="mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium font-dm text-white bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] shadow-sm shadow-pink-600/30 transition-all duration-200 hover:opacity-95 active:scale-95 sm:mt-8 sm:w-auto sm:px-9 sm:py-4"
           >
             Partner With Us
             <ExternalLink className="w-4 h-4" />

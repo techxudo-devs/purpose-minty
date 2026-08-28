@@ -253,7 +253,7 @@ export default function PhonePreview() {
   return (
     <div
       id="hero-preview"
-      className="relative mx-auto w-full max-w-[850px] px-4 pt-10 pb-6 mt-6"
+      className="relative mx-auto mt-4 w-full max-w-[850px] px-3 pb-4 pt-6 sm:mt-6 sm:px-4 sm:pb-6 sm:pt-10"
     >
       {/* Background Soft Pink Radial Glow */}
       <div
@@ -336,7 +336,7 @@ export default function PhonePreview() {
       </div>
 
       {/* ================= BIGGER PHONE DEVICE ================= */}
-      <div className="relative mx-auto w-[320px] sm:w-[360px] md:w-[350px]">
+      <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] md:max-w-[350px]">
         {/* Hardware side buttons */}
         <span className="absolute -left-[3px] top-[100px] h-[32px] w-[3px] rounded-l-sm bg-[#4a2444]" />
         <span className="absolute -left-[3px] top-[140px] h-[55px] w-[3px] rounded-l-sm bg-[#4a2444]" />
@@ -344,13 +344,13 @@ export default function PhonePreview() {
 
         {/* Outer Titanium Frame */}
         <div
-          className="relative overflow-hidden rounded-[50px] border border-white/20 bg-[#2E0F3D] p-[10px]"
+          className="relative overflow-hidden rounded-[44px] border border-white/20 bg-[#2E0F3D] p-[8px] sm:rounded-[50px] sm:p-[10px]"
 
         >
           {/* Screen Inner Frame */}
-          <div className="relative overflow-hidden rounded-[40px] bg-white">
+          <div className="relative overflow-hidden rounded-[34px] bg-white sm:rounded-[40px]">
             {/* Status Bar */}
-            <div className="relative z-10 flex h-[40px] items-end justify-between px-6 pb-1 bg-white">
+            <div className="relative z-10 flex h-[36px] items-end justify-between bg-white px-5 pb-1 sm:h-[40px] sm:px-6">
               <span className="text-[12px] font-dm tracking-tight text-[#2E0F3D]">
                 9:41
               </span>
@@ -359,7 +359,7 @@ export default function PhonePreview() {
             </div>
 
             {/* Dynamic Screen Area with Smooth Keyframe Fade */}
-            <div className="relative h-[480px] overflow-hidden bg-white">
+            <div className="relative h-[400px] overflow-hidden bg-white sm:h-[480px]">
               <div
                 key={screens[index].id}
                 className="h-full animate-screen-fade"

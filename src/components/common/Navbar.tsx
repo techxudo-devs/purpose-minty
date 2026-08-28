@@ -31,6 +31,13 @@ const Navbar: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
     const sections = navItems
       .map((item) => ({
         name: item.name,
@@ -77,7 +84,7 @@ const Navbar: React.FC = () => {
   return (
     <header
       className={`fixed left-0 right-0 top-0 z-50 font-dm transition-all duration-300 ${
-        isScrolled
+        isScrolled || mobileMenuOpen
           ? "bg-white/70 py-3 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.12)] backdrop-blur-xl"
           : "bg-transparent py-5"
       }`}
@@ -91,7 +98,7 @@ const Navbar: React.FC = () => {
                 alt="PurposeMint Logo"
                 width={150}
                 height={40}
-                className="h-9 w-auto object-contain"
+                className="h-8 w-auto object-contain sm:h-9"
                 priority
               />
             </Link>
@@ -131,34 +138,58 @@ const Navbar: React.FC = () => {
           <div className="flex items-center space-x-2 lg:hidden">
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`cursor-pointer p-2 focus:outline-none ${
-                isScrolled ? "text-slate-900 hover:text-slate-600" : "text-slate-900 hover:text-slate-700"
-              }`}
-              aria-label="Toggle menu"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              className="cursor-pointer rounded-full p-2 text-slate-900 transition-colors hover:bg-white/60 focus:outline-none"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              <span className="relative block h-6 w-6">
+                <Menu
+                  className={`absolute inset-0 h-6 w-6 transition-all duration-300 ease-out ${
+                    mobileMenuOpen ? "rotate-90 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100"
+                  }`}
+                />
+                <X
+                  className={`absolute inset-0 h-6 w-6 transition-all duration-300 ease-out ${
+                    mobileMenuOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-75 opacity-0"
+                  }`}
+                />
+              </span>
             </button>
           </div>
         </div>
       </div>
 
-      {mobileMenuOpen && (
-        <div className="mt-3 space-y-1 border-b border-slate-200/80 bg-white/95 px-6 pb-6 pt-4 shadow-2xl backdrop-blur-xl lg:hidden">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={(event) => handleNavClick(event, item.href, item.name)}
-              className={`block cursor-pointer border-b border-slate-100 py-3 text-base font-medium ${
-                activeTab === item.name ? "text-[#c01763]" : "text-slate-700"
-              }`}
-            >
-              {item.name}
-            </a>
-          ))}
+      <div
+        className={`overflow-hidden border-slate-200/80 bg-white/95 backdrop-blur-xl transition-[max-height,opacity,transform,box-shadow,border-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${
+          mobileMenuOpen
+            ? "max-h-[85vh] translate-y-0 border-b opacity-100 shadow-2xl"
+            : "pointer-events-none max-h-0 -translate-y-2 border-b border-transparent opacity-0 shadow-none"
+        }`}
+      >
+        <div className="px-6 pb-6 pt-4">
+          <nav className="space-y-1">
+            {navItems.map((item, index) => (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={(event) => handleNavClick(event, item.href, item.name)}
+                style={{ transitionDelay: mobileMenuOpen ? `${index * 45}ms` : "0ms" }}
+                className={`block cursor-pointer rounded-xl border-b border-slate-100 py-3 text-base font-medium transition-all duration-300 ease-out ${
+                  mobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-0"
+                } ${activeTab === item.name ? "text-[#c01763]" : "text-slate-700"}`}
+              >
+                {item.name}
+              </a>
+            ))}
+          </nav>
 
-          <div className="flex flex-col gap-3 pt-4">
+          <div
+            className={`flex flex-col gap-3 pt-4 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              mobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+            }`}
+            style={{ transitionDelay: mobileMenuOpen ? `${navItems.length * 45 + 80}ms` : "0ms" }}
+          >
             <a
               href="#waitlist"
               onClick={handleWaitlistClick}
@@ -169,7 +200,7 @@ const Navbar: React.FC = () => {
             </a>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 };

@@ -34,8 +34,8 @@ function PreviewPhone({
     <div
       className={`relative shrink-0 transition-transform duration-300 ${
         featured
-          ? "z-20 w-[250px] sm:w-[280px] md:w-[300px]"
-          : "z-10 w-[210px] sm:w-[235px] md:w-[250px]"
+          ? "z-20 w-[min(72vw,250px)] sm:w-[280px] md:w-[300px]"
+          : "z-10 w-[min(68vw,210px)] sm:w-[235px] md:w-[250px]"
       } hover:z-30`}
     >
       {/* Glow aura behind featured phone */}
@@ -98,7 +98,7 @@ export default function AppPreviewSection() {
   return (
     <section
       id="preview"
-      className="relative w-full py-10 pb-14 overflow-hidden bg-[#fdfbf7] text-slate-950"
+      className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 pb-12 text-slate-950 sm:pb-14"
     >
       {/* ================= 1. CENTER PINK/ORANGE RADIAL GLOW ================= */}
       <div
@@ -121,43 +121,31 @@ export default function AppPreviewSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         
         {/* Title */}
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-play text-slate-950 tracking-tighter">
+        <h2 className="font-play text-2xl tracking-tighter text-slate-950 sm:text-4xl md:text-5xl">
         App Preview
         </h2>
 
         {/* Subtitle */}
-        <p className="mt-4 text-base sm:text-lg font-dm text-slate-600 max-w-lg mx-auto leading-relaxed">
+        <p className="mx-auto mt-3 max-w-lg font-dm text-sm leading-relaxed text-slate-600 sm:mt-4 sm:text-base md:text-lg">
           A glimpse into your financial wellness journey
         </p>
 
         {/* Desktop 3-Phone Row Layout */}
-        <div className="relative mx-auto mt-14 hidden sm:flex max-w-[1020px] items-end justify-center">
+        <div className="relative mx-auto mt-8 flex max-w-[1020px] flex-col items-center gap-8 sm:mt-14 sm:flex-row sm:items-end sm:justify-center sm:gap-0">
           {/* Left Phone */}
-          <div className="origin-bottom translate-y-6 scale-[0.92] sm:-mr-8 lg:-mr-12 hover:scale-[0.95] hover:z-30 transition-all duration-300">
+          <div className="origin-bottom transition-all duration-300 sm:scale-[0.92] sm:-mr-8 sm:translate-y-6 lg:-mr-12 lg:hover:scale-[0.95] lg:hover:z-30">
             <PreviewPhone src={phones[0].src} alt={phones[0].alt} />
           </div>
 
           {/* Center Featured Phone */}
-          <div className="relative z-20 hover:scale-[1.02] hover:z-30 transition-all duration-300">
+          <div className="relative z-20 transition-all duration-300 sm:hover:scale-[1.02] sm:hover:z-30">
             <PreviewPhone src={phones[1].src} alt={phones[1].alt} featured />
           </div>
 
           {/* Right Phone */}
-          <div className="origin-bottom translate-y-6 scale-[0.92] sm:-ml-8 lg:-ml-12 hover:scale-[0.95] hover:z-30 transition-all duration-300">
+          <div className="origin-bottom transition-all duration-300 sm:scale-[0.92] sm:-ml-8 sm:translate-y-6 lg:-ml-12 lg:hover:scale-[0.95] lg:hover:z-30">
             <PreviewPhone src={phones[2].src} alt={phones[2].alt} />
           </div>
-        </div>
-
-        {/* Mobile Horizontal Scrollable View */}
-        <div className="mt-10 flex items-end justify-start gap-4 overflow-x-auto px-4 pb-6 sm:hidden scrollbar-none">
-          {phones.map((phone) => (
-            <PreviewPhone
-              key={phone.src}
-              src={phone.src}
-              alt={phone.alt}
-              featured={phone.featured}
-            />
-          ))}
         </div>
 
       </div>

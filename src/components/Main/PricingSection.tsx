@@ -97,7 +97,7 @@ function formatPrice(price: number) {
 
 export default function PricingSection() {
   return (
-    <section id="pricing" className="relative w-full bg-white py-10">
+    <section id="pricing" className="relative w-full overflow-hidden bg-white py-10 sm:py-12">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto mb-10 flex max-w-2xl flex-col items-center text-center sm:mb-14">
@@ -112,10 +112,10 @@ export default function PricingSection() {
             For Families
           </span>
 
-          <h2 className="mt-5 font-play text-3xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
+          <h2 className="mt-4 font-play text-2xl tracking-tight text-slate-950 sm:mt-5 sm:text-4xl md:text-5xl">
             Who is this for ?
           </h2>
-          <p className="mt-4 max-w-xl font-dm text-base leading-relaxed text-slate-600 sm:text-lg">
+          <p className="mt-3 max-w-xl font-dm text-sm leading-relaxed text-slate-600 sm:mt-4 sm:text-base md:text-lg">
             Two ways in — one for families building a cushion, one for the institutions that want to back them.
           </p>
         </div>
@@ -131,7 +131,7 @@ export default function PricingSection() {
             >
               {/* Colored header */}
               <div
-                className={`px-6 pb-6 pt-7 transition-all duration-300 group-hover:brightness-110 sm:px-7 sm:pt-8 ${plan.headerClass}`}
+                className={`px-5 pb-5 pt-6 transition-all duration-300 group-hover:brightness-110 sm:px-6 sm:pb-6 sm:pt-7 md:px-7 md:pt-8 ${plan.headerClass}`}
                 style={plan.headerStyle}
               >
                 {plan.featured && (
@@ -153,7 +153,7 @@ export default function PricingSection() {
                       {plan.badge}
                     </span>
                   )}
-                  <h3 className="font-play text-[22px] text-white sm:text-[24px]">
+                  <h3 className="font-play text-xl text-white sm:text-[22px] md:text-[24px]">
                     {plan.name}
                   </h3>
                   <p
@@ -165,7 +165,7 @@ export default function PricingSection() {
                   </p>
 
                   <div className="mt-6 flex items-end gap-1 transition-transform duration-300 group-hover:translate-x-0.5">
-                    <span className="font-play text-[42px] leading-none text-white transition-transform duration-300 group-hover:scale-[1.03] sm:text-[46px]">
+                    <span className="font-play text-[34px] leading-none text-white transition-transform duration-300 group-hover:scale-[1.03] sm:text-[42px] md:text-[46px]">
                       {plan.priceLabel ?? formatPrice(plan.monthlyPrice)}
                     </span>
                     {!plan.priceLabel && (
@@ -193,7 +193,7 @@ export default function PricingSection() {
               </div>
 
               {/* Features */}
-              <ul className="flex flex-1 flex-col gap-3.5 px-6 py-7 transition-colors duration-300 group-hover:bg-slate-50/60 sm:px-7 sm:py-8">
+              <ul className="flex flex-1 flex-col gap-3 px-5 py-6 transition-colors duration-300 group-hover:bg-slate-50/60 sm:gap-3.5 sm:px-6 sm:py-7 md:px-7 md:py-8">
                 {plan.features.map((feature) => (
                   <li
                     key={feature}

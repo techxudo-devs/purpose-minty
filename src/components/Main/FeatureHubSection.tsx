@@ -24,14 +24,14 @@ function FeatureHubHeader({
         Choose your goal, set the friction, and grow a cushion you can actually keep.
       </p>
 
-      <div className="mt-6 inline-flex items-center rounded-full border border-slate-200/80 bg-white/90 p-1">
+      <div className="mt-6 flex w-full max-w-xs flex-col gap-3 px-1 md:inline-flex md:max-w-none md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200/80 md:bg-white/90 md:p-1 md:px-0">
         <button
           type="button"
           onClick={() => onTabChange("features")}
-          className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm transition-all duration-200 ${
+          className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2.5 font-dm text-sm transition-all duration-200 md:w-auto md:px-5 ${
             activeTab === "features"
               ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
-              : "text-slate-500 hover:text-slate-700"
+              : "border border-slate-200/80 bg-white text-slate-500 hover:border-pink-200 hover:text-slate-700 md:border-0 md:bg-transparent"
           }`}
         >
           <HiLightningBolt className="h-4 w-4" />
@@ -40,10 +40,10 @@ function FeatureHubHeader({
         <button
           type="button"
           onClick={() => onTabChange("benefits")}
-          className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm transition-all duration-200 ${
+          className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2.5 font-dm text-sm transition-all duration-200 md:w-auto md:px-5 ${
             activeTab === "benefits"
               ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
-              : "text-slate-500 hover:text-slate-700"
+              : "border border-slate-200/80 bg-white text-slate-500 hover:border-pink-200 hover:text-slate-700 md:border-0 md:bg-transparent"
           }`}
         >
           <HiOutlineHeart className="h-4 w-4" />
@@ -505,8 +505,8 @@ const HubCardItem = forwardRef<
       ref={ref}
       className={`relative z-10 flex flex-col rounded-[20px] border border-violet-100/80 bg-[#f0f4ff] text-center ${
         compact
-          ? "min-h-[280px] p-4 sm:min-h-[300px] sm:p-5"
-          : "min-h-[340px] p-5 sm:min-h-[360px] sm:p-6"
+          ? "min-h-[240px] p-4 sm:min-h-[280px] md:min-h-[300px] sm:p-5"
+          : "min-h-[280px] p-4 sm:min-h-[340px] sm:p-5 md:min-h-[360px] md:p-6"
       }`}
     >
       <h3
@@ -666,7 +666,7 @@ function PurposeMintHub({ hubRef }: { hubRef: React.RefObject<HTMLDivElement | n
           />
         </div>
 
-        <h2 className="relative z-10 whitespace-nowrap text-center font-play text-[64px] font-bold leading-none tracking-[-0.02em] text-slate-950 sm:text-[84px] md:text-[108px] lg:text-[132px]">
+        <h2 className="relative z-10 whitespace-nowrap text-center font-play text-[clamp(2.25rem,11vw,8.25rem)] font-bold leading-none tracking-[-0.02em] text-slate-950">
           PurposeMint
         </h2>
       </div>
@@ -693,7 +693,7 @@ function HubCardsLayout({
 }) {
   const gridClass =
     columns === 4
-      ? "grid-cols-1 lg:grid-cols-4"
+      ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
       : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 
   const cardCount = topCards.length + bottomCards.length;
@@ -747,7 +747,7 @@ export default function FeatureHubSection() {
   };
 
   return (
-    <section id="feature-hub" className="relative overflow-hidden bg-[#fbfcfd] py-14 md:py-16">
+    <section id="feature-hub" className="relative overflow-hidden bg-[#fbfcfd] py-10 sm:py-14 md:py-16">
       <div
         className="pointer-events-none absolute inset-0 opacity-50"
         style={{

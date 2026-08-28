@@ -11,7 +11,7 @@ import PricingSection from '@/components/Main/PricingSection'
 import SurveySection from '@/components/Main/SurveySection'
 const Main = () => {
   return (
-    <div>
+    <div className="overflow-x-hidden">
         <Hero />
         <Features />
         <GoalsSection />

@@ -23,11 +23,11 @@ const Hero: React.FC = () => {
 
   return (
     /* ADDED flex-col HERE TO FORCE VERTICAL STACKING (TOP TO BOTTOM) */
-    <section className="relative w-full flex flex-col items-center justify-start bg-[#fdfbf7] text-slate-950 pt-28 pb-16">
+    <section className="relative flex w-full flex-col items-center justify-start overflow-hidden bg-[#fdfbf7] pb-12 pt-24 text-slate-950 sm:pb-16 sm:pt-28">
       
       {/* ================= 1. CENTER PINK/ORANGE RADIAL GLOW ================= */}
       <div
-        className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[950px] h-[600px] sm:h-[750px] pointer-events-none z-0 rounded-full opacity-80 blur-[75px] overflow-hidden"
+        className="pointer-events-none absolute left-1/2 top-[45%] z-0 h-[420px] w-[min(100vw,700px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full opacity-80 blur-[75px] sm:h-[600px] sm:w-[950px] md:h-[750px]"
         style={{
           background:
             "radial-gradient(circle at center, rgba(244, 114, 182, 0.7) 0%, rgba(251, 146, 60, 0.45) 35%, rgba(253, 224, 71, 0.25) 65%, transparent 85%)",
@@ -36,7 +36,7 @@ const Hero: React.FC = () => {
 
       {/* ================= 2. GLITTER / GRAINY NOISE TEXTURE LAYER ================= */}
       <div 
-        className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[950px] h-[600px] sm:h-[750px] pointer-events-none z-0 mix-blend-overlay"
+        className="pointer-events-none absolute left-1/2 top-[45%] z-0 h-[420px] w-[min(100vw,700px)] -translate-x-1/2 -translate-y-1/2 mix-blend-overlay sm:h-[600px] sm:w-[950px] md:h-[750px]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='10' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           maskImage: "radial-gradient(circle at center, black 30%, transparent 70%)",
@@ -48,9 +48,9 @@ const Hero: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
         
         {/* Rating Badge */}
-        <div className="inline-flex items-center gap-3 bg-white/80 border border-slate-300/60 backdrop-blur-md px-4 py-1.5 rounded-full mb-8 font-dm">
+        <div className="mb-6 w-full max-w-[min(100%,22rem)] rounded-2xl border border-slate-300/60 bg-white/85 px-3 py-3 font-dm shadow-[0_8px_24px_-12px_rgba(15,23,42,0.12)] backdrop-blur-md sm:mb-8 sm:inline-flex sm:w-auto sm:max-w-none sm:flex-row sm:items-center sm:gap-3 sm:rounded-full sm:px-4 sm:py-1.5">
           {/* Avatar Stack */}
-          <div className="flex items-center -space-x-2">
+          <div className="flex items-center justify-center -space-x-1.5 sm:-space-x-2 sm:justify-start">
             {avatars.map((url, index) => (
               <Image
                 key={index}
@@ -58,39 +58,41 @@ const Hero: React.FC = () => {
                 alt={`User ${index + 1}`}
                 width={28}
                 height={28}
-                className="w-7 h-7 rounded-full border-2 border-white object-cover"
+                className="h-6 w-6 rounded-full border-2 border-white object-cover sm:h-7 sm:w-7"
               />
             ))}
-            <div className="w-8 h-8 rounded-full border-2 border-white bg-[#e0f2fe] text-sky-900 font-bold text-xs flex items-center justify-center">
+            <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-[#e0f2fe] text-[10px] font-bold text-sky-900 sm:h-8 sm:w-8 sm:text-xs">
               60+
             </div>
           </div>
 
           {/* Stars & Text */}
-          <div className="flex items-center gap-2 text-left">
-            <div className="flex items-center gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]"
-                />
-              ))}
+          <div className="mt-2.5 flex flex-col items-center gap-1.5 border-t border-slate-200/70 pt-2.5 sm:mt-0 sm:flex-row sm:items-center sm:gap-2 sm:border-0 sm:pt-0 sm:text-left">
+            <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="h-3 w-3 fill-[#f59e0b] text-[#f59e0b] sm:h-3.5 sm:w-3.5"
+                  />
+                ))}
+              </div>
+              <span className="text-sm font-bold text-slate-900">4.8</span>
             </div>
-            <span className="text-slate-900 font-bold text-sm">4.8</span>
-            <span className="text-slate-600 text-sm font-normal">
+            <span className="px-1 text-center text-[11px] leading-snug text-slate-600 sm:max-w-none sm:px-0 sm:text-left sm:text-sm">
               Most people start at zero. So can you.
             </span>
           </div>
         </div>
 
         {/* Main Title */}
-        <h1 className="text-5xl sm:text-6xl md:text-6xl font-play text-slate-950 tracking-tight leading-[1.08] mb-6">
+        <h1 className="mb-5 font-play text-[2rem] leading-[1.1] tracking-tight text-slate-950 sm:mb-6 sm:text-5xl md:text-6xl">
           Start with what you have. <br />
           Build toward what you need.
         </h1>
 
         {/* Paragraph Text */}
-        <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-700 font-normal leading-relaxed mb-8 font-dm">
+        <p className="mx-auto mb-6 max-w-2xl text-sm leading-relaxed text-slate-700 sm:mb-8 sm:text-base md:text-lg font-dm">
           PurposeMint helps you save a little at a time, safely — and turns those savings into a way forward: a car, a home, childcare, a better job. Not a payday loan.
         </p>
 

@@ -294,20 +294,20 @@ export default function FaqSection() {
   }
 
   return (
-    <section id="faq" className="relative overflow-hidden py-10 sm:py-14 bg-[#fdfbf7] text-slate-950">
+    <section id="faq" className="relative overflow-hidden bg-[#fdfbf7] py-8 text-slate-950 sm:py-14">
       
       {/* Title */}
-      <div className="relative z-10 text-center px-4 mb-4 sm:mb-6">
-        <span className="inline-block bg-pink-100/80 border border-pink-200/70 text-[#c01763] text-sm font-medium font-dm px-4 py-1.5 rounded-full mb-3">
+      <div className="relative z-10 mb-4 px-4 text-center sm:mb-6">
+        <span className="mb-3 inline-block rounded-full border border-pink-200/70 bg-pink-100/80 px-3 py-1 text-xs font-medium font-dm text-[#c01763] sm:px-4 sm:py-1.5 sm:text-sm">
           Got Questions?
         </span>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-play text-slate-950 tracking-tight">
+        <h2 className="font-play text-2xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
           Frequently Asked Questions
         </h2>
       </div>
 
       {/* Carousel Track Area */}
-      <div ref={viewportRef} className="relative z-10 overflow-hidden py-8 md:py-12">
+      <div ref={viewportRef} className="relative z-10 overflow-hidden py-6 sm:py-8 md:py-12">
         <div
           className="flex items-start"
           style={{
@@ -329,18 +329,18 @@ export default function FaqSection() {
                 tabIndex={isForm ? undefined : 0}
                 onClick={isForm ? undefined : () => activateCard(i)}
                 onKeyDown={isForm ? undefined : (event) => onCardKey(event, i)}
-                className={`relative flex shrink-0 flex-col justify-between overflow-hidden rounded-3xl p-5 sm:p-6 pb-14 text-left transition-all duration-300 ${
+                className={`relative flex shrink-0 flex-col justify-between overflow-hidden rounded-3xl p-4 pb-12 text-left transition-all duration-300 sm:p-5 sm:pb-14 ${
                   isForm ? "" : "cursor-pointer"
                 } ${
                   isActive
-                    ? "bg-[#2E0F3D] text-white border border-pink-500/30 ring-1 ring-pink-500/20 scale-100 z-20"
-                    : "bg-white/90 backdrop-blur-md border border-pink-200/80 text-[#2E0F3D] hover:bg-white scale-95 opacity-85 z-10"
+                    ? "z-20 scale-100 border border-pink-500/30 bg-[#2E0F3D] text-white ring-1 ring-pink-500/20"
+                    : "z-10 scale-95 border border-pink-200/80 bg-white/90 text-[#2E0F3D] opacity-85 backdrop-blur-md hover:bg-white"
                 }`}
                 style={{
                   width: cardWidth || undefined,
                   flexBasis: cardWidth || undefined,
-                  minHeight: "340px",
-                  transform: lowered ? "translateY(28px)" : "translateY(0)",
+                  minHeight: "300px",
+                  transform: lowered ? "translateY(20px)" : "translateY(0)",
                 }}
               >
                 {isActive && isContact ? (
@@ -380,12 +380,12 @@ export default function FaqSection() {
       </div>
 
       {/* Bottom Controls */}
-      <div className="relative z-10 mt-2 flex justify-center gap-3">
+      <div className="relative z-10 mt-2 flex justify-center gap-2 sm:gap-3">
         <button
           type="button"
           aria-label="Previous FAQ"
           onClick={() => go(-1)}
-          className="flex h-14 w-14 items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] transition hover:bg-white active:scale-95 cursor-pointer shadow-sm"
+          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] shadow-sm transition hover:bg-white active:scale-95 sm:h-14 sm:w-14"
         >
           <Arrow dir="left" />
         </button>
@@ -393,7 +393,7 @@ export default function FaqSection() {
           type="button"
           aria-label="Next FAQ"
           onClick={() => go(1)}
-          className="flex h-14 w-14 items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] transition hover:bg-white active:scale-95 cursor-pointer shadow-sm"
+          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] shadow-sm transition hover:bg-white active:scale-95 sm:h-14 sm:w-14"
         >
           <Arrow dir="right" />
         </button>
