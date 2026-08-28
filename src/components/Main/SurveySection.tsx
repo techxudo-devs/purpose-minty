@@ -7,7 +7,13 @@ import { links } from "./site";
 
 function MarkerUnderline({ children }: { children: ReactNode }) {
   return (
-    <span className="box-decoration-clone bg-[linear-gradient(120deg,rgba(244,114,182,0.35)_0%,rgba(253,224,71,0.45)_100%)] px-1 pb-1">
+    <span
+      className="box-decoration-clone px-1 pb-1"
+      style={{
+        backgroundImage:
+          "linear-gradient(120deg, rgba(192, 23, 99, 0.22) 0%, rgba(244, 114, 182, 0.32) 45%, rgba(253, 224, 71, 0.28) 100%)",
+      }}
+    >
       {children}
     </span>
   );
@@ -80,6 +86,12 @@ const partnerInterests = [
   { id: "grant-funded", label: "Grant-funded initiatives" },
 ];
 
+const cardClass =
+  "rounded-[28px] border border-slate-200/80 bg-white/90 p-6 backdrop-blur-sm sm:p-8";
+
+const field =
+  "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 font-dm text-[14px] text-slate-800 outline-none placeholder:text-slate-400 focus:border-[#c01763] focus:ring-2 focus:ring-[#c01763]/20";
+
 function Choice({
   selected,
   onClick,
@@ -93,10 +105,10 @@ function Choice({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-4 py-2.5 text-left text-[13px] font-semibold transition ${
+      className={`cursor-pointer rounded-full border px-4 py-2.5 text-left font-dm text-[13px] transition-all duration-200 ${
         selected
-          ? "border-[#c01763] bg-[#c01763] text-white shadow-[0_8px_20px_rgba(192,23,99,0.28)]"
-          : "border-white/25 bg-white/5 text-[#f7eef4] hover:border-white/50 hover:bg-white/10"
+          ? "border-[#c01763] bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white"
+          : "border-slate-200 bg-white text-slate-700 hover:border-pink-200 hover:bg-[#fff5f8] hover:text-slate-900"
       }`}
     >
       {children}
@@ -107,9 +119,6 @@ function Choice({
 function toggle(list: string[], id: string) {
   return list.includes(id) ? list.filter((item) => item !== id) : [...list, id];
 }
-
-const field =
-  "w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3.5 text-[14px] text-white outline-none placeholder:text-white/45 focus:border-[#c01763] focus:ring-2 focus:ring-[#c01763]/30";
 
 export default function SurveySection() {
   const [tab, setTab] = useState<"user" | "partner">("user");
@@ -177,38 +186,65 @@ export default function SurveySection() {
   }
 
   return (
-    <section id="survey" className="relative overflow-hidden bg-[#2E0F3D] py-20 md:py-24">
+    <section id="survey" className="relative overflow-hidden bg-[#fdfbf7] py-14 md:py-16">
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 opacity-50"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(46,15,61,0.5), rgba(217,28,104,0.18)), radial-gradient(circle at 18% 12%, rgba(255,255,255,0.12), transparent 28%), radial-gradient(circle at 88% 8%, rgba(245,229,107,0.14), transparent 24%)",
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: "32px 32px",
         }}
-        aria-hidden
       />
 
-      <div className="relative z-10 mx-auto max-w-[780px] px-4 sm:px-6">
+      <div
+        className="pointer-events-none absolute -left-24 top-16 h-[380px] w-[380px] rounded-full opacity-60 blur-[90px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(244, 114, 182, 0.35) 0%, rgba(251, 146, 60, 0.18) 45%, transparent 75%)",
+        }}
+      />
+
+      <div
+        className="pointer-events-none absolute -right-24 bottom-0 h-[380px] w-[380px] rounded-full opacity-60 blur-[90px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(253, 224, 71, 0.32) 0%, rgba(192, 23, 99, 0.16) 45%, transparent 75%)",
+        }}
+      />
+
+      <div className="relative z-10 mx-auto max-w-[850px] px-4 sm:px-6">
         <div className="text-center">
-          <p className="font-dm text-xs font-semibold uppercase tracking-[0.1em] text-[#facc15]">
+          <span
+            className="inline-flex rounded-full px-4 py-1.5 font-dm text-[12px] text-slate-700 sm:text-[13px]"
+            style={{
+              background:
+                "linear-gradient(#fdfbf7, #fdfbf7) padding-box, linear-gradient(90deg, #c084fc, #f472b6, #fb7185) border-box",
+              border: "1.5px solid transparent",
+            }}
+          >
             Your voice matters
-          </p>
-          <h2 className="mt-3 font-play text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
-            Share Your <MarkerUnderline>Experience</MarkerUnderline>
+          </span>
+
+          <h2 className="mt-5 font-play text-3xl font-normal tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
+            Share Your Experience
           </h2>
-          <p className="mx-auto mt-4 max-w-[540px] font-dm text-[15px] font-medium leading-relaxed text-pink-100/90">
+
+          <p className="mx-auto mt-4 max-w-[540px] font-dm text-[15px] leading-relaxed text-slate-600 sm:text-base">
             Help us build something that truly serves you. Your feedback shapes the future of PurposeMint.
           </p>
         </div>
 
         <div className="mt-8 flex justify-center">
-          <div className="inline-flex rounded-2xl border border-white/15 bg-white/10 p-1.5 backdrop-blur-sm">
+          <div className="inline-flex items-center rounded-full border border-slate-200/80 bg-white/90 p-1">
             <button
               type="button"
               onClick={() => setTab("user")}
-              className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-extrabold transition ${
+              className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm transition-all duration-200 ${
                 tab === "user"
-                  ? "bg-[#c01763] text-white shadow-[0_8px_20px_rgba(192,23,99,0.35)]"
-                  : "text-[#f4e8ef] hover:text-white"
+                  ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white"
+                  : "text-slate-500 hover:text-slate-700"
               }`}
             >
               <HiOutlineUser className="h-4 w-4" />
@@ -217,10 +253,10 @@ export default function SurveySection() {
             <button
               type="button"
               onClick={() => setTab("partner")}
-              className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-extrabold transition ${
+              className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm transition-all duration-200 ${
                 tab === "partner"
-                  ? "bg-[#c01763] text-white shadow-[0_8px_20px_rgba(192,23,99,0.35)]"
-                  : "text-[#f4e8ef] hover:text-white"
+                  ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white"
+                  : "text-slate-500 hover:text-slate-700"
               }`}
             >
               <FaBuilding className="h-4 w-4" />
@@ -230,11 +266,11 @@ export default function SurveySection() {
         </div>
 
         {sent ? (
-          <div className="mt-10 rounded-[28px] border border-white/12 bg-white/[0.08] p-10 text-center backdrop-blur-sm">
-            <p className="text-[22px] font-extrabold text-white [text-shadow:0_0_18px_rgba(255,255,255,0.25)]">
+          <div className={`${cardClass} mt-10 text-center`}>
+            <p className="font-play text-[22px] text-slate-950 sm:text-[24px]">
               {tab === "user" ? "Thank you for your feedback! 💜" : "Thank you for your interest in partnering! 🤝"}
             </p>
-            <p className="mt-3 text-[14px] font-medium text-white/70">
+            <p className="mt-3 font-dm text-[14px] text-slate-600">
               {tab === "user"
                 ? "Your insights will help shape PurposeMint."
                 : "We'll be in touch soon to discuss partnership opportunities."}
@@ -244,12 +280,12 @@ export default function SurveySection() {
           <form className="mt-10 space-y-6" onSubmit={onSubmit}>
             {tab === "user" ? (
               <>
-                <div className="rounded-[28px] border border-white/12 bg-white/[0.08] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:p-8">
-                  <h3 className="mb-6 flex items-center gap-2 text-[16px] font-extrabold text-[#fff5fa]">
+                <div className={cardClass}>
+                  <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
                     Demo &amp; UX Experience
                   </h3>
-                  <p className="mb-3 text-[14px] font-semibold text-[#f7eef4]">
+                  <p className="mb-3 font-dm text-[14px] text-slate-700">
                     How would you describe your experience with the PurposeMint demo?
                   </p>
                   <div className="mb-8 flex flex-wrap gap-3">
@@ -259,7 +295,7 @@ export default function SurveySection() {
                       </Choice>
                     ))}
                   </div>
-                  <p className="mb-3 text-[14px] font-semibold text-[#f7eef4]">
+                  <p className="mb-3 font-dm text-[14px] text-slate-700">
                     Which features resonated with you? (Select all that apply)
                   </p>
                   <div className="mb-8 grid gap-3 sm:grid-cols-2">
@@ -273,7 +309,7 @@ export default function SurveySection() {
                       </Choice>
                     ))}
                   </div>
-                  <label className="mb-3 block text-[14px] font-semibold text-[#f7eef4]">
+                  <label className="mb-3 block font-dm text-[14px] text-slate-700">
                     What&apos;s one feature you wish you saw in the demo?
                   </label>
                   <input
@@ -285,12 +321,12 @@ export default function SurveySection() {
                   />
                 </div>
 
-                <div className="rounded-[28px] border border-white/12 bg-white/[0.08] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:p-8">
-                  <h3 className="mb-6 flex items-center gap-2 text-[16px] font-extrabold text-[#fff5fa]">
+                <div className={cardClass}>
+                  <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
                     Cultural Relevance &amp; Motivation
                   </h3>
-                  <p className="mb-3 text-[14px] font-semibold text-[#f7eef4]">
+                  <p className="mb-3 font-dm text-[14px] text-slate-700">
                     How well did the language and examples in PurposeMint reflect your real-life experiences?
                   </p>
                   <div className="mb-8 flex flex-wrap gap-3">
@@ -300,7 +336,7 @@ export default function SurveySection() {
                       </Choice>
                     ))}
                   </div>
-                  <p className="mb-3 text-[14px] font-semibold text-[#f7eef4]">
+                  <p className="mb-3 font-dm text-[14px] text-slate-700">
                     What type of motivation keeps you on track financially? (Select all that apply)
                   </p>
                   <div className="mb-8 grid gap-3 sm:grid-cols-2">
@@ -314,7 +350,7 @@ export default function SurveySection() {
                       </Choice>
                     ))}
                   </div>
-                  <label className="mb-3 block text-[14px] font-semibold text-[#f7eef4]">
+                  <label className="mb-3 block font-dm text-[14px] text-slate-700">
                     Any suggestions to make PurposeMint feel more &ldquo;you&rdquo;?
                   </label>
                   <textarea
@@ -327,12 +363,12 @@ export default function SurveySection() {
                   />
                 </div>
 
-                <div className="rounded-[28px] border border-white/12 bg-white/[0.08] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:p-8">
-                  <h3 className="mb-6 flex items-center gap-2 text-[16px] font-extrabold text-[#fff5fa]">
+                <div className={cardClass}>
+                  <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
                     Overall Impression
                   </h3>
-                  <p className="mb-3 text-[14px] font-semibold text-[#f7eef4]">
+                  <p className="mb-3 font-dm text-[14px] text-slate-700">
                     Based on what you&apos;ve seen, how likely are you to use PurposeMint when it launches?
                   </p>
                   <div className="flex flex-wrap gap-3">
@@ -346,12 +382,12 @@ export default function SurveySection() {
               </>
             ) : (
               <>
-                <div className="rounded-[28px] border border-white/12 bg-white/[0.08] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:p-8">
-                  <h3 className="mb-6 flex items-center gap-2 text-[16px] font-extrabold text-[#fff5fa]">
+                <div className={cardClass}>
+                  <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <FaBuilding className="h-5 w-5 text-[#c01763]" />
                     About Your Organization
                   </h3>
-                  <label className="mb-3 block text-[14px] font-semibold text-[#f7eef4]">Organization Name</label>
+                  <label className="mb-3 block font-dm text-[14px] text-slate-700">Organization Name</label>
                   <input
                     value={org}
                     onChange={(event) => setOrg(event.target.value)}
@@ -359,7 +395,7 @@ export default function SurveySection() {
                     maxLength={200}
                     className={`${field} mb-8`}
                   />
-                  <p className="mb-3 text-[14px] font-semibold text-[#f7eef4]">What type of organization are you?</p>
+                  <p className="mb-3 font-dm text-[14px] text-slate-700">What type of organization are you?</p>
                   <div className="mb-8 grid gap-3 sm:grid-cols-2">
                     {partnerTypes.map((item) => (
                       <Choice key={item.id} selected={partnerType === item.id} onClick={() => setPartnerType(item.id)}>
@@ -367,7 +403,7 @@ export default function SurveySection() {
                       </Choice>
                     ))}
                   </div>
-                  <p className="mb-3 text-[14px] font-semibold text-[#f7eef4]">
+                  <p className="mb-3 font-dm text-[14px] text-slate-700">
                     Which communities do you primarily serve? (Select all that apply)
                   </p>
                   <div className="grid gap-3 sm:grid-cols-2">
@@ -383,12 +419,12 @@ export default function SurveySection() {
                   </div>
                 </div>
 
-                <div className="rounded-[28px] border border-white/12 bg-white/[0.08] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:p-8">
-                  <h3 className="mb-6 flex items-center gap-2 text-[16px] font-extrabold text-[#fff5fa]">
+                <div className={cardClass}>
+                  <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
                     Partnership Vision
                   </h3>
-                  <p className="mb-3 text-[14px] font-semibold text-[#f7eef4]">
+                  <p className="mb-3 font-dm text-[14px] text-slate-700">
                     What partnership opportunities interest you most? (Select all that apply)
                   </p>
                   <div className="mb-8 grid gap-3 sm:grid-cols-2">
@@ -402,7 +438,7 @@ export default function SurveySection() {
                       </Choice>
                     ))}
                   </div>
-                  <label className="mb-3 block text-[14px] font-semibold text-[#f7eef4]">
+                  <label className="mb-3 block font-dm text-[14px] text-slate-700">
                     What would a successful partnership with PurposeMint look like for your organization?
                   </label>
                   <textarea
@@ -413,7 +449,7 @@ export default function SurveySection() {
                     rows={3}
                     className={`${field} mb-8 resize-none`}
                   />
-                  <label className="mb-3 block text-[14px] font-semibold text-[#f7eef4]">
+                  <label className="mb-3 block font-dm text-[14px] text-slate-700">
                     What challenges do you face in helping your community build financial stability?
                   </label>
                   <textarea
@@ -428,11 +464,11 @@ export default function SurveySection() {
               </>
             )}
 
-            <div className="rounded-[28px] border border-[#f5e56b]/25 bg-[linear-gradient(180deg,rgba(217,28,104,0.22),rgba(46,15,61,0.35))] p-6 text-center shadow-[0_20px_50px_rgba(0,0,0,0.22)] sm:p-10">
-              <h3 className="text-[20px] font-extrabold text-white [text-shadow:0_0_18px_rgba(255,255,255,0.25)] sm:text-[24px]">
+            <div className="rounded-[28px] border border-pink-100/80 bg-gradient-to-b from-[#fff5f8] to-white p-6 text-center sm:p-10">
+              <h3 className="font-play text-[20px] text-slate-950 sm:text-[24px]">
                 {tab === "user" ? "Ready to Share Your Voice?" : "Ready to Explore Partnership?"}
               </h3>
-              <p className="mt-2 text-[14px] font-medium text-[#f4e8ef]">
+              <p className="mt-2 font-dm text-[14px] text-slate-600">
                 {tab === "user"
                   ? "Enter your email to stay updated on PurposeMint's launch"
                   : "Enter your email and we'll reach out to discuss partnership opportunities"}
@@ -447,23 +483,26 @@ export default function SurveySection() {
                   maxLength={255}
                   className={field}
                 />
-                {error ? <p className="mt-2 text-left text-[12px] font-semibold text-[#ff8ab8]">{error}</p> : null}
+                {error ? <p className="mt-2 text-left font-dm text-[12px] text-[#c01763]">{error}</p> : null}
                 <button
                   type="submit"
-                  className="mt-4 w-full cursor-pointer rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 font-dm text-sm font-semibold text-white transition hover:opacity-95 active:scale-[0.98]"
+                  className="mt-4 w-full cursor-pointer rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 font-dm text-sm text-white transition hover:-translate-y-0.5 hover:opacity-95 active:scale-[0.98]"
                 >
                   Submit Feedback
                 </button>
               </div>
-              <p className="mt-5 text-[13px] font-medium text-[#f4e8ef]/80">
+              <p className="mt-5 font-dm text-[13px] text-slate-600">
                 {tab === "user"
                   ? "Your insights help us build something that truly serves you 💜"
                   : "Together, we can create pathways to financial stability 🤝"}
               </p>
-              <p className="mt-3 text-[11px] text-[#f4e8ef]/60">
+              <p className="mt-3 font-dm text-[11px] text-slate-500">
                 By submitting, you consent to our collection of your email, IP address, and browser information to
                 prevent abuse and improve our services.{" "}
-                <a href={links.privacy} className="underline hover:text-white">
+                <a
+                  href={links.privacy}
+                  className="cursor-pointer text-[#c01763] underline-offset-4 transition-colors hover:text-[#8d0543] hover:underline"
+                >
                   Privacy Policy
                 </a>
               </p>

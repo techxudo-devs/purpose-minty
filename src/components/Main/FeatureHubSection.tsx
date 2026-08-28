@@ -12,24 +12,23 @@ function FeatureHubHeader({
 }) {
   return (
     <div className="relative z-10 mx-auto mb-10 flex max-w-2xl flex-col items-center text-center sm:mb-12">
-      <span className="font-dm text-xs font-semibold uppercase tracking-[0.1em] text-[#facc15]">
+      <span className="font-dm text-xs uppercase tracking-wider text-pink-700">
         What makes us different
       </span>
 
-      <h2 className="mt-4 font-play text-3xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
-        Features &{" "}
-        <span className="font-bold">Benefits</span>
+      <h2 className="mt-4 font-play text-3xl font-normal tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
+        Features & Benefits
       </h2>
 
-      <p className="mt-4 max-w-lg font-dm text-sm leading-relaxed text-slate-600 sm:text-base">
+      <p className="mt-4 max-w-lg font-dm text-sm text-slate-600 sm:text-base">
         Choose your goal, set the friction, and grow a cushion you can actually keep.
       </p>
 
-      <div className="mt-6 inline-flex items-center rounded-full border border-slate-200/80 bg-white/90 p-1 shadow-sm">
+      <div className="mt-6 inline-flex items-center rounded-full border border-slate-200/80 bg-white/90 p-1">
         <button
           type="button"
           onClick={() => onTabChange("features")}
-          className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm font-medium transition-all duration-200 ${
+          className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm transition-all duration-200 ${
             activeTab === "features"
               ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
               : "text-slate-500 hover:text-slate-700"
@@ -41,7 +40,7 @@ function FeatureHubHeader({
         <button
           type="button"
           onClick={() => onTabChange("benefits")}
-          className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm font-medium transition-all duration-200 ${
+          className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm transition-all duration-200 ${
             activeTab === "benefits"
               ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
               : "text-slate-500 hover:text-slate-700"

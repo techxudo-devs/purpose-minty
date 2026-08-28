@@ -14,18 +14,16 @@ const Main = () => {
     <div>
         <Hero />
         <Features />
-        <DarkSection />
+        <GoalsSection />
+        <FeatureHubSection />
+        <AppPreviewSection />
         <PricingSection />
         <PartnersSection />
-        <AppPreviewSection />
-        <FeatureHubSection />
-        <GoalsSection />
-        <SurveySection />
-        <GoalsSection />
+        <DarkSection />
         <FaqSection />
+        <SurveySection />
         <Footer />
     </div>
   )
 }
-
 export default Main
