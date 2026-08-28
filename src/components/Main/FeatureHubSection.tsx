@@ -1,15 +1,84 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, forwardRef } from "react";
+import { HiLightningBolt, HiOutlineHeart } from "react-icons/hi";
+
+function FeatureHubHeader({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: "features" | "benefits";
+  onTabChange: (tab: "features" | "benefits") => void;
+}) {
+  return (
+    <div className="relative z-10 mx-auto mb-10 flex max-w-2xl flex-col items-center text-center sm:mb-12">
+      <span className="font-dm text-xs font-semibold uppercase tracking-[0.1em] text-[#facc15]">
+        What makes us different
+      </span>
+
+      <h2 className="mt-4 font-play text-3xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
+        Features &{" "}
+        <span className="font-bold">Benefits</span>
+      </h2>
+
+      <p className="mt-4 max-w-lg font-dm text-sm leading-relaxed text-slate-600 sm:text-base">
+        Choose your goal, set the friction, and grow a cushion you can actually keep.
+      </p>
+
+      <div className="mt-6 inline-flex items-center rounded-full border border-slate-200/80 bg-white/90 p-1 shadow-sm">
+        <button
+          type="button"
+          onClick={() => onTabChange("features")}
+          className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm font-medium transition-all duration-200 ${
+            activeTab === "features"
+              ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          <HiLightningBolt className="h-4 w-4" />
+          Features
+        </button>
+        <button
+          type="button"
+          onClick={() => onTabChange("benefits")}
+          className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm font-medium transition-all duration-200 ${
+            activeTab === "benefits"
+              ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          <HiOutlineHeart className="h-4 w-4" />
+          Benefits
+        </button>
+      </div>
+    </div>
+  );
+}
 
 type HubCard = {
   id: string;
   title: string;
   description: string;
-  preview: "withdrawal" | "purposemap" | "habit" | "cushion" | "voice" | "bonus";
+  preview: HubCardPreview;
 };
 
-const topCards: HubCard[] = [
+type HubCardPreview =
+  | "withdrawal"
+  | "purposemap"
+  | "habit"
+  | "cushion"
+  | "voice"
+  | "bonus"
+  | "pause"
+  | "paycycle"
+  | "adjustgoals"
+  | "nudges"
+  | "support"
+  | "people"
+  | "monthlyrecap"
+  | "moneyfeels";
+
+const featureTopCards: HubCard[] = [
   {
     id: "card-1",
     title: "Block My Own Withdrawals",
@@ -33,7 +102,7 @@ const topCards: HubCard[] = [
   },
 ];
 
-const bottomCards: HubCard[] = [
+const featureBottomCards: HubCard[] = [
   {
     id: "card-4",
     title: "Cushion Dashboard",
@@ -56,6 +125,200 @@ const bottomCards: HubCard[] = [
     preview: "bonus",
   },
 ];
+
+const benefitsTopCards: HubCard[] = [
+  {
+    id: "benefit-1",
+    title: "Paused, Not Failed",
+    description:
+      "Hit a hard week? Pause your plan without penalty, without a nagging notification, and pick back up when you're ready.",
+    preview: "pause",
+  },
+  {
+    id: "benefit-2",
+    title: "Save on Your Pay Cycle",
+    description:
+      "Choose amounts and days that match how you actually get paid — weekly, biweekly, or whenever the money lands.",
+    preview: "paycycle",
+  },
+  {
+    id: "benefit-3",
+    title: "Adjust Goals in a Tap",
+    description:
+      "Life shifts. Bump your goal up after a refund, ease it down after a rough month — no punishment, no reset.",
+    preview: "adjustgoals",
+  },
+  {
+    id: "benefit-4",
+    title: "No-Judgment Nudges",
+    description:
+      "Reminders that read like a friend, not a scold. We name the win, not the miss.",
+    preview: "nudges",
+  },
+];
+
+const benefitsBottomCards: HubCard[] = [
+  {
+    id: "benefit-5",
+    title: "Responsive Human Support",
+    description:
+      "Real people answer your messages. When you need help, you talk to a person — not a maze.",
+    preview: "support",
+  },
+  {
+    id: "benefit-6",
+    title: "Save With Your People",
+    description:
+      "Opt into small group rituals — Transfer Tuesday, No-Spend Saturday, first-$500 challenges — and build alongside others.",
+    preview: "people",
+  },
+  {
+    id: "benefit-7",
+    title: "Monthly Wins Recap",
+    description:
+      "One tap logs how the month felt. We hand back a plain, honest summary of what you built.",
+    preview: "monthlyrecap",
+  },
+  {
+    id: "benefit-8",
+    title: "Track How Money Feels",
+    description:
+      "Log the stress, the relief, the calm. See how your relationship with money shifts as your cushion grows.",
+    preview: "moneyfeels",
+  },
+];
+
+function PausePreview() {
+  return (
+    <div className="space-y-3 text-left">
+      <div className="rounded-xl border border-violet-100 bg-violet-50/80 px-3 py-2.5 font-dm text-[11px] font-medium text-[#2E0F3D]">
+        Resting this week
+      </div>
+      <p className="font-dm text-[11px] font-medium text-[#c01763]">Resume when you&apos;re ready 💜</p>
+    </div>
+  );
+}
+
+function PaycyclePreview() {
+  const options = ["Weekly", "Biweekly", "Payday"];
+  return (
+    <div className="space-y-3 text-left">
+      <div className="flex flex-wrap gap-2">
+        {options.map((option, i) => (
+          <span
+            key={option}
+            className={`rounded-full px-3 py-1.5 font-dm text-[11px] font-medium ${
+              i === 1
+                ? "bg-[#2E0F3D] text-white"
+                : "border border-slate-200 bg-slate-50 text-slate-600"
+            }`}
+          >
+            {option}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AdjustGoalsPreview() {
+  return (
+    <div className="space-y-3 text-left">
+      <p className="font-dm text-[11px] font-medium text-slate-500">This week</p>
+      <p className="font-play text-xl font-bold text-slate-900">
+        $430 <span className="text-sm font-dm font-medium text-slate-400">of $500</span>
+      </p>
+      <div>
+        <div className="mb-1 flex justify-end font-dm text-[11px] font-semibold text-[#c01763]">
+          86%
+        </div>
+        <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-[#c01763] to-[#8d0543]"
+            style={{ width: "86%" }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function NudgesPreview() {
+  return (
+    <div className="space-y-2.5 text-left">
+      <div className="rounded-xl border border-pink-100 bg-[#fff5f8] px-3 py-2.5 font-dm text-[11px] font-semibold text-[#c01763]">
+        Still here 💜
+      </div>
+      <p className="font-dm text-[11px] leading-relaxed text-slate-600">
+        A pause is allowed. Your cushion is still yours.
+      </p>
+    </div>
+  );
+}
+
+function SupportPreview() {
+  return (
+    <div className="space-y-2.5 text-left">
+      <div className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5">
+        <p className="font-dm text-[10px] font-medium text-slate-400">PurposeMint Support</p>
+        <p className="mt-1 font-dm text-[11px] text-slate-700">
+          Hey — real person here. How can we help today?
+        </p>
+      </div>
+      <p className="font-dm text-[11px] font-medium text-[#c01763]">Reply in minutes, not days</p>
+    </div>
+  );
+}
+
+function PeoplePreview() {
+  return (
+    <div className="space-y-2.5 text-left">
+      <p className="font-dm text-[11px] font-medium text-slate-500">This week</p>
+      <div className="rounded-lg border border-pink-100 bg-[#fff5f8] px-3 py-2 font-dm text-[11px] font-medium text-slate-700">
+        🔥 Transfer Tuesday
+      </div>
+      <div className="rounded-lg border border-amber-100 bg-amber-50/80 px-3 py-2 font-dm text-[11px] font-medium text-slate-700">
+        ✨ First-$500 challenge
+      </div>
+    </div>
+  );
+}
+
+function MonthlyRecapPreview() {
+  return (
+    <div className="space-y-3 text-left">
+      <p className="font-dm text-[11px] font-medium text-slate-500">This month</p>
+      <p className="font-dm text-[12px] font-semibold leading-relaxed text-[#2E0F3D]">
+        More calm than last week
+      </p>
+    </div>
+  );
+}
+
+function MoneyFeelsPreview() {
+  const moods = ["😔", "😐", "🙂", "😄", "⭐"];
+  return (
+    <div className="space-y-3 text-left">
+      <div className="flex items-center justify-between gap-1">
+        {moods.map((emoji, i) => (
+          <span
+            key={emoji}
+            className={`flex h-8 w-8 items-center justify-center rounded-xl text-sm ${
+              i === 3
+                ? "bg-[#fff5f8] ring-2 ring-[#c01763]/40"
+                : "bg-slate-50"
+            }`}
+          >
+            {emoji}
+          </span>
+        ))}
+      </div>
+      <div className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 text-center font-dm text-[11px] font-medium text-slate-600">
+        20-second check-in
+      </div>
+    </div>
+  );
+}
 
 function WithdrawalPreview() {
   const options = ["24 hours", "3 days", "Ask a friend"];
@@ -215,21 +478,53 @@ function CardPreview({ type }: { type: HubCard["preview"] }) {
       return <VoicePreview />;
     case "bonus":
       return <BonusPreview />;
+    case "pause":
+      return <PausePreview />;
+    case "paycycle":
+      return <PaycyclePreview />;
+    case "adjustgoals":
+      return <AdjustGoalsPreview />;
+    case "nudges":
+      return <NudgesPreview />;
+    case "support":
+      return <SupportPreview />;
+    case "people":
+      return <PeoplePreview />;
+    case "monthlyrecap":
+      return <MonthlyRecapPreview />;
+    case "moneyfeels":
+      return <MoneyFeelsPreview />;
   }
 }
 
-const HubCardItem = forwardRef<HTMLElement, { card: HubCard }>(function HubCardItem(
-  { card },
-  ref,
-) {
+const HubCardItem = forwardRef<
+  HTMLElement,
+  { card: HubCard; compact?: boolean }
+>(function HubCardItem({ card, compact }, ref) {
   return (
     <article
       ref={ref}
-      className="relative z-10 flex min-h-[340px] flex-col rounded-[22px] border border-violet-100/80 bg-[#f0f4ff] p-6 text-center sm:min-h-[360px] sm:p-7"
+      className={`relative z-10 flex flex-col rounded-[20px] border border-violet-100/80 bg-[#f0f4ff] text-center ${
+        compact
+          ? "min-h-[280px] p-4 sm:min-h-[300px] sm:p-5"
+          : "min-h-[340px] p-5 sm:min-h-[360px] sm:p-6"
+      }`}
     >
-      <h3 className="font-play text-lg font-bold text-slate-900 sm:text-xl">{card.title}</h3>
-      <p className="mt-2 font-dm text-sm leading-relaxed text-slate-600">{card.description}</p>
-      <div className="mt-5 flex flex-1 flex-col rounded-2xl border border-white/80 bg-white p-4 shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
+      <h3
+        className={`font-play font-bold text-slate-900 ${
+          compact ? "text-base sm:text-lg" : "text-lg sm:text-xl"
+        }`}
+      >
+        {card.title}
+      </h3>
+      <p
+        className={`mt-2 font-dm leading-relaxed text-slate-600 ${
+          compact ? "text-xs sm:text-[13px]" : "text-sm"
+        }`}
+      >
+        {card.description}
+      </p>
+      <div className={`mt-4 flex flex-1 flex-col rounded-2xl border border-white/80 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.06)] ${compact ? "p-3" : "p-4"}`}>
         <CardPreview type={card.preview} />
       </div>
     </article>
@@ -250,10 +545,16 @@ function HubConnectors({
   layoutRef,
   hubRef,
   cardRefs,
+  topCardCount,
+  cardCount,
+  columns,
 }: {
   layoutRef: React.RefObject<HTMLDivElement | null>;
   hubRef: React.RefObject<HTMLDivElement | null>;
   cardRefs: React.RefObject<(HTMLElement | null)[]>;
+  topCardCount: number;
+  cardCount: number;
+  columns: 3 | 4;
 }) {
   const [paths, setPaths] = useState<string[]>([]);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -270,16 +571,15 @@ function HubConnectors({
     const hubX = hubRect.left + hubRect.width / 2 - layoutRect.left;
     const hubY = hubRect.top + hubRect.height / 2 - layoutRect.top;
 
-    const totalCards = topCards.length + bottomCards.length;
     const nextPaths: string[] = [];
 
-    for (let i = 0; i < totalCards; i++) {
+    for (let i = 0; i < cardCount; i++) {
       const cardEl = cardRefs.current[i];
       if (!cardEl) continue;
 
       const cardRect = cardEl.getBoundingClientRect();
       const cardX = cardRect.left + cardRect.width / 2 - layoutRect.left;
-      const isTop = i < topCards.length;
+      const isTop = i < topCardCount;
       const cardY = isTop
         ? cardRect.bottom - layoutRect.top
         : cardRect.top - layoutRect.top;
@@ -288,7 +588,7 @@ function HubConnectors({
     }
 
     setPaths(nextPaths);
-  }, [layoutRef, hubRef, cardRefs]);
+  }, [layoutRef, hubRef, cardRefs, topCardCount, cardCount]);
 
   useEffect(() => {
     updatePaths();
@@ -375,13 +675,76 @@ function PurposeMintHub({ hubRef }: { hubRef: React.RefObject<HTMLDivElement | n
   );
 }
 
-export default function FeatureHubSection() {
-  const layoutRef = useRef<HTMLDivElement>(null);
-  const hubRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+function HubCardsLayout({
+  topCards,
+  bottomCards,
+  layoutRef,
+  hubRef,
+  cardRefs,
+  columns,
+  compact,
+}: {
+  topCards: HubCard[];
+  bottomCards: HubCard[];
+  layoutRef: React.RefObject<HTMLDivElement | null>;
+  hubRef: React.RefObject<HTMLDivElement | null>;
+  cardRefs: React.RefObject<(HTMLElement | null)[]>;
+  columns: 3 | 4;
+  compact?: boolean;
+}) {
+  const gridClass =
+    columns === 4
+      ? "grid-cols-1 lg:grid-cols-4"
+      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 
-  const setCardRef = (index: number) => (el: HTMLElement | null) => {
-    cardRefs.current[index] = el;
+  const cardCount = topCards.length + bottomCards.length;
+
+  return (
+    <>
+      <HubConnectors
+        layoutRef={layoutRef}
+        hubRef={hubRef}
+        cardRefs={cardRefs}
+        topCardCount={topCards.length}
+        cardCount={cardCount}
+        columns={columns}
+      />
+
+      <div className={`relative z-10 grid gap-4 pb-2 ${gridClass} lg:gap-5`}>
+        {topCards.map((card, i) => (
+          <HubCardItem key={card.id} ref={(el) => { cardRefs.current[i] = el; }} card={card} compact={compact} />
+        ))}
+      </div>
+
+      <PurposeMintHub hubRef={hubRef} />
+
+      <div className={`relative z-10 grid gap-4 pt-2 ${gridClass} lg:gap-5`}>
+        {bottomCards.map((card, i) => (
+          <HubCardItem
+            key={card.id}
+            ref={(el) => { cardRefs.current[topCards.length + i] = el; }}
+            card={card}
+            compact={compact}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
+
+export default function FeatureHubSection() {
+  const featuresLayoutRef = useRef<HTMLDivElement>(null);
+  const benefitsLayoutRef = useRef<HTMLDivElement>(null);
+  const featuresHubRef = useRef<HTMLDivElement>(null);
+  const benefitsHubRef = useRef<HTMLDivElement>(null);
+  const featuresCardRefs = useRef<(HTMLElement | null)[]>([]);
+  const benefitsCardRefs = useRef<(HTMLElement | null)[]>([]);
+  const [activeTab, setActiveTab] = useState<"features" | "benefits">("features");
+
+  const handleTabChange = (tab: "features" | "benefits") => {
+    setActiveTab(tab);
+    featuresCardRefs.current = [];
+    benefitsCardRefs.current = [];
   };
 
   return (
@@ -397,23 +760,38 @@ export default function FeatureHubSection() {
         }}
       />
 
-      <div ref={layoutRef} className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <HubConnectors layoutRef={layoutRef} hubRef={hubRef} cardRefs={cardRefs} />
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <FeatureHubHeader activeTab={activeTab} onTabChange={handleTabChange} />
 
-        <div className="relative z-10 grid grid-cols-1 gap-5 pb-2 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {topCards.map((card, i) => (
-            <HubCardItem key={card.id} ref={setCardRef(i)} card={card} />
-          ))}
-        </div>
-
-        <PurposeMintHub hubRef={hubRef} />
-
-        <div className="relative z-10 grid grid-cols-1 gap-5 pt-2 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {bottomCards.map((card, i) => (
-            <HubCardItem key={card.id} ref={setCardRef(topCards.length + i)} card={card} />
-          ))}
-        </div>
+        {activeTab === "features" && (
+          <div key="features" ref={featuresLayoutRef} className="relative">
+            <HubCardsLayout
+              topCards={featureTopCards}
+              bottomCards={featureBottomCards}
+              layoutRef={featuresLayoutRef}
+              hubRef={featuresHubRef}
+              cardRefs={featuresCardRefs}
+              columns={3}
+            />
+          </div>
+        )}
       </div>
+
+      {activeTab === "benefits" && (
+        <div key="benefits" className="relative mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
+          <div ref={benefitsLayoutRef} className="relative">
+            <HubCardsLayout
+              topCards={benefitsTopCards}
+              bottomCards={benefitsBottomCards}
+              layoutRef={benefitsLayoutRef}
+              hubRef={benefitsHubRef}
+              cardRefs={benefitsCardRefs}
+              columns={4}
+              compact
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
