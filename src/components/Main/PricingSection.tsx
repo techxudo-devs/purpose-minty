@@ -97,7 +97,7 @@ function formatPrice(price: number) {
 
 export default function PricingSection() {
   return (
-    <section className="relative w-full bg-white py-[10px]">
+    <section id="pricing" className="relative w-full bg-white py-[10px]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto mb-10 flex max-w-2xl flex-col items-center text-center sm:mb-14">

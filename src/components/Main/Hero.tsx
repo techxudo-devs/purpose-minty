@@ -96,6 +96,7 @@ const Hero: React.FC = () => {
 
         {/* Waitlist Form */}
         <form
+          id="waitlist"
           onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row items-center gap-3.5 w-full max-w-lg mx-auto font-dm mb-4"
         >

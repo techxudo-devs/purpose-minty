@@ -385,7 +385,7 @@ export default function FeatureHubSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#fbfcfd] py-14 md:py-16">
+    <section id="feature-hub" className="relative overflow-hidden bg-[#fbfcfd] py-14 md:py-16">
       <div
         className="pointer-events-none absolute inset-0 opacity-50"
         style={{

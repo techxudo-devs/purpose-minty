@@ -141,6 +141,7 @@ export default function PartnersSection() {
   return (
     <section
       ref={sectionRef}
+      id="partners"
       className="relative w-full overflow-hidden bg-[#fdfbf7] py-[10px]"
     >
       <div

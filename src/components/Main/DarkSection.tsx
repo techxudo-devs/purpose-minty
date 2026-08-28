@@ -49,7 +49,7 @@ const StickyNoteDecor = ({
 export default function DarkSection() {
   return (
     <section
-      id="faq"
+      id="how-it-works"
       className="relative w-full py-10 md:py-10 overflow-hidden bg-[#fdfbf7] text-slate-950"
     >
       {/* ================= 1. TOP-LEFT PINK/MAGENTA GRADIENT GLOW ================= */}

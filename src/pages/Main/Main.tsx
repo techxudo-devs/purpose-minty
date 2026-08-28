@@ -1,3 +1,4 @@
+import Footer from '@/components/common/Footer'
 import AppPreviewSection from '@/components/Main/AppPreviewSection'
 import FeatureHubSection from '@/components/Main/FeatureHubSection'
 import DarkSection from '@/components/Main/DarkSection'
@@ -20,6 +21,7 @@ const Main = () => {
         <FeatureHubSection />
         {/* <GoalsSection /> */}
         <FaqSection />
+        <Footer />
     </div>
   )
 }

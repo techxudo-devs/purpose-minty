@@ -159,7 +159,7 @@ const featureCards = [
 
 const Features: React.FC = () => {
   return (
-    <section className="relative w-full py-10 sm:py-10 bg-[#fbfcfd] overflow-hidden flex flex-col items-center justify-center">
+    <section className="relative w-full py-10 sm:py-10 bg-[#fbfcfd] overflow-hidden flex flex-col items-center justify-center" id="features">
       {/* Subtle Background Grid Pattern */}
       <div
         className="absolute inset-0 pointer-events-none opacity-60"
