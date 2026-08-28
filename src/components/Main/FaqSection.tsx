@@ -1,7 +1,12 @@
 "use client";
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
-import { links } from "./site";
+
+// Safe fallback for links
+const links = {
+  waitlist: "https://minttoprosper.org/purposemint",
+  email: "admin@minttoprosper.org",
+};
 
 type FaqItem = {
   q: string;
@@ -88,7 +93,7 @@ function Arrow({ dir }: { dir: "left" | "right" }) {
         <path
           d="M11.5 4.5 6.5 9l5 4.5"
           stroke="currentColor"
-          strokeWidth="1.7"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -96,7 +101,7 @@ function Arrow({ dir }: { dir: "left" | "right" }) {
         <path
           d="M6.5 4.5 11.5 9l-5 4.5"
           stroke="currentColor"
-          strokeWidth="1.7"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -141,57 +146,59 @@ function ContactForm() {
     }
     const subject = encodeURIComponent(`[PurposeMint] ${topic}`);
     const body = encodeURIComponent(`From: ${trimmed}\nTopic: ${topic}\n\n`);
-    window.location.href = `${links.email}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${links.email}?subject=${subject}&body=${body}`;
   }
 
   return (
-    <form className="faq-answer-in flex h-full flex-col" onClick={(event) => event.stopPropagation()} onSubmit={onSubmit}>
-      <span className="inline-flex w-fit rounded-full border border-[var(--brand)] px-3 py-1 text-[10px] font-extrabold tracking-[0.14em] text-[var(--brand)]">
-        FAQ
-      </span>
-      <h3 className="mt-4 font-serif text-[18px] font-bold leading-snug text-white sm:text-[20px]">
-        How do I contact PurposeMint?
-      </h3>
-
-      <label className="mt-5 flex items-center gap-2.5 rounded-full border border-white/25 px-3.5 py-2.5 text-white/80">
-        <EnvelopeIcon />
-        <span className="sr-only">Your email</span>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="Your email"
-          className="w-full bg-transparent text-[13px] font-medium text-white outline-none placeholder:text-white/45"
-        />
-      </label>
-
-      <div className="relative mt-3">
-        <select
-          required
-          value={topic}
-          onChange={(event) => setTopic(event.target.value as (typeof topics)[number])}
-          className="w-full appearance-none rounded-full border border-white/25 bg-transparent px-3.5 py-2.5 pr-9 text-[13px] font-medium text-white outline-none"
-        >
-          <option value="" disabled className="bg-[#2E0F3D] text-white">
-            Select service
-          </option>
-          {topics.map((item) => (
-            <option key={item} value={item} className="bg-[#2E0F3D] text-white">
-              {item}
-            </option>
-          ))}
-        </select>
-        <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-white/80">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-            <path d="M2.5 4.2 6 8l3.5-3.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          </svg>
+    <form className="flex h-full flex-col justify-between" onClick={(event) => event.stopPropagation()} onSubmit={onSubmit}>
+      <div>
+        <span className="inline-flex w-fit rounded-full border border-[#facc15] bg-[#facc15]/10 px-3.5 py-1 text-xs font-dm font-medium tracking-wider text-[#facc15]">
+          CONTACT US
         </span>
+        <h3 className="mt-3.5 font-play text-[18px] leading-none text-white sm:text-[20px]">
+          How do I contact PurposeMint?
+        </h3>
+
+        <label className="mt-4 flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-white/90 focus-within:border-pink-300">
+          <EnvelopeIcon />
+          <span className="sr-only">Your email</span>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="Your email"
+            className="w-full bg-transparent text-[13px] font-medium text-white outline-none placeholder:text-white/50"
+          />
+        </label>
+
+        <div className="relative mt-3">
+          <select
+            required
+            value={topic}
+            onChange={(event) => setTopic(event.target.value as (typeof topics)[number])}
+            className="w-full appearance-none rounded-full border border-white/20 bg-[#2E0F3D] px-4 py-2.5 pr-9 text-[13px] font-medium text-white outline-none focus:border-pink-300"
+          >
+            <option value="" disabled className="bg-[#2E0F3D] text-white">
+              Select topic
+            </option>
+            {topics.map((item) => (
+              <option key={item} value={item} className="bg-[#2E0F3D] text-white">
+                {item}
+              </option>
+            ))}
+          </select>
+          <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-white/80">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+              <path d="M2.5 4.2 6 8l3.5-3.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+          </span>
+        </div>
       </div>
 
       <button
         type="submit"
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[var(--brand)] py-3 text-[13px] font-extrabold tracking-[0.16em] text-[#2E0F3D] transition hover:brightness-110"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] py-3 text-[12px] font-medium font-dm tracking-wide text-white transition hover:opacity-95 cursor-pointer hover:scale-97 duration-300"
       >
         <PlaneIcon />
         SUBMIT
@@ -204,20 +211,26 @@ export default function FaqSection() {
   const count = faqs.length;
   const looped = [...faqs, ...faqs, ...faqs];
   const viewportRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(5);
-  const [index, setIndex] = useState(count - 2);
+
+  // Center offset is always 2 (represents 3rd card in the 5-card layout)
+  const center = 2;
+
+  // Divisor for step size calculation (3.6 gives wider cards on desktop)
+  const [visible, setVisible] = useState(3.6);
+  const [index, setIndex] = useState(count - center);
   const [animate, setAnimate] = useState(true);
   const [step, setStep] = useState(0);
   const [peek, setPeek] = useState(0);
-  const prevVisible = useRef(5);
-
-  const center = Math.floor(visible / 2);
 
   useEffect(() => {
     function measureVisible() {
-      if (window.matchMedia("(min-width: 1024px)").matches) setVisible(4);
-      else if (window.matchMedia("(min-width: 640px)").matches) setVisible(3);
-      else setVisible(1);
+      if (window.matchMedia("(min-width: 1024px)").matches) {
+        setVisible(3.6); // 1st Half, 2nd Full, 3rd MAIN, 4th Full, 5th Half (Wider cards)
+      } else if (window.matchMedia("(min-width: 640px)").matches) {
+        setVisible(2.4);
+      } else {
+        setVisible(1.25);
+      }
     }
     measureVisible();
     window.addEventListener("resize", measureVisible);
@@ -225,21 +238,15 @@ export default function FaqSection() {
   }, []);
 
   useEffect(() => {
-    const oldCenter = Math.floor(prevVisible.current / 2);
-    const newCenter = Math.floor(visible / 2);
-    prevVisible.current = visible;
-    if (oldCenter === newCenter) return;
-    setAnimate(false);
-    setIndex((value) => value + oldCenter - newCenter);
-  }, [visible]);
-
-  useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
     const sync = () => {
-      const nextPeek = Math.round(el.clientWidth * 0.1);
-      setPeek(nextPeek);
-      setStep((el.clientWidth + nextPeek * 2 + GAP) / visible);
+      const containerWidth = el.clientWidth;
+      const cardStep = containerWidth / visible;
+      const cardWidth = cardStep - GAP;
+      setStep(cardStep);
+      // Math to keep Card #3 precisely centered with half-peeking edge cards on left & right
+      setPeek((containerWidth - cardWidth) / 2 - center * cardStep);
     };
     sync();
     const observer = new ResizeObserver(sync);
@@ -247,6 +254,7 @@ export default function FaqSection() {
     return () => observer.disconnect();
   }, [visible]);
 
+  // Navigate 1 card per click
   function go(delta: number) {
     setAnimate(true);
     setIndex((value) => value + delta);
@@ -286,17 +294,25 @@ export default function FaqSection() {
   }
 
   return (
-    <section id="faq" className="relative overflow-hidden py-20 md:py-24" style={{ background: "#2E0F3D" }}>
-      <h2 className="mb-4 text-center font-serif text-[36px] font-bold uppercase tracking-[0.12em] text-[var(--brand)] sm:mb-5 sm:text-[48px]">
-        FAQS
-      </h2>
+    <section id="faq" className="relative overflow-hidden py-10 sm:py-14 bg-[#fdfbf7] text-slate-950">
+      
+      {/* Title */}
+      <div className="relative z-10 text-center px-4 mb-4 sm:mb-6">
+        <span className="inline-block bg-pink-100/80 border border-pink-200/70 text-[#c01763] text-sm font-medium font-dm px-4 py-1.5 rounded-full mb-3">
+          Got Questions?
+        </span>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-play text-slate-950 tracking-tight">
+          Frequently Asked Questions
+        </h2>
+      </div>
 
-      <div ref={viewportRef} className="overflow-hidden py-10 md:py-12">
+      {/* Carousel Track Area */}
+      <div ref={viewportRef} className="relative z-10 overflow-hidden py-8 md:py-12">
         <div
           className="flex items-start"
           style={{
             gap: GAP,
-            transform: step ? `translate3d(${-index * step - peek}px, 0, 0)` : undefined,
+            transform: step ? `translate3d(${-index * step + peek}px, 0, 0)` : undefined,
             transition: animate ? "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)" : "none",
           }}
           onTransitionEnd={onTrackEnd}
@@ -313,42 +329,46 @@ export default function FaqSection() {
                 tabIndex={isForm ? undefined : 0}
                 onClick={isForm ? undefined : () => activateCard(i)}
                 onKeyDown={isForm ? undefined : (event) => onCardKey(event, i)}
-                className={`relative flex shrink-0 flex-col overflow-hidden rounded-[40px] p-6 pb-14 text-left sm:p-7 sm:pb-16 ${
+                className={`relative flex shrink-0 flex-col justify-between overflow-hidden rounded-3xl p-5 sm:p-6 pb-14 text-left transition-all duration-300 ${
                   isForm ? "" : "cursor-pointer"
                 } ${
                   isActive
-                    ? "bg-black/45 shadow-[0_24px_50px_rgba(0,0,0,0.35)] ring-1 ring-white/15"
-                    : "bg-[var(--brand)]"
+                    ? "bg-[#2E0F3D] text-white border border-pink-500/30 ring-1 ring-pink-500/20 scale-100 z-20"
+                    : "bg-white/90 backdrop-blur-md border border-pink-200/80 text-[#2E0F3D] hover:bg-white scale-95 opacity-85 z-10"
                 }`}
                 style={{
                   width: cardWidth || undefined,
                   flexBasis: cardWidth || undefined,
-                  height: cardWidth ? Math.max(cardWidth, 300) : undefined,
-                  transform: lowered ? "translateY(48px)" : "translateY(0)",
+                  minHeight: "340px",
+                  transform: lowered ? "translateY(28px)" : "translateY(0)",
                 }}
               >
                 {isActive && isContact ? (
                   <ContactForm />
                 ) : isActive ? (
-                  <div key={item.q} className="faq-answer-in pr-8">
-                    <span className="inline-flex w-fit rounded-full border border-[var(--brand)] px-3 py-1 text-[10px] font-extrabold tracking-[0.14em] text-[var(--brand)]">
+                  <div key={item.q} className="pr-2">
+                    <span className="inline-flex w-fit rounded-full border border-[#facc15] bg-[#facc15]/10 px-3.5 py-1 text-xs font-dm tracking-wider text-[#facc15]">
                       FAQ
                     </span>
-                    <h3 className="mt-4 font-serif text-[18px] font-bold leading-snug text-white sm:text-[20px]">
+                    <h3 className="mt-3.5 font-play text-[19px] leading-snug text-white sm:text-[20px]">
                       {item.q}
                     </h3>
-                    <p className="mt-3 text-[13px] font-medium leading-[1.65] text-white/75">
+                    <p className="mt-3 text-sm font-dm font-normal leading-[1.6] text-pink-100/90">
                       {item.a}
                     </p>
                   </div>
                 ) : (
-                  <h3 className="max-w-[88%] font-serif text-[18px] font-bold leading-snug text-[#2E0F3D] sm:text-[20px]">
+                  <h3 className="max-w-[95%] font-play text-[18px] leading-snug text-[#2E0F3D] sm:text-[20px]">
                     {item.q}
                   </h3>
                 )}
+
+                {/* Floating Question Badge inside Card */}
                 <span
-                  className={`absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full text-[18px] font-bold ${
-                    isActive ? "bg-black/55 text-white ring-1 ring-white/35" : "bg-[#2E0F3D] text-white"
+                  className={`absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full text-[16px] transition-all ${
+                    isActive
+                      ? "bg-[#facc15] text-slate-950"
+                      : "bg-[#2E0F3D] text-white"
                   }`}
                 >
                   ?
@@ -359,12 +379,13 @@ export default function FaqSection() {
         </div>
       </div>
 
-      <div className="mt-10 flex justify-center gap-3">
+      {/* Bottom Controls */}
+      <div className="relative z-10 mt-2 flex justify-center gap-3">
         <button
           type="button"
           aria-label="Previous FAQ"
           onClick={() => go(-1)}
-          className="flex h-11 w-14 items-center justify-center rounded-full border border-white/25 bg-transparent text-white transition hover:bg-white/10"
+          className="flex h-14 w-14 items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] transition hover:bg-white active:scale-95 cursor-pointer shadow-sm"
         >
           <Arrow dir="left" />
         </button>
@@ -372,11 +393,12 @@ export default function FaqSection() {
           type="button"
           aria-label="Next FAQ"
           onClick={() => go(1)}
-          className="flex h-11 w-14 items-center justify-center rounded-full border border-white/25 bg-transparent text-white transition hover:bg-white/10"
+          className="flex h-14 w-14 items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] transition hover:bg-white active:scale-95 cursor-pointer shadow-sm"
         >
           <Arrow dir="right" />
         </button>
       </div>
+
     </section>
   );
 }
