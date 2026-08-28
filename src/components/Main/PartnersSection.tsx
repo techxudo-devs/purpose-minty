@@ -93,7 +93,7 @@ function BeatCard({
 
           <div className="relative z-10 flex items-start justify-between gap-4">
             <div>
-              <span className="inline-flex rounded-full border border-white/25 bg-white/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/90 font-dm">
+              <span className="inline-flex rounded-full border border-white/25 bg-white/10 px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wider text-white/90 font-dm">
                 {beat.label}
               </span>
               <h3 className="mt-3 font-play text-[22px] leading-tight text-white sm:text-[24px]">
@@ -124,10 +124,10 @@ function BeatCard({
 
           <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent transition-all duration-300 group-hover:via-pink-200" />
 
-          <div className="mt-4 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.04em] text-[#c01763] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#8d0543] font-dm">
+          {/* <div className="mt-4 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.04em] text-[#c01763] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#8d0543] font-dm">
             Partner advantage
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </div>
+          </div> */}
         </div>
       </div>
     </motion.article>
@@ -142,7 +142,7 @@ export default function PartnersSection() {
     <section
       ref={sectionRef}
       id="partners"
-      className="relative w-full overflow-hidden bg-[#fdfbf7] py-[10px]"
+      className="relative w-full overflow-hidden bg-[#fdfbf7] py-10"
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-50"

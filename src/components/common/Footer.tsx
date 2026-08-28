@@ -40,7 +40,7 @@ function FooterLink({
   external?: boolean;
 }) {
   const className =
-    "font-dm text-xs text-slate-600 transition-colors hover:text-[#c01763]";
+    "font-dm text-sm text-slate-600 transition-colors hover:text-[#c01763]";
 
   if (external || href.startsWith("http") || href.startsWith("mailto:")) {
     return (
@@ -71,7 +71,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-pink-100/80 bg-[#fdfbf7] text-[#2E0F3D]">
+    <footer className="relative border-t border-pink-100 bg-[#fdfbf7] text-[#2E0F3D]">
       <div
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
@@ -83,7 +83,7 @@ export default function Footer() {
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-9">
+      <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-9">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12 lg:gap-5">
           {/* Brand & contact */}
           <div className="lg:col-span-4">
@@ -93,10 +93,10 @@ export default function Footer() {
                 alt="PurposeMint Logo"
                 width={140}
                 height={36}
-                className="h-8 w-auto object-contain"
+                className="h-10 w-auto object-contain"
               />
             </Link>
-            <p className="mt-3 max-w-xs font-dm text-xs leading-relaxed text-slate-600">
+            <p className="mt-3 max-w-xs font-dm text-sm text-slate-600">
               PurposeMint helps you save a little at a time, safely — and turns those
               savings into a way forward.
             </p>
@@ -105,10 +105,10 @@ export default function Footer() {
               <li>
                 <a
                   href={links.email}
-                  className="inline-flex items-center gap-2.5 font-dm text-xs text-slate-700 transition-colors hover:text-[#c01763]"
+                  className="inline-flex items-center gap-2.5 font-dm text-sm text-slate-700 transition-colors hover:text-[#c01763]"
                 >
                   <span className="flex h-7 w-7 items-center justify-center rounded-full border border-pink-100 bg-[#fff5f8] text-[#c01763]">
-                    <HiOutlineMail className="h-3.5 w-3.5" />
+                    <HiOutlineMail className="h-4 w-4" />
                   </span>
                   admin@minttoprosper.org
                 </a>
@@ -118,10 +118,10 @@ export default function Footer() {
                   href={links.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 font-dm text-xs text-slate-700 transition-colors hover:text-[#c01763]"
+                  className="inline-flex items-center gap-2.5 font-dm text-sm text-slate-700 transition-colors hover:text-[#c01763]"
                 >
                   <span className="flex h-7 w-7 items-center justify-center rounded-full border border-pink-100 bg-[#fff5f8] text-[#c01763]">
-                    <FaLinkedinIn className="h-3 w-3" />
+                    <FaLinkedinIn className="h-4 w-4" />
                   </span>
                   PurposeMint on LinkedIn
                 </a>
@@ -131,7 +131,7 @@ export default function Footer() {
 
           {/* Quick links */}
           <div className="lg:col-span-2">
-            <h3 className="font-play text-sm font-bold text-[#2E0F3D]">Quick Links</h3>
+            <h3 className="font-play text-lg text-[#2E0F3D]">Quick Links</h3>
             <ul className="mt-2.5 space-y-1.5">
               {quickLinks.map((link) => (
                 <li key={link.label}>
@@ -143,7 +143,7 @@ export default function Footer() {
 
           {/* Explore */}
           <div className="lg:col-span-2">
-            <h3 className="font-play text-sm font-bold text-[#2E0F3D]">Explore</h3>
+            <h3 className="font-play text-lg text-[#2E0F3D]">Explore</h3>
             <ul className="mt-2.5 space-y-1.5">
               {exploreLinks.map((link) => (
                 <li key={link.label}>
@@ -155,7 +155,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div className="lg:col-span-2">
-            <h3 className="font-play text-sm font-bold text-[#2E0F3D]">Resources</h3>
+            <h3 className="font-play text-lg text-[#2E0F3D]">Resources</h3>
             <ul className="mt-2.5 space-y-1.5">
               {resourceLinks.map((link) => (
                 <li key={link.label}>
@@ -167,7 +167,7 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div className="lg:col-span-2">
-            <h3 className="font-play text-sm font-bold text-[#2E0F3D]">
+            <h3 className="font-play text-lg text-[#2E0F3D]">
               Join Our Newsletter
             </h3>
             <form onSubmit={onNewsletterSubmit} className="mt-2.5 space-y-2">
@@ -177,11 +177,11 @@ export default function Footer() {
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="Enter your email"
                 required
-                className="w-full rounded-lg border border-pink-200 bg-white px-3 py-2 font-dm text-xs text-slate-800 outline-none transition focus:border-[#c01763] focus:ring-2 focus:ring-pink-100"
+                className="w-full rounded-lg border border-pink-200 bg-white px-3 py-2 font-dm text-sm text-slate-800 outline-none transition focus:border-[#c01763] focus:ring-2 focus:ring-pink-100"
               />
               <button
                 type="submit"
-                className="w-full cursor-pointer rounded-lg bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-3 py-2 font-dm text-xs font-semibold text-white transition hover:opacity-95 active:scale-[0.98]"
+                className="w-full cursor-pointer rounded-lg bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-3 py-3 hover:scale-98 font-dm text-xs font-medium text-white transition hover:opacity-95 active:scale-[0.98]"
               >
                 Join Now
               </button>
@@ -193,7 +193,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="PurposeMint on LinkedIn"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-pink-100 bg-[#fff5f8] text-[#c01763] transition hover:bg-[#c01763] hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-pink-200 bg-[#fff5f8] text-[#c01763] transition hover:bg-[#c01763] hover:text-white"
               >
                 <FaLinkedinIn className="h-3.5 w-3.5" />
               </a>
