@@ -13,8 +13,8 @@ const beats = [
     title: "Warmth, reclaimed.",
     body: "Community deposits are increasingly moving toward digital-first options that don't know a member's name. PurposeMint offers your institution a warm, trusted front door back into an audience you already have reach into but haven't fully activated — savers who want the relationship a real bank offers, not just an app.",
     icon: HeartHandshake,
-    accent: "from-amber-500/20 via-orange-400/10 to-rose-500/20",
-    bar: "from-[#f59e0b] via-[#f97316] to-[#c01763]",
+    accent: "from-fuchsia-500/20 via-purple-400/10 to-rose-500/20",
+    bar: "from-[#c084fc] via-[#c01763] to-[#8d0543]",
     rotate: "-rotate-1",
     offset: "md:translate-y-6",
   },
@@ -145,21 +145,10 @@ export default function PartnersSection() {
       className="relative w-full overflow-hidden bg-[#fdfbf7] py-10"
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-50"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "32px 32px",
-        }}
-      />
-
-      <div
         className="pointer-events-none absolute -left-32 top-24 h-[420px] w-[420px] rounded-full opacity-60 blur-[90px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(244, 114, 182, 0.35) 0%, rgba(251, 146, 60, 0.2) 45%, transparent 75%)",
+            "radial-gradient(circle at center, rgba(244, 114, 182, 0.35) 0%, rgba(192, 23, 99, 0.2) 45%, transparent 75%)",
         }}
       />
 
@@ -167,7 +156,7 @@ export default function PartnersSection() {
         className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full opacity-60 blur-[90px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(253, 224, 71, 0.35) 0%, rgba(192, 23, 99, 0.18) 45%, transparent 75%)",
+            "radial-gradient(circle at center, rgba(192, 132, 252, 0.35) 0%, rgba(192, 23, 99, 0.18) 45%, transparent 75%)",
         }}
       />
 
@@ -221,7 +210,7 @@ export default function PartnersSection() {
             href={links.partner}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 text-sm font-medium text-white transition-all duration-200 hover:-translate-y-0.5 hover:opacity-95 active:scale-[0.98] sm:w-auto sm:px-9 sm:py-4 font-dm"
+            className="motion-btn inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 font-dm text-sm font-medium text-white hover:opacity-95 sm:w-auto sm:px-9 sm:py-4"
           >
             Partner With Us
             <ArrowUpRight className="h-4 w-4" />

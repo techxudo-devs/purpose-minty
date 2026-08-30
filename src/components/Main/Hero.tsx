@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Star } from "lucide-react";
 import PhonePreview from "./PhonePreview";
 
 const Hero: React.FC = () => {
@@ -30,7 +29,7 @@ const Hero: React.FC = () => {
         className="pointer-events-none absolute left-1/2 top-[45%] z-0 h-[420px] w-[min(100vw,700px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full opacity-80 blur-[75px] sm:h-[600px] sm:w-[950px] md:h-[750px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(244, 114, 182, 0.7) 0%, rgba(251, 146, 60, 0.45) 35%, rgba(253, 224, 71, 0.25) 65%, transparent 85%)",
+            "radial-gradient(circle at center, rgba(244, 114, 182, 0.7) 0%, rgba(192, 23, 99, 0.45) 35%, rgba(168, 85, 247, 0.25) 65%, transparent 85%)",
         }}
       />
 
@@ -66,20 +65,10 @@ const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Stars & Text */}
+          {/* Waitlist Label & Text */}
           <div className="mt-2.5 flex flex-col items-center gap-1.5 border-t border-slate-200/70 pt-2.5 sm:mt-0 sm:flex-row sm:items-center sm:gap-2 sm:border-0 sm:pt-0 sm:text-left">
-            <div className="flex items-center gap-1.5">
-              <div className="flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="h-3 w-3 fill-[#f59e0b] text-[#f59e0b] sm:h-3.5 sm:w-3.5"
-                  />
-                ))}
-              </div>
-              <span className="text-sm font-bold text-slate-900">4.8</span>
-            </div>
-            <span className="px-1 text-center text-[11px] leading-snug text-slate-600 sm:max-w-none sm:px-0 sm:text-left sm:text-sm">
+            <span className="text-sm font-dm font-medium text-slate-900">In Waitlist</span>
+            <span className="px-1 text-center text-[11px] leading-snug text-slate-600 sm:max-w-none sm:px-0 sm:text-left sm:text-sm pt-[2.2px]">
               Most people start at zero. So can you.
             </span>
           </div>
@@ -115,7 +104,7 @@ const Hero: React.FC = () => {
           {/* Magenta Gradient Waitlist Button */}
           <button
             type="submit"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full text-white font-medium text-base bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] hover:opacity-95 shadow-pink-600/30 active:scale-95 transition-all duration-200 cursor-pointer whitespace-nowrap"
+            className="motion-btn w-full cursor-pointer whitespace-nowrap rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-8 py-3.5 text-base font-medium text-white shadow-pink-600/30 hover:opacity-95 sm:w-auto"
           >
             Join the Waitlist
           </button>

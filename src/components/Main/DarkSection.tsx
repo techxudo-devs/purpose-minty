@@ -11,21 +11,20 @@ import {
   Heart,
 } from "lucide-react";
 
-// Helper Decor Components using Lucide React Icons
 const MoneyBillDecor = ({ className = "" }: { className?: string }) => (
   <div
-    className={`flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 px-4 py-2.5 rounded-lg backdrop-blur-md ${className}`}
+    className={`flex items-center gap-2 rounded-lg border border-pink-400/40 bg-[#52005c] px-4 py-2.5 text-pink-50 ${className}`}
   >
-    <Banknote className="w-6 h-6 text-emerald-600" />
-    <span className="text-base font-play tracking-wide">$500</span>
+    <Banknote className="h-6 w-6 text-pink-300" />
+    <span className="font-play text-base tracking-wide">$500</span>
   </div>
 );
 
 const CoinBadgeDecor = ({ className = "" }: { className?: string }) => (
   <div
-    className={`flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-[#c01763] to-[#52005c] text-white ${className}`}
+    className={`flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-tr from-[#c01763] to-[#52005c] text-white shadow-lg shadow-pink-900/40 ${className}`}
   >
-    <Coins className="w-5 h-5" />
+    <Coins className="h-5 w-5" />
   </div>
 );
 
@@ -37,11 +36,11 @@ const StickyNoteDecor = ({
   className?: string;
 }) => (
   <div
-    className={`bg-amber-100/95 text-amber-950 border border-amber-300/80 p-3.5 rounded-lg backdrop-blur-sm ${className}`}
+    className={`rounded-lg border border-pink-400/40 bg-[#52005c] p-3.5 text-pink-50 ${className}`}
   >
     <div className="flex items-start gap-1.5">
-      <StickyNoteIcon className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
-      <div className="text-xs font-dm leading-tight">{children}</div>
+      <StickyNoteIcon className="mt-0.5 h-4 w-4 shrink-0 text-pink-300" />
+      <div className="font-dm text-xs leading-tight">{children}</div>
     </div>
   </div>
 );
@@ -50,116 +49,94 @@ export default function DarkSection() {
   return (
     <section
       id="how-it-works"
-      className="relative w-full py-10 md:py-10 overflow-hidden bg-[#fdfbf7] text-slate-950"
+      className="relative w-full overflow-hidden bg-[#2E0F3D] py-10 text-white md:py-14"
     >
-      {/* ================= 1. TOP-LEFT PINK/MAGENTA GRADIENT GLOW ================= */}
       <div
-        className="absolute -top-50 -left-60 w-[550px] sm:w-[550px] h-[550px] sm:h-[550px] pointer-events-none z-0 rounded-full opacity-70 blur-[90px]"
+        className="pointer-events-none absolute -left-60 -top-50 z-0 h-[550px] w-[550px] rounded-full opacity-80 blur-[90px] sm:h-[550px] sm:w-[550px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(244, 114, 182, 0.3) 0%, rgba(251, 146, 60, 0.4) 45%, transparent 75%)",
+            "radial-gradient(circle at center, rgba(192, 23, 99, 0.45) 0%, rgba(82, 0, 92, 0.35) 45%, transparent 75%)",
         }}
       />
 
-      {/* ================= 2. BOTTOM-RIGHT YELLOW/ORANGE GRADIENT GLOW ================= */}
       <div
-        className="absolute -top-50 -right-60 w-[550px] sm:w-[550px] h-[550px] sm:h-[550px] pointer-events-none z-0 rounded-full opacity-70 blur-[90px]"
+        className="pointer-events-none absolute -right-60 -top-50 z-0 h-[550px] w-[550px] rounded-full opacity-80 blur-[90px] sm:h-[550px] sm:w-[550px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(253, 224, 71, 0.4) 0%, rgba(244, 114, 182, 0.3) 45%, transparent 75%)",
+            "radial-gradient(circle at center, rgba(168, 85, 247, 0.35) 0%, rgba(192, 23, 99, 0.25) 45%, transparent 75%)",
         }}
       />
 
-      {/* ================= 3. GLITTER / GRAINY NOISE TEXTURE LAYER ================= */}
       <div
-        className="absolute inset-0 pointer-events-none z-0 mix-blend-overlay opacity-30"
+        className="pointer-events-none absolute inset-0 z-0 opacity-[0.08]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='10' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
-        {/* Letter Card Area with Floating Lucide Decor */}
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-4 text-center sm:px-6 lg:px-8">
         <div className="relative w-full max-w-[420px] sm:max-w-[450px]">
-          {/* 1. Floating Money Bill Icon */}
-          <div className="absolute -left-12 top-10 hidden sm:block md:-left-28 rotate-[-18deg] z-20">
+          <div className="absolute -left-12 top-10 z-20 hidden rotate-[-18deg] sm:block md:-left-28">
             <MoneyBillDecor />
           </div>
 
-          {/* 2. Floating Sticky Note Icon */}
-          <div className="absolute -right-30 top-0 hidden md:block rotate-[8deg] z-20">
+          <div className="absolute -right-30 top-0 z-20 hidden rotate-[8deg] md:block">
             <StickyNoteDecor className="w-[140px]">
               Paused, not
               <br />
               failed.{" "}
-              <Heart className="w-3 h-3 text-pink-600 inline ml-0.5 fill-pink-600" />
+              <Heart className="ml-0.5 inline h-3 w-3 fill-pink-400 text-pink-400" />
             </StickyNoteDecor>
           </div>
 
-          {/* 3. Floating Coin Badge Icon */}
           <CoinBadgeDecor className="absolute -bottom-4 -left-6 z-20" />
 
-          {/* 4. Center Letter Card */}
-          <div className="relative w-full max-w-[420px] rotate-[1.5deg] bg-white px-5 py-8 text-left text-slate-900 rounded-2xl border border-pink-200 sm:max-w-[450px] sm:rotate-[2.5deg] sm:px-8 sm:py-10 md:px-10 md:py-12">
-            {/* Security Badge Icon inside letter */}
-            <div className="flex items-center justify-between mb-8">
-              <p className="text-sm font-play text-slate-950 font-dm">
-                Dear saver,
-              </p>
-              <div className="flex items-center gap-1.5 text-[11px] font-medium font-dm text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="relative isolate w-full max-w-[420px] rotate-[1.5deg] rounded-2xl border border-pink-400/30 bg-[#451752] px-5 py-8 text-left shadow-[0_24px_60px_-20px_rgba(0,0,0,0.55)] sm:max-w-[450px] sm:rotate-[2.5deg] sm:px-8 sm:py-10 md:px-10 md:py-12">
+            <div className="mb-8 flex items-center justify-between gap-3">
+              <p className="font-play text-sm text-white">Dear saver,</p>
+              <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-pink-400/40 bg-[#52005c] px-3 py-1 font-dm text-[11px] font-medium text-pink-50">
+                <ShieldCheck className="h-3.5 w-3.5 text-pink-200" />
                 FDIC-Insured
               </div>
             </div>
 
-            <p className="text-sm font-medium leading-[1.8] text-slate-600 font-dm">
-              Millions of families are one flat tire or one missed shift away
-              from a payday loan that turns a two-week emergency into five
-              months of debt. PurposeMint gives you another way.
+            <p className="font-dm text-sm font-medium leading-[1.8] text-pink-50">
+              Millions of families are one flat tire or one missed shift away from a payday loan
+              that turns a two-week emergency into five months of debt. PurposeMint gives you
+              another way.
             </p>
 
-            <p className="mt-6 text-sm font-medium leading-[1.8] text-slate-600 font-dm">
-              Save a little at a time in an FDIC-insured account. Miss a week?
-              Paused, not failed. Your first goal isn&apos;t $10,000 — it&apos;s
-              $500.
+            <p className="mt-6 font-dm text-sm font-medium leading-[1.8] text-pink-50">
+              Save a little at a time in an FDIC-insured account. Miss a week? Paused, not failed.
+              Your first goal isn&apos;t $10,000 — it&apos;s $500.
             </p>
 
-            <p className="mt-6 text-sm font-medium font-play leading-[1.8] text-slate-950">
+            <p className="mt-6 font-play text-[15px] font-medium leading-[1.8] text-white">
               Start at zero. Build toward what you need.
             </p>
 
-            <div className="mt-10 pt-5 border-t border-slate-100 flex items-center justify-between">
+            <div className="mt-10 flex items-center justify-between border-t border-pink-400/20 pt-5">
               <div>
-                <p className="text-base text-slate-950 font-play">
-                  PurposeMint
-                </p>
-                <p className="text-xs font-medium text-pink-400 font-dm">
+                <p className="font-play text-base text-white">PurposeMint</p>
+                <p className="font-dm text-xs font-medium text-pink-200">
                   An initiative of Mint To Prosper Foundation
                 </p>
               </div>
 
-              {/* Lock Icon */}
-              <Lock className="w-4.5 h-4.5 text-pink-400" />
+              <Lock className="h-4.5 w-4.5 text-pink-400" />
             </div>
           </div>
         </div>
 
-        {/* Bottom Call to Action */}
-        <div className="mt-8 max-w-[800px] text-center md:mt-10">
-          {/* <h2 className="text-2xl sm:text-3xl md:text-4xl text-slate-950 font-play tracking-tight">
-            Five levels. FDIC-insured savings.
-            <br className="hidden sm:block" /> And a real way forward when
-            you&apos;re ready.
-          </h2> */}
-
+        <div className="mt-2 max-w-[800px] text-center md:mt-4">
           <a
             href="https://minttoprosper.org/purposemint/partner"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium font-dm text-white bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] shadow-sm shadow-pink-600/30 transition-all duration-200 hover:opacity-95 active:scale-95 sm:mt-8 sm:w-auto sm:px-9 sm:py-4"
+            className="motion-btn mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 font-dm text-sm font-medium text-white shadow-sm shadow-pink-900/40 hover:opacity-95 sm:mt-8 sm:w-auto sm:px-9 sm:py-4"
           >
             Partner With Us
-            <ExternalLink className="w-4 h-4" />
+            <ExternalLink className="h-4 w-4" />
           </a>
         </div>
       </div>

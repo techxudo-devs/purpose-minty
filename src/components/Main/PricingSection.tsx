@@ -29,7 +29,8 @@ const plans: Plan[] = [
     ],
     headerClass: "relative overflow-hidden",
     headerStyle: {
-      background: "linear-gradient(180deg, #3a3a3a 0%, #1c1c1c 55%, #0f0f0f 100%)",
+      background:
+        "linear-gradient(135deg, #7c3aed 0%, #9333ea 35%, #c01763 70%, #b00f57 100%)",
     },
   },
   {
@@ -66,7 +67,11 @@ const plans: Plan[] = [
       "Partner discounts that grow over time",
       "Savings streak tracking + gamification",
     ],
-    headerClass: "bg-[#0a0a0a]",
+    headerClass: "relative overflow-hidden",
+    headerStyle: {
+      background:
+        "linear-gradient(135deg, #52005c 0%, #2E0F3D 25%, #7c3aed 52%, #c01763 78%, #8d0543 100%)",
+    },
   },
 ];
 
@@ -181,7 +186,7 @@ export default function PricingSection() {
 
                   <button
                     type="button"
-                    className={`mt-6 w-full cursor-pointer rounded-xl bg-white py-3 text-[14px] font-semibold text-slate-950 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] ${
+                    className={`motion-btn mt-6 w-full cursor-pointer rounded-xl bg-white py-3 text-[14px] font-semibold text-slate-950 ${
                       plan.featured
                         ? "hover:bg-pink-50 hover:text-[#8d0543]"
                         : "hover:bg-slate-50"

@@ -152,7 +152,7 @@ function ContactForm() {
   return (
     <form className="flex h-full flex-col justify-between" onClick={(event) => event.stopPropagation()} onSubmit={onSubmit}>
       <div>
-        <span className="inline-flex w-fit rounded-full border border-[#facc15] bg-[#facc15]/10 px-3.5 py-1 text-xs font-dm font-medium tracking-wider text-[#facc15]">
+        <span className="inline-flex w-fit rounded-full border border-[#c01763] bg-[#c01763]/10 px-3.5 py-1 text-xs font-dm font-medium tracking-wider text-[#c01763]">
           CONTACT US
         </span>
         <h3 className="mt-3.5 font-play text-[18px] leading-none text-white sm:text-[20px]">
@@ -198,7 +198,7 @@ function ContactForm() {
 
       <button
         type="submit"
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] py-3 text-[12px] font-medium font-dm tracking-wide text-white transition hover:opacity-95 cursor-pointer hover:scale-97 duration-300"
+        className="motion-btn mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] py-3 font-dm text-[12px] font-medium tracking-wide text-white hover:opacity-95"
       >
         <PlaneIcon />
         SUBMIT
@@ -347,7 +347,7 @@ export default function FaqSection() {
                   <ContactForm />
                 ) : isActive ? (
                   <div key={item.q} className="pr-2">
-                    <span className="inline-flex w-fit rounded-full border border-[#facc15] bg-[#facc15]/10 px-3.5 py-1 text-xs font-dm tracking-wider text-[#facc15]">
+                    <span className="inline-flex w-fit rounded-full border border-[#c01763] bg-[#c01763]/10 px-3.5 py-1 text-xs font-dm tracking-wider text-[#c01763]">
                       FAQ
                     </span>
                     <h3 className="mt-3.5 font-play text-[19px] leading-snug text-white sm:text-[20px]">
@@ -367,7 +367,7 @@ export default function FaqSection() {
                 <span
                   className={`absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full text-[16px] transition-all ${
                     isActive
-                      ? "bg-[#facc15] text-slate-950"
+                      ? "bg-[#c01763] text-white"
                       : "bg-[#2E0F3D] text-white"
                   }`}
                 >
@@ -385,7 +385,7 @@ export default function FaqSection() {
           type="button"
           aria-label="Previous FAQ"
           onClick={() => go(-1)}
-          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] shadow-sm transition hover:bg-white active:scale-95 sm:h-14 sm:w-14"
+          className="motion-btn-lift flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] shadow-sm hover:bg-white sm:h-14 sm:w-14"
         >
           <Arrow dir="left" />
         </button>
@@ -393,7 +393,7 @@ export default function FaqSection() {
           type="button"
           aria-label="Next FAQ"
           onClick={() => go(1)}
-          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] shadow-sm transition hover:bg-white active:scale-95 sm:h-14 sm:w-14"
+          className="motion-btn-lift flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-pink-200 bg-white/90 text-[#2E0F3D] shadow-sm hover:bg-white sm:h-14 sm:w-14"
         >
           <Arrow dir="right" />
         </button>

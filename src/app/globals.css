@@ -4,9 +4,60 @@
   --font-pop: var(--font-pop);
   --font-play: var(--font-play);
   --font-dm: var(--font-dm);
+  --font-ep: var(--font-ep);
 }
 
 body {
   font-family: var(--font-pop), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+}
+
+@keyframes voice-scan {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+.animate-voice-scan {
+  animation: voice-scan 2.4s ease-in-out infinite;
+}
+
+.motion-btn {
+  transition:
+    transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 200ms ease,
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.motion-btn:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+.motion-btn:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.motion-btn-lift {
+  transition:
+    transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 200ms ease,
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.motion-btn-lift:hover {
+  transform: translateY(-4px);
+}
+
+.motion-btn-lift:active {
+  transform: translateY(-1px);
 }

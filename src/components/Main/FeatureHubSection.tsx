@@ -3,6 +3,238 @@
 import { useCallback, useEffect, useRef, useState, forwardRef } from "react";
 import { HiLightningBolt, HiOutlineHeart } from "react-icons/hi";
 
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  return reduced;
+}
+
+function useCycleIndex(count: number, intervalMs = 2800) {
+  const [active, setActive] = useState(0);
+  const reducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion || count <= 1) return;
+    const id = window.setInterval(() => setActive((i) => (i + 1) % count), intervalMs);
+    return () => window.clearInterval(id);
+  }, [count, intervalMs, reducedMotion]);
+
+  return active;
+}
+
+function useSmoothRange(
+  fillRef: React.RefObject<HTMLDivElement | null>,
+  {
+    min,
+    max,
+    durationMs,
+    phaseMs = 0,
+    onValue,
+  }: {
+    min: number;
+    max: number;
+    durationMs: number;
+    phaseMs?: number;
+    onValue?: (value: number) => void;
+  },
+) {
+  const reducedMotion = usePrefersReducedMotion();
+  const onValueRef = useRef(onValue);
+  onValueRef.current = onValue;
+
+  useEffect(() => {
+    const apply = (value: number) => {
+      if (fillRef.current) fillRef.current.style.width = `${value}%`;
+      onValueRef.current?.(value);
+    };
+
+    const mid = min + (max - min) / 2;
+    if (reducedMotion) {
+      apply(mid);
+      return;
+    }
+
+    let frameId = 0;
+    const start = performance.now() - phaseMs;
+
+    const tick = (now: number) => {
+      const progress = ((now - start) % durationMs) / durationMs;
+      const wave = (1 - Math.cos(progress * Math.PI * 2)) / 2;
+      apply(min + (max - min) * wave);
+      frameId = window.requestAnimationFrame(tick);
+    };
+
+    frameId = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frameId);
+  }, [fillRef, min, max, durationMs, phaseMs, reducedMotion]);
+}
+
+function CyclingPillGroup({
+  options,
+  active,
+}: {
+  options: string[];
+  active: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+
+  const updateIndicator = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const pills = container.querySelectorAll<HTMLElement>("[data-cycle-pill]");
+    const pill = pills[active];
+    if (!pill) return;
+    setIndicator({
+      left: pill.offsetLeft,
+      width: pill.offsetWidth,
+    });
+  }, [active]);
+
+  useEffect(() => {
+    updateIndicator();
+    const container = containerRef.current;
+    if (!container) return;
+    const observer = new ResizeObserver(updateIndicator);
+    observer.observe(container);
+    window.addEventListener("resize", updateIndicator);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateIndicator);
+    };
+  }, [updateIndicator]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative inline-flex items-center gap-1 rounded-full border border-slate-200/80 bg-slate-50/90 p-1"
+    >
+      <span
+        aria-hidden
+        className="absolute top-1 bottom-1 rounded-full bg-[#2E0F3D] transition-[left,width] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        style={{ left: indicator.left, width: indicator.width }}
+      />
+      {options.map((option, i) => (
+        <span
+          key={option}
+          data-cycle-pill
+          className={`relative z-10 whitespace-nowrap rounded-full px-3 py-1.5 font-dm text-[11px] font-medium transition-colors duration-500 ${
+            i === active ? "text-white" : "text-slate-600"
+          }`}
+        >
+          {option}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function SmoothMetricBar({
+  label,
+  min,
+  max,
+  durationMs,
+  phaseMs = 0,
+  colorClass,
+}: {
+  label: string;
+  min: number;
+  max: number;
+  durationMs: number;
+  phaseMs?: number;
+  colorClass: string;
+}) {
+  const fillRef = useRef<HTMLDivElement>(null);
+  const percentRef = useRef<HTMLSpanElement>(null);
+
+  useSmoothRange(fillRef, {
+    min,
+    max,
+    durationMs,
+    phaseMs,
+    onValue: (value) => {
+      if (percentRef.current) percentRef.current.textContent = `${Math.round(value)}%`;
+    },
+  });
+
+  return (
+    <div>
+      <div className="mb-1 flex justify-between font-dm text-[11px] font-medium text-slate-700">
+        <span>{label}</span>
+        <span ref={percentRef} className="text-[#c01763]">
+          {Math.round(min)}%
+        </span>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+        <div
+          ref={fillRef}
+          className={`h-full rounded-full bg-gradient-to-r ${colorClass}`}
+          style={{ width: `${min}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function GoalProgressPreview({
+  min,
+  max,
+  durationMs,
+  goalTotal = 500,
+  phaseMs = 0,
+}: {
+  min: number;
+  max: number;
+  durationMs: number;
+  goalTotal?: number;
+  phaseMs?: number;
+}) {
+  const fillRef = useRef<HTMLDivElement>(null);
+  const percentRef = useRef<HTMLSpanElement>(null);
+  const amountRef = useRef<HTMLSpanElement>(null);
+
+  useSmoothRange(fillRef, {
+    min,
+    max,
+    durationMs,
+    phaseMs,
+    onValue: (value) => {
+      if (percentRef.current) percentRef.current.textContent = `${Math.round(value)}%`;
+      if (amountRef.current) amountRef.current.textContent = `$${Math.round((goalTotal * value) / 100)}`;
+    },
+  });
+
+  return (
+    <div className="space-y-3 text-left">
+      <p className="font-dm text-[11px] font-medium text-slate-500">This week</p>
+      <p className="font-play text-xl font-bold text-slate-900">
+        <span ref={amountRef}>${Math.round((goalTotal * min) / 100)}</span>{" "}
+        <span className="text-sm font-dm font-medium text-slate-400">of ${goalTotal}</span>
+      </p>
+      <div>
+        <div className="mb-1 flex justify-end font-dm text-[11px] font-semibold text-[#c01763]">
+          <span ref={percentRef}>{Math.round(min)}%</span>
+        </div>
+        <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
+          <div
+            ref={fillRef}
+            className="h-full rounded-full bg-gradient-to-r from-[#c01763] to-[#8d0543]"
+            style={{ width: `${min}%` }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FeatureHubHeader({
   activeTab,
   onTabChange,
@@ -24,14 +256,14 @@ function FeatureHubHeader({
         Choose your goal, set the friction, and grow a cushion you can actually keep.
       </p>
 
-      <div className="mt-6 flex w-full max-w-xs flex-col gap-3 px-1 md:inline-flex md:max-w-none md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200/80 md:bg-white/90 md:p-1 md:px-0">
+      <div className="mt-6 inline-flex w-fit flex-row items-center gap-0 rounded-full border border-slate-200/80 bg-white/90 p-1">
         <button
           type="button"
           onClick={() => onTabChange("features")}
-          className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2.5 font-dm text-sm transition-all duration-200 md:w-auto md:px-5 ${
+          className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm ${
             activeTab === "features"
               ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
-              : "border border-slate-200/80 bg-white text-slate-500 hover:border-pink-200 hover:text-slate-700 md:border-0 md:bg-transparent"
+              : "text-slate-500 hover:text-slate-700"
           }`}
         >
           <HiLightningBolt className="h-4 w-4" />
@@ -40,10 +272,10 @@ function FeatureHubHeader({
         <button
           type="button"
           onClick={() => onTabChange("benefits")}
-          className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2.5 font-dm text-sm transition-all duration-200 md:w-auto md:px-5 ${
+          className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm ${
             activeTab === "benefits"
               ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
-              : "border border-slate-200/80 bg-white text-slate-500 hover:border-pink-200 hover:text-slate-700 md:border-0 md:bg-transparent"
+              : "text-slate-500 hover:text-slate-700"
           }`}
         >
           <HiOutlineHeart className="h-4 w-4" />
@@ -190,7 +422,7 @@ const benefitsBottomCards: HubCard[] = [
 function PausePreview() {
   return (
     <div className="space-y-3 text-left">
-      <div className="rounded-xl border border-violet-100 bg-violet-50/80 px-3 py-2.5 font-dm text-[11px] font-medium text-[#2E0F3D]">
+      <div className="animate-pulse rounded-xl border border-violet-100 bg-violet-50/80 px-3 py-2.5 font-dm text-[11px] font-medium text-[#2E0F3D]">
         Resting this week
       </div>
       <p className="font-dm text-[11px] font-medium text-[#c01763]">Resume when you&apos;re ready 💜</p>
@@ -200,68 +432,60 @@ function PausePreview() {
 
 function PaycyclePreview() {
   const options = ["Weekly", "Biweekly", "Payday"];
+  const active = useCycleIndex(options.length, 2800);
+
   return (
     <div className="space-y-3 text-left">
-      <div className="flex flex-wrap gap-2">
-        {options.map((option, i) => (
-          <span
-            key={option}
-            className={`rounded-full px-3 py-1.5 font-dm text-[11px] font-medium ${
-              i === 1
-                ? "bg-[#2E0F3D] text-white"
-                : "border border-slate-200 bg-slate-50 text-slate-600"
-            }`}
-          >
-            {option}
-          </span>
-        ))}
-      </div>
+      <CyclingPillGroup options={options} active={active} />
     </div>
   );
 }
 
 function AdjustGoalsPreview() {
-  return (
-    <div className="space-y-3 text-left">
-      <p className="font-dm text-[11px] font-medium text-slate-500">This week</p>
-      <p className="font-play text-xl font-bold text-slate-900">
-        $430 <span className="text-sm font-dm font-medium text-slate-400">of $500</span>
-      </p>
-      <div>
-        <div className="mb-1 flex justify-end font-dm text-[11px] font-semibold text-[#c01763]">
-          86%
-        </div>
-        <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-[#c01763] to-[#8d0543]"
-            style={{ width: "86%" }}
-          />
-        </div>
-      </div>
-    </div>
-  );
+  return <GoalProgressPreview min={68} max={92} durationMs={3600} phaseMs={400} />;
 }
 
 function NudgesPreview() {
+  const messages = [
+    { title: "Still here 💜", body: "A pause is allowed. Your cushion is still yours." },
+    { title: "Small win today ✨", body: "You kept $12 in — that counts more than you think." },
+    { title: "No lecture here", body: "We name the win, not the miss." },
+  ];
+  const active = useCycleIndex(messages.length, 2800);
+  const message = messages[active];
+
   return (
     <div className="space-y-2.5 text-left">
-      <div className="rounded-xl border border-pink-100 bg-[#fff5f8] px-3 py-2.5 font-dm text-[11px] font-semibold text-[#c01763]">
-        Still here 💜
+      <div
+        key={message.title}
+        className="rounded-xl border border-pink-100 bg-[#fff5f8] px-3 py-2.5 font-dm text-[11px] font-semibold text-[#c01763] transition-all duration-500"
+      >
+        {message.title}
       </div>
-      <p className="font-dm text-[11px] leading-relaxed text-slate-600">
-        A pause is allowed. Your cushion is still yours.
+      <p className="font-dm text-[11px] leading-relaxed text-slate-600 transition-opacity duration-500">
+        {message.body}
       </p>
     </div>
   );
 }
 
 function SupportPreview() {
+  const messages = [
+    "Hey — real person here. How can we help today?",
+    "Got it. Let me look at your account with you.",
+    "You're not alone in this — we'll figure it out together.",
+  ];
+  const active = useCycleIndex(messages.length, 3000);
+
   return (
     <div className="space-y-2.5 text-left">
       <div className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5">
         <p className="font-dm text-[10px] font-medium text-slate-400">PurposeMint Support</p>
-        <p className="mt-1 font-dm text-[11px] text-slate-700">
-          Hey — real person here. How can we help today?
+        <p
+          key={active}
+          className="mt-1 font-dm text-[11px] text-slate-700 transition-opacity duration-500"
+        >
+          {messages[active]}
         </p>
       </div>
       <p className="font-dm text-[11px] font-medium text-[#c01763]">Reply in minutes, not days</p>
@@ -270,25 +494,46 @@ function SupportPreview() {
 }
 
 function PeoplePreview() {
+  const rituals = ["🔥 Transfer Tuesday", "✨ First-$500 challenge", "💜 No-Spend Saturday"];
+  const active = useCycleIndex(rituals.length, 2400);
+
   return (
     <div className="space-y-2.5 text-left">
       <p className="font-dm text-[11px] font-medium text-slate-500">This week</p>
-      <div className="rounded-lg border border-pink-100 bg-[#fff5f8] px-3 py-2 font-dm text-[11px] font-medium text-slate-700">
-        🔥 Transfer Tuesday
-      </div>
-      <div className="rounded-lg border border-amber-100 bg-amber-50/80 px-3 py-2 font-dm text-[11px] font-medium text-slate-700">
-        ✨ First-$500 challenge
-      </div>
+      {rituals.map((ritual, i) => (
+        <div
+          key={ritual}
+          className={`rounded-lg px-3 py-2 font-dm text-[11px] font-medium transition-all duration-500 ${
+            i === active
+              ? "scale-[1.02] border border-pink-200 bg-[#fff5f8] text-slate-800 shadow-sm"
+              : i === 1
+                ? "border border-purple-100 bg-purple-50/80 text-slate-700"
+                : "border border-pink-100 bg-[#fff5f8] text-slate-700"
+          }`}
+        >
+          {ritual}
+        </div>
+      ))}
     </div>
   );
 }
 
 function MonthlyRecapPreview() {
+  const summaries = [
+    "More calm than last week",
+    "Saved on 3 of 4 planned days",
+    "Your cushion grew by $48",
+  ];
+  const active = useCycleIndex(summaries.length, 2600);
+
   return (
     <div className="space-y-3 text-left">
       <p className="font-dm text-[11px] font-medium text-slate-500">This month</p>
-      <p className="font-dm text-[12px] font-semibold leading-relaxed text-[#2E0F3D]">
-        More calm than last week
+      <p
+        key={active}
+        className="font-dm text-[12px] font-semibold leading-relaxed text-[#2E0F3D] transition-opacity duration-500"
+      >
+        {summaries[active]}
       </p>
     </div>
   );
@@ -296,15 +541,17 @@ function MonthlyRecapPreview() {
 
 function MoneyFeelsPreview() {
   const moods = ["😔", "😐", "🙂", "😄", "⭐"];
+  const active = useCycleIndex(moods.length, 2000);
+
   return (
     <div className="space-y-3 text-left">
       <div className="flex items-center justify-between gap-1">
         {moods.map((emoji, i) => (
           <span
             key={emoji}
-            className={`flex h-8 w-8 items-center justify-center rounded-xl text-sm ${
-              i === 3
-                ? "bg-[#fff5f8] ring-2 ring-[#c01763]/40"
+            className={`flex h-8 w-8 items-center justify-center rounded-xl text-sm transition-all duration-500 ${
+              i === active
+                ? "scale-110 bg-[#fff5f8] ring-2 ring-[#c01763]/40"
                 : "bg-slate-50"
             }`}
           >
@@ -321,130 +568,121 @@ function MoneyFeelsPreview() {
 
 function WithdrawalPreview() {
   const options = ["24 hours", "3 days", "Ask a friend"];
+  const lockMessages = [
+    "Locked for 24 hours ✨",
+    "Locked until Friday ✨",
+    "Friend approval required ✨",
+  ];
+  const active = useCycleIndex(options.length, 2800);
+
   return (
     <div className="space-y-3 text-left">
       <p className="font-dm text-[11px] font-medium text-slate-500">Your delay</p>
-      <div className="flex flex-wrap gap-2">
-        {options.map((option, i) => (
-          <span
-            key={option}
-            className={`rounded-full px-3 py-1.5 font-dm text-[11px] font-medium ${
-              i === 1
-                ? "bg-[#2E0F3D] text-white"
-                : "border border-slate-200 bg-slate-50 text-slate-600"
+      <CyclingPillGroup options={options} active={active} />
+      <div className="relative min-h-[42px] rounded-xl border border-pink-100 bg-[#fff5f8]">
+        {lockMessages.map((message, i) => (
+          <p
+            key={message}
+            className={`absolute inset-x-0 top-0 px-3 py-2.5 font-dm text-[11px] font-medium text-[#c01763] transition-opacity duration-700 ${
+              i === active ? "opacity-100" : "opacity-0"
             }`}
           >
-            {option}
-          </span>
+            {message}
+          </p>
         ))}
-      </div>
-      <div className="rounded-xl border border-pink-100 bg-[#fff5f8] px-3 py-2.5 font-dm text-[11px] font-medium text-[#c01763]">
-        Locked until Friday ✨
       </div>
     </div>
   );
 }
 
 function PurposeMapPreview() {
-  const metrics = [
-    { label: "Money", value: 72, color: "from-[#c01763] to-[#8d0543]" },
-    { label: "Mindset", value: 29, color: "from-violet-400 to-violet-600" },
-    { label: "Motivation", value: 58, color: "from-amber-400 to-orange-500" },
-  ];
   return (
     <div className="space-y-3 text-left">
-      {metrics.map((metric) => (
-        <div key={metric.label}>
-          <div className="mb-1 flex justify-between font-dm text-[11px] font-medium text-slate-700">
-            <span>{metric.label}</span>
-            <span className="text-[#c01763]">{metric.value}%</span>
-          </div>
-          <div className="h-2 overflow-hidden rounded-full bg-slate-100">
-            <div
-              className={`h-full rounded-full bg-gradient-to-r ${metric.color}`}
-              style={{ width: `${metric.value}%` }}
-            />
-          </div>
-        </div>
-      ))}
+      <SmoothMetricBar
+        label="Money"
+        min={48}
+        max={86}
+        durationMs={3600}
+        colorClass="from-[#c01763] to-[#8d0543]"
+      />
+      <SmoothMetricBar
+        label="Mindset"
+        min={22}
+        max={38}
+        durationMs={4200}
+        phaseMs={600}
+        colorClass="from-violet-400 to-violet-600"
+      />
+      <SmoothMetricBar
+        label="Motivation"
+        min={45}
+        max={72}
+        durationMs={3800}
+        phaseMs={1200}
+        colorClass="from-fuchsia-400 to-purple-600"
+      />
     </div>
   );
 }
 
 function HabitPreview() {
-  const days = [
-    { label: "✓", done: true },
-    { label: "✓", done: true },
-    { label: "✓", done: true },
-    { label: "T", done: false },
-    { label: "F", done: false },
-    { label: "S", done: false },
-    { label: "✓", done: true },
-  ];
+  const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
+  const active = useCycleIndex(dayLabels.length, 1800);
+  const streak = Math.min(dayLabels.length, active + 1);
+
   return (
     <div className="space-y-3 text-left">
       <div className="flex items-center justify-between gap-1">
-        {days.map((day, i) => (
-          <div
-            key={i}
-            className={`flex h-8 w-8 items-center justify-center rounded-lg font-dm text-[11px] font-semibold ${
-              day.done
-                ? "bg-[#2E0F3D] text-white"
-                : "border border-slate-200 bg-slate-50 text-slate-400"
-            }`}
-          >
-            {day.label}
-          </div>
-        ))}
+        {dayLabels.map((label, i) => {
+          const done = i <= active;
+          return (
+            <div
+              key={`${label}-${i}`}
+              className={`flex h-8 w-8 items-center justify-center rounded-lg font-dm text-[11px] font-semibold transition-all duration-500 ${
+                done
+                  ? "scale-105 bg-[#2E0F3D] text-white"
+                  : "border border-slate-200 bg-slate-50 text-slate-400"
+              }`}
+            >
+              {done ? "✓" : label}
+            </div>
+          );
+        })}
       </div>
-      <p className="font-dm text-[11px] font-semibold text-[#c01763]">4-day streak</p>
+      <p className="font-dm text-[11px] font-semibold text-[#c01763] transition-all duration-500">
+        {streak}-day streak
+      </p>
     </div>
   );
 }
 
 function CushionPreview() {
-  return (
-    <div className="space-y-3 text-left">
-      <p className="font-dm text-[11px] font-medium text-slate-500">This week</p>
-      <p className="font-play text-xl font-bold text-slate-900">
-        $480 <span className="text-sm font-dm font-medium text-slate-400">of $500</span>
-      </p>
-      <div>
-        <div className="mb-1 flex justify-end font-dm text-[11px] font-semibold text-[#c01763]">
-          96%
-        </div>
-        <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-[#c01763] to-[#8d0543]"
-            style={{ width: "96%" }}
-          />
-        </div>
-      </div>
-    </div>
-  );
+  return <GoalProgressPreview min={78} max={96} durationMs={3600} phaseMs={800} />;
 }
 
 function VoicePreview() {
   const moods = ["😔", "😐", "🙂", "😄", "⭐"];
+  const active = useCycleIndex(moods.length, 2000);
+
   return (
     <div className="space-y-3 text-left">
       <div className="flex items-center justify-between gap-1">
         {moods.map((emoji, i) => (
-          <button
+          <span
             key={emoji}
-            type="button"
-            className={`flex h-9 w-9 items-center justify-center rounded-xl text-base transition-colors ${
-              i === 3
-                ? "bg-[#fff5f8] ring-2 ring-[#c01763]/40"
-                : "bg-slate-50 hover:bg-slate-100"
+            className={`flex h-9 w-9 items-center justify-center rounded-xl text-base transition-all duration-500 ${
+              i === active
+                ? "scale-110 bg-[#fff5f8] ring-2 ring-[#c01763]/40"
+                : "bg-slate-50"
             }`}
           >
             {emoji}
-          </button>
+          </span>
         ))}
       </div>
-      <div className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 text-center font-dm text-[11px] font-medium text-slate-600">
-        20-second check-in
+      <div className="relative overflow-hidden rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 text-center font-dm text-[11px] font-medium text-slate-600">
+        <span className="relative z-10">20-second check-in</span>
+        <span className="animate-voice-scan absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#c01763]/10 to-transparent" />
       </div>
     </div>
   );
@@ -453,7 +691,7 @@ function VoicePreview() {
 function BonusPreview() {
   return (
     <div className="space-y-3 text-left">
-      <div className="rounded-xl bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-4 py-3 text-center">
+      <div className="animate-pulse rounded-xl bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-4 py-3 text-center">
         <p className="font-play text-sm font-bold text-white">You unlocked $10 🎁</p>
       </div>
       <p className="font-dm text-[11px] leading-relaxed text-slate-600">
@@ -503,7 +741,7 @@ const HubCardItem = forwardRef<
   return (
     <article
       ref={ref}
-      className={`relative z-10 flex flex-col rounded-[20px] border border-violet-100/80 bg-[#f0f4ff] text-center ${
+      className={`relative z-10 flex flex-col rounded-[20px] border border-pink-100/80 bg-[#fdf5f9] text-center ${
         compact
           ? "min-h-[240px] p-4 sm:min-h-[280px] md:min-h-[300px] sm:p-5"
           : "min-h-[280px] p-4 sm:min-h-[340px] sm:p-5 md:min-h-[360px] md:p-6"
@@ -647,14 +885,14 @@ function PurposeMintHub({ hubRef }: { hubRef: React.RefObject<HTMLDivElement | n
             className="absolute left-1/2 top-1/2 h-[90px] w-[min(92vw,680px)] -translate-x-1/2 -translate-y-1/2 blur-[52px] sm:h-[110px] sm:blur-[62px] md:w-[760px]"
             style={{
               background:
-                "radial-gradient(ellipse 100% 72% at center, rgba(244, 114, 182, 0.55) 0%, rgba(251, 146, 60, 0.38) 38%, rgba(253, 224, 71, 0.22) 62%, transparent 84%)",
+                "radial-gradient(ellipse 100% 72% at center, rgba(244, 114, 182, 0.55) 0%, rgba(192, 23, 99, 0.38) 38%, rgba(168, 85, 247, 0.22) 62%, transparent 84%)",
             }}
           />
           <div
             className="absolute left-1/2 top-1/2 h-[70px] w-[min(78vw,560px)] -translate-x-1/2 -translate-y-1/2 blur-[38px] sm:h-[85px] sm:blur-[46px] md:w-[620px]"
             style={{
               background:
-                "radial-gradient(ellipse 100% 68% at center, rgba(253, 224, 71, 0.32) 0%, rgba(192, 23, 99, 0.28) 48%, transparent 78%)",
+                "radial-gradient(ellipse 100% 68% at center, rgba(192, 132, 252, 0.32) 0%, rgba(192, 23, 99, 0.28) 48%, transparent 78%)",
             }}
           />
           <div
@@ -747,18 +985,7 @@ export default function FeatureHubSection() {
   };
 
   return (
-    <section id="feature-hub" className="relative overflow-hidden bg-[#fbfcfd] py-10 sm:py-14 md:py-16">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-50"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "32px 32px",
-        }}
-      />
-
+    <section id="feature-hub" className="relative overflow-hidden bg-[#fdfbf7] py-10 sm:py-14 md:py-16">
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <FeatureHubHeader activeTab={activeTab} onTabChange={handleTabChange} />
 

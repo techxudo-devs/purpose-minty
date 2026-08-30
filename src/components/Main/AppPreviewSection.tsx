@@ -105,7 +105,7 @@ export default function AppPreviewSection() {
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] sm:w-[1000px] h-[550px] sm:h-[700px] pointer-events-none z-0 rounded-full opacity-80 blur-[80px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(244, 114, 182, 0.6) 0%, rgba(251, 146, 60, 0.35) 40%, rgba(253, 224, 71, 0.2) 65%, transparent 65%)",
+            "radial-gradient(circle at center, rgba(244, 114, 182, 0.6) 0%, rgba(192, 23, 99, 0.35) 40%, rgba(168, 85, 247, 0.2) 65%, transparent 65%)",
         }}
       />
 

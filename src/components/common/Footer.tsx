@@ -72,17 +72,6 @@ export default function Footer() {
 
   return (
     <footer className="relative border-t border-pink-100 bg-[#fdfbf7] text-[#2E0F3D]">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-40"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(192, 23, 99, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(192, 23, 99, 0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "28px 28px",
-        }}
-      />
-
       <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-9 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-12 lg:gap-5">
           {/* Brand & contact */}
@@ -181,7 +170,7 @@ export default function Footer() {
               />
               <button
                 type="submit"
-                className="w-full cursor-pointer rounded-lg bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-3 py-3 hover:scale-98 font-dm text-xs font-medium text-white transition hover:opacity-95 active:scale-[0.98]"
+                className="motion-btn w-full cursor-pointer rounded-lg bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-3 py-3 font-dm text-xs font-medium text-white hover:opacity-95"
               >
                 Join Now
               </button>
@@ -193,7 +182,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="PurposeMint on LinkedIn"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-pink-200 bg-[#fff5f8] text-[#c01763] transition hover:bg-[#c01763] hover:text-white"
+                className="motion-btn-lift flex h-8 w-8 items-center justify-center rounded-full border border-pink-200 bg-[#fff5f8] text-[#c01763] hover:bg-[#c01763] hover:text-white"
               >
                 <FaLinkedinIn className="h-3.5 w-3.5" />
               </a>

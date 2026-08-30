@@ -112,7 +112,7 @@ const Navbar: React.FC = () => {
                   key={item.name}
                   href={item.href}
                   onClick={(event) => handleNavClick(event, item.href, item.name)}
-                  className={`cursor-pointer whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition-all duration-200 xl:px-4 xl:text-sm ${
+                  className={`cursor-pointer whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium xl:px-4 xl:text-sm ${
                     isActive
                       ? "font-semibold text-[#f472b6]"
                       : "text-white hover:bg-pink-500/50"
@@ -128,7 +128,7 @@ const Navbar: React.FC = () => {
             <a
               href="#waitlist"
               onClick={handleWaitlistClick}
-              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#facc15] px-6 py-3.5 text-sm font-semibold text-slate-950 transition-all duration-300 hover:bg-[#eab308] active:scale-95"
+              className="motion-btn-lift inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 text-sm font-semibold text-white hover:opacity-95"
             >
               Join the Waitlist
               <ArrowRight className="h-4 w-4" />
@@ -139,7 +139,7 @@ const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => setMobileMenuOpen((open) => !open)}
-              className="cursor-pointer rounded-full p-2 text-slate-900 transition-colors hover:bg-white/60 focus:outline-none"
+              className="motion-btn-lift cursor-pointer rounded-full p-2 text-slate-900 hover:bg-white/60 focus:outline-none"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
             >
@@ -175,7 +175,7 @@ const Navbar: React.FC = () => {
                 href={item.href}
                 onClick={(event) => handleNavClick(event, item.href, item.name)}
                 style={{ transitionDelay: mobileMenuOpen ? `${index * 45}ms` : "0ms" }}
-                className={`block cursor-pointer rounded-xl border-b border-slate-100 py-3 text-base font-medium transition-all duration-300 ease-out ${
+                className={`motion-btn-lift block cursor-pointer rounded-xl border-b border-slate-100 py-3 text-base font-medium transition-all duration-300 ease-out ${
                   mobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-0"
                 } ${activeTab === item.name ? "text-[#c01763]" : "text-slate-700"}`}
               >
@@ -193,7 +193,7 @@ const Navbar: React.FC = () => {
             <a
               href="#waitlist"
               onClick={handleWaitlistClick}
-              className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[#facc15] py-3 text-base font-semibold text-slate-950 transition-all active:scale-95"
+              className="motion-btn-lift inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] py-3 text-base font-semibold text-white hover:opacity-95"
             >
               Join the Waitlist
               <ArrowRight className="h-4 w-4" />

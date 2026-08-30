@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins, Playfair_Display, DM_Sans } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Poppins,
+  Playfair_Display,
+  DM_Sans,
+  Ephesis,
+} from "next/font/google";
 import SmoothScroll from "@/components/common/SmoothScroll";
 import "./globals.css";
 import Navbar from "@/components/common/Navbar";
@@ -32,6 +39,12 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
 });
 
+const ephesis = Ephesis({
+  variable: "--font-ep",
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "PurposeMint",
   description:
@@ -42,7 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${playfairDisplay.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${playfairDisplay.variable} ${dmSans.variable} ${ephesis.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll />

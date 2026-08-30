@@ -29,13 +29,62 @@ const goals = [
 
 type Goal = (typeof goals)[number];
 
+const HIGHLIGHT_ROW_CLASSES =
+  "bg-gradient-to-r from-[#ffe4ec] via-[#fff5f8] to-[#fdf8ff] shadow-[inset_4px_0_0_0_#c01763] ring-1 ring-[#c01763]/25";
+
+function clearRowHighlight(el: HTMLElement) {
+  el.dataset.highlighted = "false";
+  el.classList.remove(...HIGHLIGHT_ROW_CLASSES.split(" "));
+  el.classList.add("bg-white/80");
+  gsap.set(el, { clearProps: "backgroundColor,boxShadow" });
+}
+
+function fadeOutRowHighlight(el: HTMLElement) {
+  if (el.dataset.highlighted !== "true") return;
+
+  gsap.killTweensOf(el, "backgroundColor,boxShadow");
+  el.dataset.highlighted = "false";
+  el.classList.remove(...HIGHLIGHT_ROW_CLASSES.split(" "));
+  el.classList.add("bg-white/80");
+
+  gsap.to(el, {
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    boxShadow: "none",
+    duration: 0.22,
+    ease: "power3.in",
+    onComplete: () => gsap.set(el, { clearProps: "backgroundColor,boxShadow" }),
+  });
+}
+
+function fadeInRowHighlight(el: HTMLElement) {
+  gsap.killTweensOf(el, "backgroundColor,boxShadow");
+
+  el.dataset.highlighted = "true";
+  el.classList.remove("bg-white/80");
+  el.classList.add(...HIGHLIGHT_ROW_CLASSES.split(" "));
+
+  gsap.fromTo(
+    el,
+    {
+      backgroundColor: "rgba(255, 228, 236, 1)",
+      boxShadow: "inset 4px 0 0 0 #c01763, 0 0 28px rgba(192, 23, 99, 0.4)",
+    },
+    {
+      backgroundColor: "rgba(255, 245, 248, 0.95)",
+      boxShadow: "inset 4px 0 0 0 #c01763, 0 0 0px rgba(192, 23, 99, 0)",
+      duration: 0.35,
+      ease: "power2.out",
+    },
+  );
+}
+
 function MarkerUnderline({ children }: { children: ReactNode }) {
   return (
     <span
       className="box-decoration-clone px-1 pb-1"
       style={{
         backgroundImage:
-          "linear-gradient(120deg, rgba(192, 23, 99, 0.22) 0%, rgba(244, 114, 182, 0.32) 45%, rgba(253, 224, 71, 0.28) 100%)",
+          "linear-gradient(120deg, rgba(192, 23, 99, 0.22) 0%, rgba(244, 114, 182, 0.32) 45%, rgba(192, 132, 252, 0.28) 100%)",
       }}
     >
       {children}
@@ -53,13 +102,14 @@ function fillRow(el: HTMLElement, goal: Goal, index: number) {
   el.dataset.index = String(index);
 }
 
-function GoalRow({ goal, index, featured }: { goal: Goal; index: number; featured?: boolean }) {
+function GoalRow({ goal, index, highlighted }: { goal: Goal; index: number; highlighted?: boolean }) {
   return (
     <div
-      className={`goal-ticker-row relative flex h-[76px] items-center gap-2.5 border-b border-slate-100/90 px-3 transition-colors duration-500 sm:h-[88px] sm:gap-3.5 sm:px-5 ${
-        featured ? "bg-gradient-to-r from-[#fff5f8] via-white to-[#fdf8ff]" : "bg-white/80"
+      className={`goal-ticker-row relative flex h-[76px] items-center gap-2.5 border-b border-slate-100/90 px-3 sm:h-[88px] sm:gap-3.5 sm:px-5 ${
+        highlighted ? HIGHLIGHT_ROW_CLASSES : "bg-white/80"
       }`}
       data-index={index}
+      data-highlighted={highlighted ? "true" : "false"}
     >
       <span
         data-icon
@@ -142,31 +192,24 @@ export default function GoalsSection() {
         return row?.offsetHeight ?? ROW;
       };
 
-      const highlightTopRow = () => {
-        track.querySelectorAll(".goal-ticker-row").forEach((row, i) => {
-          const el = row as HTMLElement;
-          if (i === 0) {
-            gsap.to(el, {
-              backgroundColor: "rgba(255, 245, 248, 0.95)",
-              duration: 0.22,
-              ease: "power2.out",
-            });
-          } else {
-            gsap.to(el, { backgroundColor: "rgba(255,255,255,0.8)", duration: 0.22 });
-          }
-        });
-      };
-
       const step = () => {
         if (busy) return;
 
+        const previousHighlighted = track.querySelector(
+          '.goal-ticker-row[data-highlighted="true"]',
+        ) as HTMLElement | null;
+
         const node = template.cloneNode(true) as HTMLElement;
         fillRow(node, goals[next % goals.length], next);
+        clearRowHighlight(node);
         next += 1;
 
         gsap.set(node, { opacity: 0.65, scale: 0.985 });
         track.insertBefore(node, track.firstChild);
         busy = true;
+
+        fadeInRowHighlight(node);
+        if (previousHighlighted) fadeOutRowHighlight(previousHighlighted);
 
         gsap.set(track, { y: -getRowHeight() });
         gsap.to(track, {
@@ -179,7 +222,6 @@ export default function GoalsSection() {
               track.lastElementChild?.remove();
             }
             busy = false;
-            highlightTopRow();
           },
         });
 
@@ -202,7 +244,6 @@ export default function GoalsSection() {
 
       const startLoop = () => {
         if (loopId) return;
-        highlightTopRow();
         loopId = window.setInterval(step, INTERVAL_MS);
       };
 
@@ -237,21 +278,10 @@ export default function GoalsSection() {
       className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 sm:py-10"
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-50"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "32px 32px",
-        }}
-      />
-
-      <div
         className="pointer-events-none absolute -left-24 top-16 h-[380px] w-[380px] rounded-full opacity-60 blur-[90px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(244, 114, 182, 0.35) 0%, rgba(251, 146, 60, 0.18) 45%, transparent 75%)",
+            "radial-gradient(circle at center, rgba(244, 114, 182, 0.35) 0%, rgba(192, 23, 99, 0.18) 45%, transparent 75%)",
         }}
       />
 
@@ -259,7 +289,7 @@ export default function GoalsSection() {
         className="pointer-events-none absolute -right-24 bottom-0 h-[380px] w-[380px] rounded-full opacity-60 blur-[90px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(253, 224, 71, 0.32) 0%, rgba(192, 23, 99, 0.16) 45%, transparent 75%)",
+            "radial-gradient(circle at center, rgba(192, 132, 252, 0.32) 0%, rgba(192, 23, 99, 0.16) 45%, transparent 75%)",
         }}
       />
 
@@ -338,7 +368,7 @@ export default function GoalsSection() {
 
               <div ref={trackRef}>
                 {goals.slice(0, VISIBLE).map((goal, index) => (
-                  <GoalRow key={goal.title} goal={goal} index={index} featured={index === 0} />
+                  <GoalRow key={goal.title} goal={goal} index={index} highlighted={index === 0} />
                 ))}
               </div>
             </div>
@@ -355,7 +385,7 @@ export default function GoalsSection() {
               className="pointer-events-none absolute -left-1 -top-3 h-8 w-8 text-[#c01763] sm:-left-2"
               aria-hidden
             />
-            <p className="font-dm text-sm font-medium leading-relaxed text-slate-700 sm:text-base">
+            <p className="font-ep text-xl text-slate-800 sm:text-2xl md:text-3xl">
               &ldquo;Not everyone is saving for a vacation—some of us just need clean shoes for school
               or a break from survival mode.&rdquo;
             </p>

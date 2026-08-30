@@ -11,7 +11,7 @@ function MarkerUnderline({ children }: { children: ReactNode }) {
       className="box-decoration-clone px-1 pb-1"
       style={{
         backgroundImage:
-          "linear-gradient(120deg, rgba(192, 23, 99, 0.22) 0%, rgba(244, 114, 182, 0.32) 45%, rgba(253, 224, 71, 0.28) 100%)",
+          "linear-gradient(120deg, rgba(192, 23, 99, 0.22) 0%, rgba(244, 114, 182, 0.32) 45%, rgba(192, 132, 252, 0.28) 100%)",
       }}
     >
       {children}
@@ -110,7 +110,7 @@ function Choice({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full cursor-pointer rounded-full border px-3 py-2.5 text-center font-dm text-[12px] transition-all duration-200 md:w-auto md:px-4 md:text-left md:text-[13px] ${
+      className={`motion-btn w-full cursor-pointer rounded-full border px-3 py-2.5 text-center font-dm text-[12px] md:w-auto md:px-4 md:text-left md:text-[13px] ${
         selected
           ? "border-[#c01763] bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white"
           : "border-slate-200 bg-white text-slate-700 hover:border-pink-200 hover:bg-[#fff5f8] hover:text-slate-900"
@@ -193,21 +193,10 @@ export default function SurveySection() {
   return (
     <section id="survey" className="relative overflow-hidden bg-[#fdfbf7] py-10 sm:py-14 md:py-16">
       <div
-        className="pointer-events-none absolute inset-0 opacity-50"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "32px 32px",
-        }}
-      />
-
-      <div
         className="pointer-events-none absolute -left-24 top-16 h-[380px] w-[380px] rounded-full opacity-60 blur-[90px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(244, 114, 182, 0.35) 0%, rgba(251, 146, 60, 0.18) 45%, transparent 75%)",
+            "radial-gradient(circle at center, rgba(244, 114, 182, 0.35) 0%, rgba(192, 23, 99, 0.18) 45%, transparent 75%)",
         }}
       />
 
@@ -215,7 +204,7 @@ export default function SurveySection() {
         className="pointer-events-none absolute -right-24 bottom-0 h-[380px] w-[380px] rounded-full opacity-60 blur-[90px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(253, 224, 71, 0.32) 0%, rgba(192, 23, 99, 0.16) 45%, transparent 75%)",
+            "radial-gradient(circle at center, rgba(192, 132, 252, 0.32) 0%, rgba(192, 23, 99, 0.16) 45%, transparent 75%)",
         }}
       />
 
@@ -242,14 +231,14 @@ export default function SurveySection() {
         </div>
 
         <div className="mt-6 flex justify-center sm:mt-8">
-          <div className="flex w-full max-w-xs flex-col gap-3 px-1 md:inline-flex md:max-w-none md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200/80 md:bg-white/90 md:p-1 md:px-0">
+          <div className="inline-flex w-fit flex-row items-center gap-0 rounded-full border border-slate-200/80 bg-white/90 p-1">
             <button
               type="button"
               onClick={() => setTab("user")}
-              className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2.5 font-dm text-sm transition-all duration-200 md:w-auto md:px-5 ${
+              className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm ${
                 tab === "user"
                   ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
-                  : "border border-slate-200/80 bg-white text-slate-500 hover:border-pink-200 hover:text-slate-700 md:border-0 md:bg-transparent"
+                  : "text-slate-500 hover:text-slate-700"
               }`}
             >
               <HiOutlineUser className="h-4 w-4" />
@@ -258,10 +247,10 @@ export default function SurveySection() {
             <button
               type="button"
               onClick={() => setTab("partner")}
-              className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2.5 font-dm text-sm transition-all duration-200 md:w-auto md:px-5 ${
+              className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm ${
                 tab === "partner"
                   ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
-                  : "border border-slate-200/80 bg-white text-slate-500 hover:border-pink-200 hover:text-slate-700 md:border-0 md:bg-transparent"
+                  : "text-slate-500 hover:text-slate-700"
               }`}
             >
               <FaBuilding className="h-4 w-4" />
@@ -491,7 +480,7 @@ export default function SurveySection() {
                 {error ? <p className="mt-2 text-left font-dm text-[12px] text-[#c01763]">{error}</p> : null}
                 <button
                   type="submit"
-                  className="mt-4 w-full cursor-pointer rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 font-dm text-sm text-white transition hover:-translate-y-0.5 hover:opacity-95 active:scale-[0.98]"
+                  className="motion-btn mt-4 w-full cursor-pointer rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 font-dm text-sm text-white hover:opacity-95"
                 >
                   Submit Feedback
                 </button>

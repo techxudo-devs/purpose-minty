@@ -98,8 +98,8 @@ const featureCards = [
     rotation: "-rotate-[6deg]",
     translateY: "translate-y-6 sm:translate-y-8",
     zIndex: "z-10",
-    gradientFrom: "#facc15", // Yellow
-    gradientTo: "#38bdf8", // Cyan
+    gradientFrom: "#f472b6",
+    gradientTo: "#c084fc",
     arcPath: "M -10 130 Q 80 180 180 80",
     trackPath: "M -10 160 Q 80 210 180 110",
   },
@@ -111,8 +111,8 @@ const featureCards = [
     rotation: "-rotate-[3deg]",
     translateY: "translate-y-2 sm:translate-y-3",
     zIndex: "z-20",
-    gradientFrom: "#38bdf8", // Cyan
-    gradientTo: "#84cc16", // Lime
+    gradientFrom: "#c084fc",
+    gradientTo: "#f472b6",
     arcPath: "M -20 80 Q 70 0 180 40",
     trackPath: "M -20 120 Q 70 40 180 80",
   },
@@ -124,8 +124,8 @@ const featureCards = [
     rotation: "rotate-0",
     translateY: "-translate-y-2 sm:-translate-y-3",
     zIndex: "z-30", // Center top card
-    gradientFrom: "#84cc16", // Lime
-    gradientTo: "#c084fc", // Purple
+    gradientFrom: "#f472b6",
+    gradientTo: "#a855f7",
     arcPath: "M -20 40 Q 90 120 180 160",
     trackPath: "M -20 0 Q 90 80 180 120",
   },
@@ -138,7 +138,7 @@ const featureCards = [
     translateY: "translate-y-2 sm:translate-y-3",
     zIndex: "z-20",
     gradientFrom: "#c084fc", // Purple
-    gradientTo: "#facc15", // Yellow
+    gradientTo: "#f472b6",
     arcPath: "M -20 160 Q 70 20 180 60",
     trackPath: "M -20 120 Q 70 -20 180 20",
   },
@@ -150,8 +150,8 @@ const featureCards = [
     rotation: "rotate-[6deg]",
     translateY: "translate-y-6 sm:translate-y-8",
     zIndex: "z-10",
-    gradientFrom: "#facc15", // Yellow
-    gradientTo: "#ef4444", // Red
+    gradientFrom: "#c01763",
+    gradientTo: "#8d0543",
     arcPath: "M -20 60 Q 80 160 180 120",
     trackPath: "M -20 20 Q 80 120 180 80",
   },
@@ -160,20 +160,8 @@ const featureCards = [
 const Features: React.FC = () => {
   return (
     <section className="relative w-full py-10 sm:py-10 bg-[#fbfcfd] overflow-hidden flex flex-col items-center justify-center" id="features">
-      {/* Subtle Background Grid Pattern */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-60"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px)
-          `,
-          backgroundSize: "32px 32px",
-        }}
-      />
-
       {/* Ambient Background Glow Under Center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-cyan-100/30 via-purple-100/40 to-amber-100/30 rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-pink-100/30 via-purple-100/40 to-pink-100/30 rounded-full pointer-events-none -z-10" />
 
       {/* Top Heading & Short Paragraph */}
       <div className="text-center max-w-4xl mx-auto px-4 mb-10 sm:mb-14 relative z-10">
