@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import PhonePreview from "./PhonePreview";
+import { links } from "./site";
 
 const Hero: React.FC = () => {
-  const [email, setEmail] = useState("");
-
   // Avatars for the rating badge
   const avatars = [
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100",
@@ -15,18 +15,13 @@ const Hero: React.FC = () => {
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Waitlist email submitted:", email);
-  };
-
   return (
     /* ADDED flex-col HERE TO FORCE VERTICAL STACKING (TOP TO BOTTOM) */
-    <section className="relative flex w-full flex-col items-center justify-start overflow-hidden bg-[#fdfbf7] pb-12 pt-24 text-slate-950 sm:pb-16 sm:pt-28">
+    <section className="relative flex w-full flex-col items-center justify-start overflow-hidden bg-[#fdfbf7] pt-24 text-slate-950 sm:pt-30">
       
       {/* ================= 1. CENTER PINK/ORANGE RADIAL GLOW ================= */}
       <div
-        className="pointer-events-none absolute left-1/2 top-[45%] z-0 h-[420px] w-[min(100vw,700px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full opacity-80 blur-[75px] sm:h-[600px] sm:w-[950px] md:h-[750px]"
+        className="pointer-events-none absolute left-1/2 top-[40%] z-0 h-[420px] w-[min(100vw,700px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full opacity-80 blur-[75px] sm:h-[600px] sm:w-[950px] md:h-[750px]"
         style={{
           background:
             "radial-gradient(circle at center, rgba(244, 114, 182, 0.7) 0%, rgba(192, 23, 99, 0.45) 35%, rgba(168, 85, 247, 0.25) 65%, transparent 85%)",
@@ -85,30 +80,29 @@ const Hero: React.FC = () => {
           PurposeMint helps you save a little at a time, safely — and turns those savings into a way forward: a car, a home, childcare, a better job. Not a payday loan.
         </p>
 
-        {/* Waitlist Form */}
-        <form
+        <div
           id="waitlist"
-          onSubmit={handleSubmit}
-          className="flex flex-col sm:flex-row items-center gap-3.5 w-full max-w-lg mx-auto font-dm mb-4"
+          className="mb-4 flex w-full max-w-lg flex-col items-center gap-3.5 font-dm sm:flex-row sm:justify-center"
         >
-          {/* Email Input Field */}
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email"
-            required
-            className="w-full sm:flex-1 px-6 py-3.5 rounded-full bg-white border border-pink-300 focus:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-200 text-slate-800 placeholder-[#7c3aed]/60 text-base transition-all duration-200"
-          />
+          <a
+            href={links.demo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="motion-btn inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-8 py-3.5 text-base font-medium text-white shadow-[0_8px_24px_-8px_rgba(192,23,99,0.45)] hover:opacity-95 sm:w-auto"
+          >
+            Start the Demo
+            <ArrowRight className="h-4 w-4" />
+          </a>
 
-          {/* Magenta Gradient Waitlist Button */}
-          <button
-            type="submit"
-            className="motion-btn w-full cursor-pointer whitespace-nowrap rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-8 py-3.5 text-base font-medium text-white shadow-pink-600/30 hover:opacity-95 sm:w-auto"
+          <a
+            href={links.waitlist}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="motion-btn inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-pink-300 bg-white px-8 py-3.5 text-base font-medium text-[#c01763] shadow-sm hover:border-pink-400 hover:bg-[#fff5f8] sm:w-auto"
           >
             Join the Waitlist
-          </button>
-        </form>
+          </a>
+        </div>
 
       </div>
 

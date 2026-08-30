@@ -27,12 +27,12 @@ const demoOptions = [
 ];
 
 const featureOptions = [
-  { id: "purposemap", label: "PurposeMap™ (goal tracking)" },
-  { id: "habit-builder", label: "Habit Builder" },
-  { id: "pause-plan", label: "Pause My Plan feature" },
-  { id: "community-challenges", label: "Community Challenges" },
-  { id: "mood-tracking", label: "Mood & Reflection tracking" },
-  { id: "fdic-savings", label: "FDIC-insured savings" },
+  { id: "purposemap", label: "PurposeMap™ (goal tracking)", emoji: "🗺️" },
+  { id: "habit-builder", label: "Habit Builder", emoji: "🔁" },
+  { id: "pause-plan", label: "Pause My Plan feature", emoji: "⏸️" },
+  { id: "community-challenges", label: "Community Challenges", emoji: "🏆" },
+  { id: "mood-tracking", label: "Mood & Reflection tracking", emoji: "💭" },
+  { id: "fdic-savings", label: "FDIC-insured savings", emoji: "🛡️" },
 ];
 
 const cultureOptions = [
@@ -43,11 +43,11 @@ const cultureOptions = [
 ];
 
 const motivationOptions = [
-  { id: "gentle-nudges", label: "Gentle, encouraging nudges" },
-  { id: "direct-reminders", label: "Direct, no-nonsense reminders" },
-  { id: "celebration-focused", label: "Celebration of small wins" },
-  { id: "community-accountability", label: "Community accountability" },
-  { id: "visual-progress", label: "Visual progress tracking" },
+  { id: "gentle-nudges", label: "Gentle, encouraging nudges", emoji: "💬" },
+  { id: "direct-reminders", label: "Direct, no-nonsense reminders", emoji: "📣" },
+  { id: "celebration-focused", label: "Celebration of small wins", emoji: "🎉" },
+  { id: "community-accountability", label: "Community accountability", emoji: "🤝" },
+  { id: "visual-progress", label: "Visual progress tracking", emoji: "📈" },
 ];
 
 const likelihoodOptions = [
@@ -58,32 +58,32 @@ const likelihoodOptions = [
 ];
 
 const partnerTypes = [
-  { id: "credit-union", label: "Credit Union" },
-  { id: "cdfi", label: "CDFI" },
-  { id: "nonprofit", label: "Nonprofit Organization" },
-  { id: "employer", label: "Employer/HR Benefits" },
-  { id: "faith-based", label: "Faith-Based Organization" },
-  { id: "government", label: "Government Agency" },
-  { id: "other", label: "Other" },
+  { id: "credit-union", label: "Credit Union", emoji: "🏦" },
+  { id: "cdfi", label: "CDFI", emoji: "💚" },
+  { id: "nonprofit", label: "Nonprofit Organization", emoji: "💜" },
+  { id: "employer", label: "Employer/HR Benefits", emoji: "🏢" },
+  { id: "faith-based", label: "Faith-Based Organization", emoji: "🙏" },
+  { id: "government", label: "Government Agency", emoji: "🏛️" },
+  { id: "other", label: "Other", emoji: "✏️" },
 ];
 
 const communities = [
-  { id: "low-income", label: "Low-income households" },
-  { id: "subsidized-housing", label: "Subsidized housing residents" },
-  { id: "single-parents", label: "Single parents" },
-  { id: "unbanked", label: "Unbanked/underbanked" },
-  { id: "bipoc", label: "BIPOC communities" },
-  { id: "youth", label: "Youth & young adults" },
-  { id: "general", label: "General population" },
+  { id: "low-income", label: "Low-income households", emoji: "🏠" },
+  { id: "subsidized-housing", label: "Subsidized housing residents", emoji: "🏘️" },
+  { id: "single-parents", label: "Single parents", emoji: "👨‍👧" },
+  { id: "unbanked", label: "Unbanked/underbanked", emoji: "💳" },
+  { id: "bipoc", label: "BIPOC communities", emoji: "🌍" },
+  { id: "youth", label: "Youth & young adults", emoji: "🎓" },
+  { id: "general", label: "General population", emoji: "👥" },
 ];
 
 const partnerInterests = [
-  { id: "savings-challenges", label: "Hosting savings challenges" },
-  { id: "financial-literacy", label: "Financial literacy integration" },
-  { id: "employee-benefits", label: "Employee financial wellness" },
-  { id: "community-programs", label: "Community program integration" },
-  { id: "lending-pipeline", label: "Building a healthier lending pipeline" },
-  { id: "grant-funded", label: "Grant-funded initiatives" },
+  { id: "savings-challenges", label: "Hosting savings challenges", emoji: "🏆" },
+  { id: "financial-literacy", label: "Financial literacy integration", emoji: "📚" },
+  { id: "employee-benefits", label: "Employee financial wellness", emoji: "💼" },
+  { id: "community-programs", label: "Community program integration", emoji: "🌱" },
+  { id: "lending-pipeline", label: "Building a healthier lending pipeline", emoji: "🔗" },
+  { id: "grant-funded", label: "Grant-funded initiatives", emoji: "💰" },
 ];
 
 const cardClass =
@@ -100,10 +100,12 @@ const choiceGridClass = "grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-3";
 function Choice({
   selected,
   onClick,
+  emoji,
   children,
 }: {
   selected: boolean;
   onClick: () => void;
+  emoji?: string;
   children: ReactNode;
 }) {
   return (
@@ -116,9 +118,37 @@ function Choice({
           : "border-slate-200 bg-white text-slate-700 hover:border-pink-200 hover:bg-[#fff5f8] hover:text-slate-900"
       }`}
     >
+      {emoji ? <span className="mr-1.5">{emoji}</span> : null}
       {children}
     </button>
   );
+}
+
+function FieldLabel({
+  emoji,
+  children,
+  as = "p",
+}: {
+  emoji: string;
+  children: ReactNode;
+  as?: "p" | "label";
+}) {
+  const className =
+    "mb-3 flex items-start gap-2 font-dm text-[14px] text-slate-700";
+  const content = (
+    <>
+      <span className="mt-0.5 shrink-0 text-base leading-none" aria-hidden>
+        {emoji}
+      </span>
+      <span>{children}</span>
+    </>
+  );
+
+  if (as === "label") {
+    return <label className={className}>{content}</label>;
+  }
+
+  return <p className={className}>{content}</p>;
 }
 
 function toggle(list: string[], id: string) {
@@ -279,33 +309,39 @@ export default function SurveySection() {
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
                     Demo &amp; UX Experience
                   </h3>
-                  <p className="mb-3 font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="📱">
                     How would you describe your experience with the PurposeMint demo?
-                  </p>
+                  </FieldLabel>
                   <div className={`mb-8 ${choiceGroupClass}`}>
                     {demoOptions.map((item) => (
-                      <Choice key={item.id} selected={demo === item.id} onClick={() => setDemo(item.id)}>
-                        {item.emoji} {item.label}
+                      <Choice
+                        key={item.id}
+                        selected={demo === item.id}
+                        onClick={() => setDemo(item.id)}
+                        emoji={item.emoji}
+                      >
+                        {item.label}
                       </Choice>
                     ))}
                   </div>
-                  <p className="mb-3 font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="⭐">
                     Which features resonated with you? (Select all that apply)
-                  </p>
+                  </FieldLabel>
                   <div className={`mb-8 ${choiceGridClass}`}>
                     {featureOptions.map((item) => (
                       <Choice
                         key={item.id}
                         selected={featuresPicked.includes(item.id)}
                         onClick={() => setFeaturesPicked((value) => toggle(value, item.id))}
+                        emoji={item.emoji}
                       >
                         {item.label}
                       </Choice>
                     ))}
                   </div>
-                  <label className="mb-3 block font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="💡" as="label">
                     What&apos;s one feature you wish you saw in the demo?
-                  </label>
+                  </FieldLabel>
                   <input
                     value={missing}
                     onChange={(event) => setMissing(event.target.value)}
@@ -320,33 +356,39 @@ export default function SurveySection() {
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
                     Cultural Relevance &amp; Motivation
                   </h3>
-                  <p className="mb-3 font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="🪞">
                     How well did the language and examples in PurposeMint reflect your real-life experiences?
-                  </p>
+                  </FieldLabel>
                   <div className={`mb-8 ${choiceGroupClass}`}>
                     {cultureOptions.map((item) => (
-                      <Choice key={item.id} selected={culture === item.id} onClick={() => setCulture(item.id)}>
-                        {item.emoji} {item.label}
+                      <Choice
+                        key={item.id}
+                        selected={culture === item.id}
+                        onClick={() => setCulture(item.id)}
+                        emoji={item.emoji}
+                      >
+                        {item.label}
                       </Choice>
                     ))}
                   </div>
-                  <p className="mb-3 font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="🎯">
                     What type of motivation keeps you on track financially? (Select all that apply)
-                  </p>
+                  </FieldLabel>
                   <div className={`mb-8 ${choiceGridClass}`}>
                     {motivationOptions.map((item) => (
                       <Choice
                         key={item.id}
                         selected={motivation.includes(item.id)}
                         onClick={() => setMotivation((value) => toggle(value, item.id))}
+                        emoji={item.emoji}
                       >
                         {item.label}
                       </Choice>
                     ))}
                   </div>
-                  <label className="mb-3 block font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="✨" as="label">
                     Any suggestions to make PurposeMint feel more &ldquo;you&rdquo;?
-                  </label>
+                  </FieldLabel>
                   <textarea
                     value={suggestion}
                     onChange={(event) => setSuggestion(event.target.value)}
@@ -362,13 +404,18 @@ export default function SurveySection() {
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
                     Overall Impression
                   </h3>
-                  <p className="mb-3 font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="🚀">
                     Based on what you&apos;ve seen, how likely are you to use PurposeMint when it launches?
-                  </p>
+                  </FieldLabel>
                   <div className={choiceGroupClass}>
                     {likelihoodOptions.map((item) => (
-                      <Choice key={item.id} selected={likelihood === item.id} onClick={() => setLikelihood(item.id)}>
-                        {item.emoji} {item.label}
+                      <Choice
+                        key={item.id}
+                        selected={likelihood === item.id}
+                        onClick={() => setLikelihood(item.id)}
+                        emoji={item.emoji}
+                      >
+                        {item.label}
                       </Choice>
                     ))}
                   </div>
@@ -381,7 +428,9 @@ export default function SurveySection() {
                     <FaBuilding className="h-5 w-5 text-[#c01763]" />
                     About Your Organization
                   </h3>
-                  <label className="mb-3 block font-dm text-[14px] text-slate-700">Organization Name</label>
+                  <FieldLabel emoji="🏢" as="label">
+                    Organization Name
+                  </FieldLabel>
                   <input
                     value={org}
                     onChange={(event) => setOrg(event.target.value)}
@@ -389,23 +438,29 @@ export default function SurveySection() {
                     maxLength={200}
                     className={`${field} mb-8`}
                   />
-                  <p className="mb-3 font-dm text-[14px] text-slate-700">What type of organization are you?</p>
+                  <FieldLabel emoji="🏷️">What type of organization are you?</FieldLabel>
                   <div className={`mb-8 ${choiceGridClass}`}>
                     {partnerTypes.map((item) => (
-                      <Choice key={item.id} selected={partnerType === item.id} onClick={() => setPartnerType(item.id)}>
+                      <Choice
+                        key={item.id}
+                        selected={partnerType === item.id}
+                        onClick={() => setPartnerType(item.id)}
+                        emoji={item.emoji}
+                      >
                         {item.label}
                       </Choice>
                     ))}
                   </div>
-                  <p className="mb-3 font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="👥">
                     Which communities do you primarily serve? (Select all that apply)
-                  </p>
+                  </FieldLabel>
                   <div className={choiceGridClass}>
                     {communities.map((item) => (
                       <Choice
                         key={item.id}
                         selected={served.includes(item.id)}
                         onClick={() => setServed((value) => toggle(value, item.id))}
+                        emoji={item.emoji}
                       >
                         {item.label}
                       </Choice>
@@ -418,23 +473,24 @@ export default function SurveySection() {
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
                     Partnership Vision
                   </h3>
-                  <p className="mb-3 font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="🤝">
                     What partnership opportunities interest you most? (Select all that apply)
-                  </p>
+                  </FieldLabel>
                   <div className={`mb-8 ${choiceGridClass}`}>
                     {partnerInterests.map((item) => (
                       <Choice
                         key={item.id}
                         selected={interests.includes(item.id)}
                         onClick={() => setInterests((value) => toggle(value, item.id))}
+                        emoji={item.emoji}
                       >
                         {item.label}
                       </Choice>
                     ))}
                   </div>
-                  <label className="mb-3 block font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="🔭" as="label">
                     What would a successful partnership with PurposeMint look like for your organization?
-                  </label>
+                  </FieldLabel>
                   <textarea
                     value={vision}
                     onChange={(event) => setVision(event.target.value)}
@@ -443,9 +499,9 @@ export default function SurveySection() {
                     rows={3}
                     className={`${field} mb-8 resize-none`}
                   />
-                  <label className="mb-3 block font-dm text-[14px] text-slate-700">
+                  <FieldLabel emoji="🧗" as="label">
                     What challenges do you face in helping your community build financial stability?
-                  </label>
+                  </FieldLabel>
                   <textarea
                     value={challenges}
                     onChange={(event) => setChallenges(event.target.value)}
@@ -468,6 +524,9 @@ export default function SurveySection() {
                   : "Enter your email and we'll reach out to discuss partnership opportunities"}
               </p>
               <div className="mx-auto mt-6 max-w-md">
+                <FieldLabel emoji="✉️" as="label">
+                  Email address
+                </FieldLabel>
                 <input
                   type="email"
                   required

@@ -2,6 +2,128 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import {
+  Heart,
+  LifeBuoy,
+  PauseCircle,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
+
+const floatingPills: {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: LucideIcon;
+  accent: string;
+  borderGradient: string;
+  position: string;
+  floatDelay: string;
+  floatDuration: string;
+}[] = [
+  {
+    id: "fdic",
+    title: "FDIC-insured",
+    subtitle: "Bank-level protection",
+    icon: ShieldCheck,
+    accent: "from-[#c084fc]/90 via-[#7c3aed]/90 to-[#52005c]/90",
+    borderGradient:
+      "linear-gradient(135deg, rgba(192,132,252,0.65), rgba(255,255,255,0.35), rgba(82,0,92,0.55))",
+    position: "left-2 md:left-30 top-15 -rotate-[8deg]",
+    floatDelay: "0s",
+    floatDuration: "5s",
+  },
+  {
+    id: "no-judgment",
+    title: "No judgment",
+    subtitle: "Start where you are",
+    icon: Heart,
+    accent: "from-[#f472b6]/90 via-[#c01763]/90 to-[#8d0543]/90",
+    borderGradient:
+      "linear-gradient(135deg, rgba(244,114,182,0.65), rgba(255,255,255,0.35), rgba(192,23,99,0.55))",
+    position: "left-2 md:left-45 top-[58%]",
+    floatDelay: "1.1s",
+    floatDuration: "4.6s",
+  },
+  {
+    id: "secure-support",
+    title: "Real, secure support",
+    subtitle: "Humans who get it",
+    icon: LifeBuoy,
+    accent: "from-violet-400/90 via-purple-500/90 to-[#7c3aed]/90",
+    borderGradient:
+      "linear-gradient(135deg, rgba(167,139,250,0.65), rgba(255,255,255,0.35), rgba(124,58,237,0.55))",
+    position: "right-2 md:right-38 top-32",
+    floatDelay: "2s",
+    floatDuration: "4.8s",
+  },
+  {
+    id: "paused",
+    title: "Paused, not failed",
+    subtitle: "Life happens — resume anytime",
+    icon: PauseCircle,
+    accent: "from-fuchsia-400/90 via-[#c01763]/90 to-violet-600/90",
+    borderGradient:
+      "linear-gradient(135deg, rgba(232,121,249,0.65), rgba(255,255,255,0.35), rgba(124,58,237,0.55))",
+    position: "right-2 md:right-24 top-[52%]",
+    floatDelay: "0.5s",
+    floatDuration: "5.2s",
+  },
+];
+
+function FloatingPill({
+  title,
+  subtitle,
+  icon: Icon,
+  accent,
+  borderGradient,
+  position,
+  floatDelay,
+  floatDuration,
+}: (typeof floatingPills)[number]) {
+  return (
+    <div className={`absolute z-20 hidden sm:block ${position}`}>
+      <div
+        className="pill-float relative rounded-2xl p-[1px]"
+        style={{
+          background: borderGradient,
+          animationDelay: floatDelay,
+          animationDuration: floatDuration,
+        }}
+      >
+        <div className="relative overflow-hidden rounded-2xl bg-white/40 px-4 py-3.5 backdrop-blur-2xl backdrop-saturate-[1.75]">
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-white/55 to-transparent"
+            aria-hidden
+          />
+          <div className="pill-shimmer pointer-events-none absolute inset-0" aria-hidden />
+
+          <div className="relative flex items-center gap-3.5">
+            <div
+              className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] bg-gradient-to-br ${accent} backdrop-blur-sm`}
+            >
+              <div
+                className="absolute inset-0 rounded-[16px] bg-gradient-to-tr from-white/45 via-white/10 to-transparent"
+                aria-hidden
+              />
+              <Icon className="relative h-[22px] w-[22px] text-white" strokeWidth={2.35} aria-hidden />
+              <span className="pill-spark absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-white" aria-hidden />
+            </div>
+
+            <div className="min-w-0">
+              <p className="whitespace-nowrap font-play text-[14px] leading-tight text-[#2E0F3D]">
+                {title}
+              </p>
+              <p className="mt-0.5 whitespace-nowrap font-dm text-[11px] font-medium text-slate-600/90">
+                {subtitle}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const goals = [
   { name: "Fresh Haircut Fund", now: "$38 of $50", pct: "76%", icon: "💇" },
@@ -28,7 +150,7 @@ function GoalsScreen() {
         <p className="mt-1 text-[32px] font-play leading-none text-[#2E0F3D]">
           $247.50
         </p>
-        <p className="mt-1.5 text-[13px] font-medium font-dm text-[#2ec4b6]">
+        <p className="mt-1.5 text-[13px] font-medium font-dm text-[#c01763]">
           +$12 this week!
         </p>
 
@@ -199,6 +321,15 @@ const screens = [
   { id: "pause", node: <PausedScreen /> },
 ];
 
+/** Measured inset of the black screen area inside hand.png (1080×1599) */
+const HAND_SCREEN = {
+  top: "1.8%",
+  left: "12.8%",
+  width: "45%",
+  height: "64.8%",
+  radius: "9%",
+} as const;
+
 function StatusIcons() {
   return (
     <svg width="50" height="12" viewBox="0 0 56 12" fill="none" aria-hidden>
@@ -230,9 +361,32 @@ function StatusIcons() {
         stroke="#2E0F3D"
         strokeWidth="1.15"
       />
-      <rect x="43.3" y="2.5" width="8.2" height="5.4" rx="1" fill="#2ec4b6" />
+      <rect x="43.3" y="2.5" width="8.2" height="5.4" rx="1" fill="#c01763" />
       <rect x="55.2" y="3.6" width="1.4" height="3.2" rx="0.5" fill="#2E0F3D" />
     </svg>
+  );
+}
+
+function PhoneScreenAnimation({ index }: { index: number }) {
+  return (
+    <div className="flex h-full w-full flex-col overflow-hidden bg-white">
+      <div className="relative z-10 flex h-[0%] min-h-[24px] shrink-0 items-end justify-between bg-white px-[7%] pb-0.5">
+        <span className="text-[9px] font-dm tracking-tight text-[#2E0F3D] sm:text-[10px]">
+          9:41
+        </span>
+        <StatusIcons />
+      </div>
+
+      <div className="relative min-h-0 flex-1 overflow-hidden bg-white">
+        <div key={screens[index].id} className="h-full animate-screen-fade">
+          {screens[index].node}
+        </div>
+      </div>
+
+      <div className="flex shrink-0 justify-center bg-white pb-1 pt-0.5">
+        <span className="h-1 w-[30%] rounded-full bg-[#2E0F3D]/20" />
+      </div>
+    </div>
   );
 }
 
@@ -253,7 +407,7 @@ export default function PhonePreview() {
   return (
     <div
       id="hero-preview"
-      className="relative mx-auto mt-4 w-full max-w-[850px] px-3 pb-4 pt-6 sm:mt-6 sm:px-4 sm:pb-6 sm:pt-10"
+      className="relative mx-auto mt-4 w-full max-w-[980px] px-3 pb-2 pt-6 sm:mt-6 sm:px-4 sm:pb-4 sm:pt-10"
     >
       {/* Background Soft Pink Radial Glow */}
       <div
@@ -262,118 +416,61 @@ export default function PhonePreview() {
         aria-hidden
       />
 
-      {/* ================= FLOATING TRANSACTION/NOTIFICATION PILLS (NIMBUS STYLE) ================= */}
+      {/* ================= FLOATING FEATURE PILLS ================= */}
+      {floatingPills.map((pill) => (
+        <FloatingPill key={pill.id} {...pill} />
+      ))}
 
-      {/* 1. Left Floating Pill */}
-      <div className="hidden sm:flex items-center gap-3 absolute left-2 md:left-0 top-1/3 z-20 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl border border-pink-200 shadow-slate-900/10 transition-all hover:scale-103">
-        <Image
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80"
-          alt="Sarah"
-          width={40}
-          height={40}
-          className="w-10 h-10 rounded-full object-cover border border-pink-100"
-        />
-        <div className="text-left">
-          <p className="text-sm font-play text-[#2E0F3D]">Sarah Jenkins</p>
-          <p className="text-xs font-dm text-slate-400">Haircut Goal Fund</p>
-        </div>
-        <span className="ml-2 text-sm font-play text-[#2ec4b6] bg-teal-50 px-2.5 py-1 rounded-full">
-          +$50.00
-        </span>
-      </div>
-
-      <div className="hidden sm:flex items-center gap-3 absolute left-2 md:left-0 top-[60%] z-20 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl border border-pink-200 shadow-slate-900/10 transition-all hover:scale-103">
-        <Image
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80"
-          alt="Sarah"
-          width={40}
-          height={40}
-          className="w-10 h-10 rounded-full object-cover border border-pink-100"
-        />
-        <div className="text-left">
-          <p className="text-sm font-play text-[#2E0F3D]">Sarah Jenkins</p>
-          <p className="text-xs font-dm text-slate-400">Haircut Goal Fund</p>
-        </div>
-        <span className="ml-2 text-sm font-play text-[#c01763] bg-teal-50 px-2.5 py-1 rounded-full">
-          +$50.00
-        </span>
-      </div>
-
-      {/* 2. Top-Right Floating Pill */}
-      <div className="hidden sm:flex items-center gap-3 absolute right-2 md:-right-6 top-20 z-20 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl border border-pink-200 shadow-slate-900/10 transition-all hover:scale-103">
-        <Image
-          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80"
-          alt="Daniel"
-          width={40}
-          height={40}
-          className="w-10 h-10 rounded-full object-cover border border-pink-100"
-        />
-        <div className="text-left">
-          <p className="text-sm font-play text-[#2E0F3D]">Daniel Parker</p>
-          <p className="text-xs font-dm text-slate-400">Auto Pathway Fund</p>
-        </div>
-        <span className="ml-2 text-sm text-[#c01763] bg-pink-50 px-2.5 py-1 rounded-full font-play">
-          +$1,250.00
-        </span>
-      </div>
-
-      {/* 3. Bottom-Right Floating Pill */}
-      <div className="hidden sm:flex items-center gap-3 absolute right-4 md:-right-0 bottom-14 z-20 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl border border-pink-200 shadow-slate-900/10 transition-all hover:scale-103">
-        <Image
-          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80"
-          alt="Maya"
-          width={40}
-          height={40}
-          className="w-10 h-10 rounded-full object-cover border border-pink-100"
-        />
-        <div className="text-left">
-          <p className="text-sm font-play text-[#2E0F3D]">Maya Lin</p>
-          <p className="text-xs font-dm text-slate-400">Emergency Fund</p>
-        </div>
-        <span className="ml-2 text-sm font-play text-[#2ec4b6] bg-teal-50 px-2.5 py-1 rounded-full">
-          +$300.00
-        </span>
-      </div>
-
-      {/* ================= BIGGER PHONE DEVICE ================= */}
-      <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] md:max-w-[350px]">
-        {/* Hardware side buttons */}
-        <span className="absolute -left-[3px] top-[100px] h-[32px] w-[3px] rounded-l-sm bg-[#4a2444]" />
-        <span className="absolute -left-[3px] top-[140px] h-[55px] w-[3px] rounded-l-sm bg-[#4a2444]" />
-        <span className="absolute -right-[3px] top-[130px] h-[65px] w-[3px] rounded-r-sm bg-[#4a2444]" />
-
-        {/* Outer Titanium Frame */}
+      {/* ================= HAND + SCREEN PREVIEW ================= */}
+      <div className="relative mx-auto w-full max-w-[min(96vw,640px)] sm:max-w-[min(92vw,700px)]">
         <div
-          className="relative overflow-hidden rounded-[44px] border border-white/20 bg-[#2E0F3D] p-[8px] sm:rounded-[50px] sm:p-[10px]"
-
+          className="relative mx-auto w-full translate-x-[4%] sm:translate-x-[14%]"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, #000 0%, #000 70%, rgba(0,0,0,0.5) 85%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to bottom, #000 0%, #000 70%, rgba(0,0,0,0.5) 85%, transparent 100%)",
+          }}
         >
-          {/* Screen Inner Frame */}
-          <div className="relative overflow-hidden rounded-[34px] bg-white sm:rounded-[40px]">
-            {/* Status Bar */}
-            <div className="relative z-10 flex h-[36px] items-end justify-between bg-white px-5 pb-1 sm:h-[40px] sm:px-6">
-              <span className="text-[12px] font-dm tracking-tight text-[#2E0F3D]">
-                9:41
-              </span>
-              <span className="absolute left-1/2 top-[10px] h-[20px] w-[90px] -translate-x-1/2 rounded-full bg-[#0b050c]" />
-              <StatusIcons />
-            </div>
+          <Image
+            src="/images/hand.png"
+            alt="Hand holding PurposeMint app"
+            width={1080}
+            height={1599}
+            className="relative z-[1] block h-auto w-full"
+            priority
+          />
 
-            {/* Dynamic Screen Area with Smooth Keyframe Fade */}
-            <div className="relative h-[400px] overflow-hidden bg-white sm:h-[480px]">
-              <div
-                key={screens[index].id}
-                className="h-full animate-screen-fade"
-              >
-                {screens[index].node}
-              </div>
-            </div>
-
-            {/* Home Bar */}
-            <div className="flex justify-center bg-white pb-2.5 pt-1">
-              <span className="h-[4.5px] w-[115px] rounded-full bg-[#2E0F3D]/20" />
+          {/* Animated app screens — aligned to the empty screen in hand.png */}
+          <div
+            className="absolute z-[2] overflow-hidden bg-white"
+            style={{
+              top: HAND_SCREEN.top,
+              left: HAND_SCREEN.left,
+              width: HAND_SCREEN.width,
+              height: HAND_SCREEN.height,
+              borderRadius: HAND_SCREEN.radius,
+              boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.6)",
+            }}
+          >
+            <div
+              className="h-full w-full origin-center"
+              style={{ transform: "scale(0.978)" }}
+            >
+              <PhoneScreenAnimation index={index} />
             </div>
           </div>
         </div>
+
+        {/* Large bottom fade — hides wrist cut-off into hero background */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-[10%] sm:h-[10%] translate-x-[14%]"
+          style={{
+            background:
+              "linear-gradient(to top, #fdfbf7 0%, #fdfbf7 50%, rgba(253,251,247,0.92) 72%, rgba(253,251,247,0.55) 88%, transparent 100%)",
+          }}
+        />
       </div>
 
       {/* Keyframe Transition Style */}
@@ -390,6 +487,62 @@ export default function PhonePreview() {
         }
         .animate-screen-fade {
           animation: screenFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes pillFloat {
+          0%,
+          100% {
+            transform: translateY(0) rotate(0deg);
+          }
+          35% {
+            transform: translateY(-7px) rotate(0.6deg);
+          }
+          70% {
+            transform: translateY(-13px) rotate(-0.4deg);
+          }
+        }
+        @keyframes pillShimmer {
+          0% {
+            transform: translateX(-130%) skewX(-14deg);
+          }
+          100% {
+            transform: translateX(230%) skewX(-14deg);
+          }
+        }
+        @keyframes pillSpark {
+          0%,
+          100% {
+            opacity: 0.55;
+            transform: scale(0.85);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.15);
+          }
+        }
+        .pill-float {
+          animation-name: pillFloat;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+          will-change: transform;
+        }
+        .pill-shimmer {
+          background: linear-gradient(
+            105deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.75) 50%,
+            transparent 70%
+          );
+          animation: pillShimmer 5.5s ease-in-out infinite;
+        }
+        .pill-spark {
+          animation: pillSpark 2.8s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .pill-float,
+          .pill-shimmer,
+          .pill-spark {
+            animation: none;
+          }
         }
       `}</style>
     </div>
