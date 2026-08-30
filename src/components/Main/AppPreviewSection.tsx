@@ -15,8 +15,8 @@ const phones = [
     featured: true,
   },
   {
-    src: "/images/preview-rhythm.jpg",
-    alt: "PurposeMint home showing PurposeMap values, a 4-day streak, and how you're feeling today",
+    src: "/images/image-copy.png",
+    alt: "PurposeMint Reflections screen with today's prompt and a recent journal entry connected to Security",
     featured: false,
   },
 ];
