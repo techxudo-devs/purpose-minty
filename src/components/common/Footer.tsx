@@ -176,16 +176,17 @@ export default function Footer() {
               </button>
             </form>
 
-            <div className="mt-3 flex items-center gap-2">
-              <a
-                href={links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="PurposeMint on LinkedIn"
-                className="motion-btn-lift flex h-8 w-8 items-center justify-center rounded-full border border-pink-200 bg-[#fff5f8] text-[#c01763] hover:bg-[#c01763] hover:text-white"
-              >
-                <FaLinkedinIn className="h-3.5 w-3.5" />
-              </a>
+            <div className="mt-4">
+              <p className="font-dm text-[11px] font-medium uppercase tracking-wdier text-slate-500">
+                Supported By
+              </p>
+              <Image
+                src="/images/support.png"
+                alt="Fintech Sandbox"
+                width={160}
+                height={48}
+                className="mt-2 h-12 w-auto object-contain object-left"
+              />
             </div>
           </div>
         </div>

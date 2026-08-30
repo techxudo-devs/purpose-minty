@@ -329,7 +329,7 @@ export default function FaqSection() {
                 tabIndex={isForm ? undefined : 0}
                 onClick={isForm ? undefined : () => activateCard(i)}
                 onKeyDown={isForm ? undefined : (event) => onCardKey(event, i)}
-                className={`relative flex shrink-0 flex-col justify-between overflow-hidden rounded-3xl p-4 pb-12 text-left transition-all duration-300 sm:p-5 sm:pb-14 ${
+                className={`relative flex shrink-0 flex-col justify-between overflow-hidden rounded-3xl p-5 pb-12 text-left transition-all duration-300 sm:p-6 sm:pb-14 ${
                   isForm ? "" : "cursor-pointer"
                 } ${
                   isActive
@@ -350,7 +350,7 @@ export default function FaqSection() {
                     <span className="inline-flex w-fit rounded-full border border-[#c01763] bg-[#c01763]/10 px-3.5 py-1 text-xs font-dm tracking-wider text-[#c01763]">
                       FAQ
                     </span>
-                    <h3 className="mt-3.5 font-play text-[19px] leading-snug text-white sm:text-[20px]">
+                    <h3 className="mt-3.5 font-play text-[16px] sm:text-[19px] leading-snug text-white md:text-[20px]">
                       {item.q}
                     </h3>
                     <p className="mt-3 text-sm font-dm font-normal leading-[1.6] text-pink-100/90">

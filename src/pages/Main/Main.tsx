@@ -1,5 +1,6 @@
 import Footer from '@/components/common/Footer'
 import AppPreviewSection from '@/components/Main/AppPreviewSection'
+import CtaSection from '@/components/Main/CtaSection'
 import FeatureHubSection from '@/components/Main/FeatureHubSection'
 import DarkSection from '@/components/Main/DarkSection'
 import FaqSection from '@/components/Main/FaqSection'
@@ -22,6 +23,7 @@ const Main = () => {
         <DarkSection />
         <FaqSection />
         <SurveySection />
+        <CtaSection />
         <Footer />
     </div>
   )
