@@ -1,10 +1,10 @@
 import Footer from '@/components/common/Footer'
 import AppPreviewSection from '@/components/Main/AppPreviewSection'
 import CtaSection from '@/components/Main/CtaSection'
-import FeatureHubSection from '@/components/Main/FeatureHubSection'
+import BetterOptionsSection from '@/components/Main/BetterOptionsSection'
 import DarkSection from '@/components/Main/DarkSection'
 import FaqSection from '@/components/Main/FaqSection'
-import Features from '@/components/Main/Features'
+import FeatureHubSection from '@/components/Main/FeatureHubSection'
 import GoalsSection from '@/components/Main/GoalsSection'
 import Hero from '@/components/Main/Hero'
 import LevelsSection from '@/components/Main/LevelsSection'
@@ -15,8 +15,8 @@ const Main = () => {
   return (
     <div className="overflow-x-hidden">
         <Hero />
-        {/* <Features /> */}
         <LevelsSection />
+        <BetterOptionsSection />
         <GoalsSection />
         <FeatureHubSection />
         <AppPreviewSection />

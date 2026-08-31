@@ -117,9 +117,13 @@ function LevelPill({
             >
               <Icon className="h-[18px] w-[18px] text-white" strokeWidth={2.25} aria-hidden />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <h3 className="font-play text-[14px] leading-tight text-white sm:text-[15px]">
                 {title}
+                <span className="font-dm text-[11px] font-medium normal-case tracking-normal text-pink-100/85 sm:text-[12px]">
+                  {" "}
+                  - Unlocked at Level 5
+                </span>
               </h3>
               <p className="mt-1 font-dm text-[12px] leading-snug text-pink-100/85 sm:text-[13px]">
                 {description}
@@ -242,7 +246,7 @@ export default function LevelsSection() {
   }, [updateLines]);
 
   return (
-    <section id="levels" className="relative w-full overflow-hidden bg-[#FBF8FB] py-10 sm:py-10 md:py-10">
+    <section id="levels" className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 sm:py-10 md:py-10">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-play text-2xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">

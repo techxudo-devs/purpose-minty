@@ -465,7 +465,7 @@ export default function PhonePreview() {
         {/* Large bottom fade — hides wrist cut-off into hero background */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-[10%] sm:h-[10%] translate-x-[14%]"
+          className="pointer-events-none absolute inset-x-0 -bottom-10 lg:bottom-0 z-[4] h-[10%] sm:h-[10%] translate-x-[14%]"
           style={{
             background:
               "linear-gradient(to top, #fdfbf7 0%, #fdfbf7 50%, rgba(253,251,247,0.92) 72%, rgba(253,251,247,0.55) 88%, transparent 100%)",
