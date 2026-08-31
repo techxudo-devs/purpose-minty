@@ -165,9 +165,7 @@ function usePhoneScreenScale(
   return scale;
 }
 
-function GoalsScreen({ compact = false }: { compact?: boolean }) {
-  const visibleGoals = compact ? goals.slice(0, 2) : goals;
-
+function GoalsScreen() {
   return (
     <div className="flex h-full flex-col bg-white">
       <div className="flex items-center justify-between border-b border-pink-100 bg-white px-5 py-3">
@@ -187,7 +185,7 @@ function GoalsScreen({ compact = false }: { compact?: boolean }) {
           Your Goals
         </p>
         <div className="mt-2 space-y-2.5">
-          {visibleGoals.map((goal) => (
+          {goals.map((goal) => (
             <div
               key={goal.name}
               className="flex items-center justify-between rounded-2xl border border-pink-100 bg-[#fff5f8] px-3.5 py-2.5"
@@ -384,15 +382,9 @@ function StatusIcons() {
   );
 }
 
-function PhoneScreenAnimation({
-  index,
-  compact,
-}: {
-  index: number;
-  compact: boolean;
-}) {
+function PhoneScreenAnimation({ index }: { index: number }) {
   const screenNodes = [
-    <GoalsScreen key="goals" compact={compact} />,
+    <GoalsScreen key="goals" />,
     <AddGoalScreen key="add" />,
     <MapScreen key="map" />,
     <PathwaysScreen key="path" />,
@@ -423,7 +415,6 @@ export default function PhonePreview() {
   const [index, setIndex] = useState(0);
   const screenRef = useRef<HTMLDivElement>(null);
   const scale = usePhoneScreenScale(screenRef);
-  const compact = scale < 0.85;
 
   useEffect(() => {
     const reduce = window.matchMedia(
@@ -498,7 +489,7 @@ export default function PhonePreview() {
                   : { width: "100%", height: "100%" }
               }
             >
-              <PhoneScreenAnimation index={index} compact={compact} />
+              <PhoneScreenAnimation index={index} />
             </div>
           </div>
         </div>
