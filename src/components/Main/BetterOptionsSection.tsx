@@ -41,93 +41,59 @@ const items: {
   },
 ];
 
-function OptionPill({
+function OptionPoint({
   title,
   description,
   icon: Icon,
   accent,
 }: (typeof items)[number]) {
   return (
-    <div
-      className="relative w-full rounded-[20px] p-[1px]"
-      style={{
-        background:
-          "linear-gradient(135deg, rgba(244,114,182,0.45), rgba(255,255,255,0.2), rgba(168,85,247,0.4))",
-      }}
-    >
-      <div className="relative overflow-hidden rounded-[19px] border border-white/70 bg-white/45 px-4 py-3.5 backdrop-blur-2xl backdrop-saturate-[1.75] sm:px-5 sm:py-4">
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-white/50 to-transparent"
+    <div className="mx-auto flex w-full max-w-[280px] flex-col items-center px-2 text-center sm:max-w-none sm:px-3">
+      <div
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] bg-gradient-to-br sm:h-11 sm:w-11 ${accent}`}
+      >
+        <Icon
+          className="h-[18px] w-[18px] text-white sm:h-[20px] sm:w-[20px]"
+          strokeWidth={2.25}
           aria-hidden
         />
-        <div className="option-pill-shimmer pointer-events-none absolute inset-0" aria-hidden />
-
-        <div className="relative flex items-start gap-3">
-          <div
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] border border-white/60 bg-gradient-to-br ${accent}`}
-          >
-            <Icon className="h-[18px] w-[18px] text-white" strokeWidth={2.25} aria-hidden />
-          </div>
-          <div className="min-w-0">
-            <h3 className="font-play text-[14px] leading-tight text-[#2E0F3D] sm:text-[15px]">
-              {title}
-            </h3>
-            <p className="mt-1 font-dm text-[12px] leading-snug text-slate-600 sm:text-[13px]">
-              {description}
-            </p>
-          </div>
-        </div>
       </div>
+      <h3 className="mt-3 font-play text-[14px] leading-snug text-[#2E0F3D] sm:mt-4 sm:text-[15px] md:text-[16px]">
+        {title}
+      </h3>
+      <p className="mt-1.5 font-dm text-[12px] leading-relaxed text-slate-600 sm:mt-2 sm:text-[13px] md:text-[14px]">
+        {description}
+      </p>
     </div>
   );
 }
 
 export default function BetterOptionsSection() {
   return (
-    <section id="features" className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 sm:py-12 md:py-14">
+    <section
+      id="features"
+      className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 sm:py-12 md:py-14 lg:py-16"
+    >
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-play text-2xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
-            You&apos;re not bad with money.<br/>{" "}
+          <h2 className="font-play text-[1.65rem] leading-[1.15] tracking-tight text-slate-950 sm:text-3xl md:text-4xl lg:text-5xl">
+            You&apos;re not bad with money.{" "}
             <span className="text-[#c01763]">You&apos;ve just been handed bad options.</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-xl font-dm text-sm leading-relaxed text-slate-600 sm:text-base">
+          <p className="mx-auto mt-3 max-w-xl font-dm text-[13px] leading-relaxed text-slate-600 sm:mt-4 sm:text-sm md:text-base">
             When something breaks, the fastest option nearby is usually a payday loan.
             PurposeMint gives you a better one — before you need it.
           </p>
         </div>
 
-        <div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5">
-          {items.map((item) => (
-            <OptionPill key={item.title} {...item} />
-          ))}
+        <div className="mx-auto mt-8 max-w-6xl sm:mt-10 md:mt-12">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-6 xl:gap-8">
+            {items.map((item) => (
+              <OptionPoint key={item.title} {...item} />
+            ))}
+          </div>
         </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes optionPillShimmer {
-          0% {
-            transform: translateX(-130%) skewX(-14deg);
-          }
-          100% {
-            transform: translateX(230%) skewX(-14deg);
-          }
-        }
-        .option-pill-shimmer {
-          background: linear-gradient(
-            105deg,
-            transparent 30%,
-            rgba(255, 255, 255, 0.75) 50%,
-            transparent 70%
-          );
-          animation: optionPillShimmer 5.5s ease-in-out infinite;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .option-pill-shimmer {
-            animation: none;
-          }
-        }
-      `}</style>
     </section>
   );
 }
