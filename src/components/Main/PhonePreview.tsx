@@ -107,7 +107,6 @@ function FloatingPill({
                 aria-hidden
               />
               <Icon className="relative h-[22px] w-[22px] text-white" strokeWidth={2.35} aria-hidden />
-              <span className="pill-spark absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-white" aria-hidden />
             </div>
 
             <div className="min-w-0">
@@ -540,17 +539,6 @@ export default function PhonePreview() {
             transform: translateX(230%) skewX(-14deg);
           }
         }
-        @keyframes pillSpark {
-          0%,
-          100% {
-            opacity: 0.55;
-            transform: scale(0.85);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.15);
-          }
-        }
         .pill-float {
           animation-name: pillFloat;
           animation-timing-function: ease-in-out;
@@ -566,13 +554,9 @@ export default function PhonePreview() {
           );
           animation: pillShimmer 5.5s ease-in-out infinite;
         }
-        .pill-spark {
-          animation: pillSpark 2.8s ease-in-out infinite;
-        }
         @media (prefers-reduced-motion: reduce) {
           .pill-float,
-          .pill-shimmer,
-          .pill-spark {
+          .pill-shimmer {
             animation: none;
           }
         }
