@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import Image from "next/image";
 import {
   Heart,
@@ -132,46 +132,73 @@ const goals = [
   { name: "Emergency Rainy Day", now: "$160 of $200", pct: "80%", icon: "☔" },
 ];
 
-function GoalsScreen() {
+/** Content is authored for ~280px-wide screens; scale down when the mockup is narrower. */
+const PHONE_SCREEN_BASE_WIDTH = 280;
+
+function usePhoneScreenScale(
+  ref: RefObject<HTMLDivElement | null>,
+  baseWidth = PHONE_SCREEN_BASE_WIDTH,
+) {
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const update = () => {
+      const width = el.getBoundingClientRect().width;
+      if (width <= 0) return;
+      setScale(Math.min(1, width / baseWidth));
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    window.addEventListener("resize", update);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, [baseWidth]);
+
+  return scale;
+}
+
+function GoalsScreen({ compact = false }: { compact?: boolean }) {
+  const visibleGoals = compact ? goals.slice(0, 2) : goals;
+
   return (
-    <div className="flex flex-col h-full bg-white">
-      <div className="flex items-center justify-between border-b border-pink-100 px-5 py-3 bg-white">
-        <span className="text-[14px] font-play text-[#2E0F3D]">
-          Hey Queen 👑
-        </span>
+    <div className="flex h-full flex-col bg-white">
+      <div className="flex items-center justify-between border-b border-pink-100 bg-white px-5 py-3">
+        <span className="text-[14px] font-play text-[#2E0F3D]">Hey Queen 👑</span>
         <span className="rounded-full bg-pink-100 px-3 py-1 text-[10px] font-medium font-dm text-[#c01763]">
           You&apos;re doing amazing
         </span>
       </div>
-      <div className="px-5 py-4 flex-1 bg-white">
+      <div className="flex-1 bg-white px-5 py-4">
         <p className="text-[11px] font-medium font-dm tracking-wider uppercase text-slate-400">
           Total Saved
         </p>
-        <p className="mt-1 text-[32px] font-play leading-none text-[#2E0F3D]">
-          $247.50
-        </p>
-        <p className="mt-1.5 text-[13px] font-medium font-dm text-[#c01763]">
-          +$12 this week!
-        </p>
+        <p className="mt-1 text-[32px] font-play leading-none text-[#2E0F3D]">$247.50</p>
+        <p className="mt-1.5 text-[13px] font-medium font-dm text-[#c01763]">+$12 this week!</p>
 
         <p className="mt-5 text-[11px] font-medium font-dm tracking-wide uppercase text-slate-400">
           Your Goals
         </p>
         <div className="mt-2 space-y-2.5">
-          {goals.map((goal) => (
+          {visibleGoals.map((goal) => (
             <div
               key={goal.name}
               className="flex items-center justify-between rounded-2xl border border-pink-100 bg-[#fff5f8] px-3.5 py-2.5"
             >
-              <div>
-                <p className="text-[13px] font-play text-[#2E0F3D]">
+              <div className="min-w-0 pr-2">
+                <p className="truncate text-[13px] font-play text-[#2E0F3D]">
                   {goal.icon} {goal.name}
                 </p>
-                <p className="text-[11px] font-medium font-dm text-slate-500">
-                  {goal.now}
-                </p>
+                <p className="text-[11px] font-medium font-dm text-slate-500">{goal.now}</p>
               </div>
-              <span className="text-[13px] font-medium font-dm text-[#c01763]">
+              <span className="shrink-0 text-[13px] font-medium font-dm text-[#c01763]">
                 {goal.pct}
               </span>
             </div>
@@ -184,23 +211,19 @@ function GoalsScreen() {
 
 function AddGoalScreen() {
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex h-full flex-col bg-white">
       <div className="border-b border-pink-100 px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">
-          Add a New Goal
-        </span>
+        <span className="text-[14px] font-play text-[#2E0F3D]">Add a New Goal</span>
       </div>
-      <div className="px-5 py-5 flex-1">
-        <p className="text-[13px] font-semibold text-slate-600">
-          What are you saving for?
-        </p>
-        <p className="text-[11px] font-medium font-dm tracking-wide uppercase text-slate-400 mt-4">
+      <div className="flex-1 px-5 py-5">
+        <p className="text-[13px] font-semibold text-slate-600">What are you saving for?</p>
+        <p className="mt-4 text-[11px] font-medium font-dm tracking-wide uppercase text-slate-400">
           Goal name
         </p>
         <div className="mt-1.5 rounded-2xl border border-pink-100 bg-[#fff5f8] px-4 py-3 text-[13px] font-medium font-dm text-[#2E0F3D]">
           Coffee Joy Runs ☕
         </div>
-        <p className="text-[11px] font-medium font-dm tracking-wide uppercase text-slate-400 mt-4">
+        <p className="mt-4 text-[11px] font-medium font-dm tracking-wide uppercase text-slate-400">
           Target amount
         </p>
         <div className="mt-1.5 rounded-2xl border border-pink-100 bg-[#fff5f8] px-4 py-3 text-[13px] font-medium font-dm text-[#2E0F3D]">
@@ -221,13 +244,11 @@ function MapScreen() {
     { label: "Motivation", hint: "Stay inspired", pct: "85%" },
   ];
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex h-full flex-col bg-white">
       <div className="border-b border-pink-100 px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">
-          Your PurposeMap™
-        </span>
+        <span className="text-[14px] font-play text-[#2E0F3D]">Your PurposeMap™</span>
       </div>
-      <div className="px-5 py-5 flex-1">
+      <div className="flex-1 px-5 py-5">
         <p className="text-[13px] font-medium font-dm text-slate-600">
           Align savings with your values
         </p>
@@ -256,13 +277,11 @@ function MapScreen() {
 function PathwaysScreen() {
   const items = ["Auto", "Housing", "Childcare", "Workforce"];
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex h-full flex-col bg-white">
       <div className="border-b border-pink-100 px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">
-          PurposeMint Pathways
-        </span>
+        <span className="text-[14px] font-play text-[#2E0F3D]">PurposeMint Pathways</span>
       </div>
-      <div className="px-5 py-5 flex-1">
+      <div className="flex-1 px-5 py-5">
         <p className="text-[11px] font-medium tracking-wide font-play uppercase text-[#c01763]">
           Stability → Mobility
         </p>
@@ -279,7 +298,7 @@ function PathwaysScreen() {
             </div>
           ))}
         </div>
-        <p className="mt-5 text-[11px] font-medium font-dm text-slate-400 text-center">
+        <p className="mt-5 text-center text-[11px] font-medium font-dm text-slate-400">
           Build readiness. Connect with partners.
         </p>
       </div>
@@ -289,23 +308,21 @@ function PathwaysScreen() {
 
 function PausedScreen() {
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex h-full flex-col bg-white">
       <div className="border-b border-pink-100 px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">
-          Goal Paused
-        </span>
+        <span className="text-[14px] font-play text-[#2E0F3D]">Goal Paused</span>
       </div>
-      <div className="px-5 py-6 text-center flex-1 flex flex-col justify-center items-center">
+      <div className="flex flex-1 flex-col items-center justify-center px-5 py-5 text-center">
         <p className="text-[32px]" aria-hidden>
           💜
         </p>
-        <p className="mt-3 text-[17px] font-play text-[#2E0F3D]">
+        <p className="mt-3 text-[17px] font-play leading-snug text-[#2E0F3D]">
           No worries! Life happens.
         </p>
-        <p className="mt-1.5 text-[12px] font-medium font-dm text-slate-500">
+        <p className="mt-1.5 text-[12px] font-medium font-dm leading-snug text-slate-500">
           Resume when you&apos;re ready. Need more time? That&apos;s okay.
         </p>
-        <div className="mt-6 w-full h-11 rounded-full text-center text-[13px] font-medium leading-[44px] text-white bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] shadow-md font-dm shadow-pink-600/20">
+        <div className="mt-5 w-full h-11 rounded-full text-center text-[13px] font-medium leading-[44px] text-white bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] shadow-md font-dm shadow-pink-600/20">
           Resume Saving
         </div>
       </div>
@@ -314,11 +331,11 @@ function PausedScreen() {
 }
 
 const screens = [
-  { id: "goals", node: <GoalsScreen /> },
-  { id: "add", node: <AddGoalScreen /> },
-  { id: "map", node: <MapScreen /> },
-  { id: "path", node: <PathwaysScreen /> },
-  { id: "pause", node: <PausedScreen /> },
+  { id: "goals" },
+  { id: "add" },
+  { id: "map" },
+  { id: "path" },
+  { id: "pause" },
 ];
 
 /** Measured inset of the black screen area inside hand.png (1080×1599) */
@@ -332,7 +349,7 @@ const HAND_SCREEN = {
 
 function StatusIcons() {
   return (
-    <svg width="50" height="12" viewBox="0 0 56 12" fill="none" aria-hidden>
+    <svg className="h-[10px] w-auto" viewBox="0 0 56 12" fill="none" aria-hidden>
       <rect x="0" y="4" width="3" height="4" rx="0.6" fill="#2E0F3D" />
       <rect x="5" y="2.5" width="3" height="5.5" rx="0.6" fill="#2E0F3D" />
       <rect x="10" y="1" width="3" height="7" rx="0.6" fill="#2E0F3D" />
@@ -367,19 +384,31 @@ function StatusIcons() {
   );
 }
 
-function PhoneScreenAnimation({ index }: { index: number }) {
+function PhoneScreenAnimation({
+  index,
+  compact,
+}: {
+  index: number;
+  compact: boolean;
+}) {
+  const screenNodes = [
+    <GoalsScreen key="goals" compact={compact} />,
+    <AddGoalScreen key="add" />,
+    <MapScreen key="map" />,
+    <PathwaysScreen key="path" />,
+    <PausedScreen key="pause" />,
+  ];
+
   return (
     <div className="flex h-full w-full flex-col overflow-hidden bg-white">
-      <div className="relative z-10 flex h-[0%] min-h-[24px] shrink-0 items-end justify-between bg-white px-[7%] pb-0.5">
-        <span className="text-[9px] font-dm tracking-tight text-[#2E0F3D] sm:text-[10px]">
-          9:41
-        </span>
+      <div className="relative z-10 flex min-h-[18px] shrink-0 items-end justify-between bg-white px-[7%] pb-0.5">
+        <span className="text-[9px] font-dm tracking-tight text-[#2E0F3D]">9:41</span>
         <StatusIcons />
       </div>
 
       <div className="relative min-h-0 flex-1 overflow-hidden bg-white">
         <div key={screens[index].id} className="h-full animate-screen-fade">
-          {screens[index].node}
+          {screenNodes[index]}
         </div>
       </div>
 
@@ -392,6 +421,9 @@ function PhoneScreenAnimation({ index }: { index: number }) {
 
 export default function PhonePreview() {
   const [index, setIndex] = useState(0);
+  const screenRef = useRef<HTMLDivElement>(null);
+  const scale = usePhoneScreenScale(screenRef);
+  const compact = scale < 0.85;
 
   useEffect(() => {
     const reduce = window.matchMedia(
@@ -443,6 +475,7 @@ export default function PhonePreview() {
 
           {/* Animated app screens — aligned to the empty screen in hand.png */}
           <div
+            ref={screenRef}
             className="absolute z-[2] overflow-hidden bg-white"
             style={{
               top: HAND_SCREEN.top,
@@ -454,10 +487,18 @@ export default function PhonePreview() {
             }}
           >
             <div
-              className="h-full w-full origin-center"
-              style={{ transform: "scale(0.978)" }}
+              className="origin-top-left"
+              style={
+                scale < 1
+                  ? {
+                      width: `${100 / scale}%`,
+                      height: `${100 / scale}%`,
+                      transform: `scale(${scale})`,
+                    }
+                  : { width: "100%", height: "100%" }
+              }
             >
-              <PhoneScreenAnimation index={index} />
+              <PhoneScreenAnimation index={index} compact={compact} />
             </div>
           </div>
         </div>

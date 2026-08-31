@@ -82,7 +82,16 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <header
+    <>
+      <div
+        className={`fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-sm transition-opacity duration-300 ease-out lg:hidden ${
+          mobileMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden={!mobileMenuOpen}
+      />
+
+      <header
       className={`fixed left-0 right-0 top-0 z-50 font-dm transition-all duration-300 ${
         isScrolled || mobileMenuOpen
           ? "bg-white/70 py-3 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.12)] backdrop-blur-xl"
@@ -202,6 +211,7 @@ const Navbar: React.FC = () => {
         </div>
       </div>
     </header>
+    </>
   );
 };
 
