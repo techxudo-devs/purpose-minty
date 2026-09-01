@@ -72,7 +72,7 @@ export default function BetterOptionsSection() {
   return (
     <section
       id="features"
-      className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 sm:py-12 md:py-14 lg:py-16"
+      className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 sm:py-10 md:py-10 lg:py-10"
     >
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">

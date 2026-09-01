@@ -1,359 +1,308 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  Coins,
-  KeyRound,
-  Lock,
-  Route,
-  ShieldCheck,
-  TrendingUp,
-  type LucideIcon,
-} from "lucide-react";
+import { useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-const leftPills = [
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+const journeySteps = [
   {
-    title: "Stash your first dollar",
+    level: 1,
+    title: "Your first dollar",
     description: "Round-ups and payday rules start where you are.",
-    icon: Coins,
-    accent: "from-[#f472b6]/90 via-[#c01763]/90 to-[#8d0543]/90",
   },
   {
+    level: 2,
     title: "Hit your next $500",
     description: "Build a cushion a flat tire can't wipe out.",
-    icon: ShieldCheck,
-    accent: "from-[#c084fc]/90 via-[#7c3aed]/90 to-[#52005c]/90",
   },
   {
+    level: 3,
     title: "Keep a streak alive",
     description: "Lock tools and nudges that keep you consistent.",
-    icon: Lock,
-    accent: "from-[#f472b6]/90 via-[#c01763]/90 to-[#7c3aed]/90",
   },
-];
-
-const rightPills = [
   {
+    level: 4,
     title: "Grow the buffer",
     description: "Rent gaps, childcare, job transitions — covered.",
-    icon: TrendingUp,
-    accent: "from-[#c084fc]/90 via-[#9333ea]/90 to-[#52005c]/90",
   },
   {
+    level: 5,
     title: "Unlock a Pathway",
     description: "Your savings become proof you're ready.",
-    icon: KeyRound,
-    accent: "from-[#c01763]/90 via-[#b00f57]/90 to-[#52005c]/90",
   },
   {
+    isStar: true,
     title: "Pathways",
     description: "Car, housing, childcare — fair partners ahead.",
-    icon: Route,
-    accent: "from-[#f472b6]/90 via-[#c01763]/90 to-[#7c3aed]/90",
-    featured: true,
+    note: "Unlocked at Level 5",
   },
 ];
 
-type PillData = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  accent: string;
-  featured?: boolean;
-};
+type StepStatus = "future" | "active" | "completed";
 
-type ConnectorLine = {
-  d: string;
-};
-
-function connectorPath(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  index: number,
-  total: number,
-) {
-  const dx = x2 - x1;
-  const t = total <= 1 ? 0.5 : index / (total - 1);
-  const bow = (0.5 - t) * 42;
-
-  const c1x = x1 + dx * 0.38;
-  const c2x = x1 + dx * 0.72;
-  const c1y = y1 + bow * 0.25;
-  const c2y = y2 + bow * 0.9;
-
-  return `M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`;
+function getStepStatus(stepIndex: number, activeStep: number): StepStatus {
+  if (stepIndex < activeStep) return "completed";
+  if (stepIndex === activeStep) return "active";
+  return "future";
 }
 
-function LevelPill({
-  title,
-  description,
-  icon: Icon,
-  accent,
-  featured = false,
-}: PillData) {
-  if (featured) {
+function StepMarker({
+  level,
+  isStar,
+  status,
+}: {
+  level?: number;
+  isStar?: boolean;
+  status: StepStatus;
+}) {
+  const isReached = status === "active" || status === "completed";
+
+  if (isStar) {
     return (
-      <div
-        className="relative w-full rounded-[20px] p-[1.5px]"
+      <span
+        data-marker
+        className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-medium text-white transition-[transform,box-shadow] duration-500 sm:h-10 sm:w-10 ${
+          status === "active"
+            ? "scale-110 ring-4 ring-[#c01763]/30"
+            : isReached
+              ? "ring-4 ring-[#c01763]/15"
+              : "scale-90 opacity-45 ring-4 ring-transparent"
+        }`}
         style={{
-          background:
-            "linear-gradient(135deg, rgba(244,114,182,0.95), rgba(192,23,99,0.75), rgba(124,58,237,0.9))",
+          background: isReached
+            ? "linear-gradient(135deg, #c01763 0%, #7c3aed 100%)"
+            : "linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)",
         }}
       >
-        <div
-          className="relative overflow-hidden rounded-[19px] px-4 py-3.5 sm:px-5 sm:py-4"
-          style={{
-            background:
-              "linear-gradient(145deg, #c01763 0%, #b00f57 38%, #7c3aed 72%, #52005c 100%)",
-          }}
-        >
-          <div className="pill-shimmer-level pointer-events-none absolute inset-0 opacity-30" aria-hidden />
-
-          <div className="relative flex items-start gap-3">
-            <div
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] border border-white/30 bg-gradient-to-br ${accent}`}
-            >
-              <Icon className="h-[18px] w-[18px] text-white" strokeWidth={2.25} aria-hidden />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h3 className="font-play text-[14px] leading-tight text-white sm:text-[15px]">
-                {title}
-                <span className="font-dm text-[11px] font-medium normal-case tracking-normal text-pink-100/85 sm:text-[12px]">
-                  {" "}
-                  - Unlocked at Level 5
-                </span>
-              </h3>
-              <p className="mt-1 font-dm text-[12px] leading-snug text-pink-100/85 sm:text-[13px]">
-                {description}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+        ★
+      </span>
     );
   }
 
   return (
-    <div
-      className="relative w-full rounded-[20px] p-[1px]"
-      style={{
-        background:
-          "linear-gradient(135deg, rgba(244,114,182,0.45), rgba(255,255,255,0.2), rgba(168,85,247,0.4))",
-      }}
+    <span
+      data-marker
+      className={`flex h-9 w-9 items-center justify-center rounded-full border-2 font-dm text-xs font-bold transition-all duration-300 sm:h-10 sm:w-10 sm:text-sm ${
+        status === "active"
+          ? "scale-110 border-[#c01763] bg-[#c01763] text-white"
+          : status === "completed"
+            ? "scale-100 border-[#c01763]/40 bg-[#fff5f8] text-[#c01763]"
+            : "scale-90 border-[#c01763]/15 bg-white text-slate-400 opacity-60"
+      }`}
     >
-      <div className="relative overflow-hidden rounded-[19px] border border-white/70 bg-white/45 px-4 py-3.5 backdrop-blur-2xl backdrop-saturate-[1.75] sm:px-5 sm:py-4">
+      {level}
+    </span>
+  );
+}
+
+function LevelJourneyPanel() {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const lineProgressRef = useRef<HTMLDivElement>(null);
+  const [activeStep, setActiveStep] = useState(0);
+
+  useGSAP(
+    () => {
+      const panel = panelRef.current;
+      const lineProgress = lineProgressRef.current;
+      if (!panel || !lineProgress) return;
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reducedMotion) {
+        gsap.set(lineProgress, { scaleY: 1 });
+        setActiveStep(journeySteps.length - 1);
+        return;
+      }
+
+      gsap.set(lineProgress, { scaleY: 0, transformOrigin: "top center" });
+      setActiveStep(0);
+
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.7, paused: true });
+
+      journeySteps.forEach((_, index) => {
+        tl.to(
+          lineProgress,
+          {
+            scaleY: index / (journeySteps.length - 1),
+            duration: 0.45,
+            ease: "power2.inOut",
+          },
+          index === 0 ? 0 : "+=0.25",
+        );
+
+        tl.call(() => setActiveStep(index), [], "<0.08");
+      });
+
+      tl.to({}, { duration: 0.6 });
+      tl.to(lineProgress, { scaleY: 0, duration: 0.3, ease: "power2.inOut" });
+      tl.call(() => setActiveStep(0), [], "-=0.08");
+
+      const scrollTrigger = ScrollTrigger.create({
+        trigger: panel,
+        start: "top 85%",
+        end: "bottom 15%",
+        onEnter: () => tl.play(),
+        onLeave: () => tl.pause(),
+        onEnterBack: () => tl.play(),
+        onLeaveBack: () => tl.pause(),
+      });
+
+      return () => scrollTrigger.kill();
+    },
+    { scope: panelRef },
+  );
+
+  return (
+    <div
+      ref={panelRef}
+      className="relative mx-auto w-full max-w-xl overflow-hidden rounded-2xl border border-pink-200/80 bg-white/90 backdrop-blur-sm sm:max-w-2xl lg:max-w-3xl"
+    >
+      <div
+        className="relative px-5 py-4 text-center sm:px-6 sm:py-5"
+        style={{
+          background:
+            "linear-gradient(135deg, #52005c 0%, #2E0F3D 28%, #c01763 58%, #b00f57 78%, #8d0543 100%)",
+        }}
+      >
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-white/50 to-transparent"
+          className="pointer-events-none absolute inset-0 opacity-25"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(135deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 14px)",
+          }}
           aria-hidden
         />
-        <div className="pill-shimmer-level pointer-events-none absolute inset-0" aria-hidden />
-
-        <div className="relative flex items-start gap-3">
-          <div
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] border border-white/60 bg-gradient-to-br ${accent}`}
-          >
-            <Icon className="h-[18px] w-[18px] text-white" strokeWidth={2.25} aria-hidden />
-          </div>
-          <div className="min-w-0">
-            <h3 className="font-play text-[14px] leading-tight text-[#2E0F3D] sm:text-[15px]">
-              {title}
-            </h3>
-            <p className="mt-1 font-dm text-[12px] leading-snug text-slate-600 sm:text-[13px]">
-              {description}
-            </p>
-          </div>
+        <div className="relative">
+          <p className="font-dm text-[11px] font-medium uppercase tracking-[0.08em] text-pink-100/80 sm:text-xs">
+            Your journey
+          </p>
+          <p className="mt-1 font-play text-xl leading-tight text-white sm:text-2xl">
+            Zero to Pathways
+          </p>
         </div>
+      </div>
+
+      <div className="px-5 py-7 sm:px-7 sm:py-9">
+        <ol className="relative">
+          <div
+            className="pointer-events-none absolute bottom-5 left-[17px] top-5 w-px overflow-hidden sm:left-[19px]"
+            aria-hidden
+          >
+            <div className="absolute inset-0 bg-slate-200" />
+            <div
+              ref={lineProgressRef}
+              className="absolute inset-0 bg-gradient-to-b from-[#c01763] via-[#b00f57] to-[#7c3aed]"
+              style={{ transform: "scaleY(0)", transformOrigin: "top center" }}
+            />
+          </div>
+
+          {journeySteps.map((step, index) => {
+            const isStar = "isStar" in step && step.isStar;
+            const status = getStepStatus(index, activeStep);
+            const isActive = status === "active";
+            const isReached = status === "active" || status === "completed";
+            const isLast = index === journeySteps.length - 1;
+
+            return (
+              <li
+                key={step.title}
+                className={`relative flex gap-4 sm:gap-5 ${isLast ? "pb-0" : "pb-7 sm:pb-8"}`}
+              >
+                <div className="relative z-10 shrink-0 pt-0.5">
+                  <StepMarker
+                    level={"level" in step ? step.level : undefined}
+                    isStar={isStar}
+                    status={status}
+                  />
+                </div>
+
+                <div className="min-w-0 flex-1 pt-0.5 text-left">
+                  <h3
+                    className={`font-play text-[15px] leading-snug transition-colors duration-500 sm:text-base md:text-[17px] ${
+                      isActive
+                        ? "text-[#c01763]"
+                        : isReached
+                          ? "text-slate-900"
+                          : "text-slate-500"
+                    }`}
+                  >
+                    {step.title}
+                  </h3>
+                  <p
+                    className={`mt-1.5 font-dm text-[13px] leading-relaxed transition-colors duration-500 sm:mt-2 sm:text-sm md:text-[15px] ${
+                      isActive ? "text-slate-700" : isReached ? "text-slate-600" : "text-slate-400"
+                    }`}
+                  >
+                    {step.description}
+                  </p>
+                  {"note" in step && step.note && (
+                    <p
+                      className={`mt-1.5 font-dm text-[12px] font-medium transition-colors duration-500 sm:text-[13px] ${
+                        isActive ? "text-[#c01763]" : isReached ? "text-[#c01763]/70" : "text-slate-400"
+                      }`}
+                    >
+                      {step.note}
+                    </p>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </div>
   );
 }
 
 export default function LevelsSection() {
-  const layoutRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLDivElement>(null);
-  const leftPillRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const rightPillRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [lines, setLines] = useState<ConnectorLine[]>([]);
-
-  const updateLines = useCallback(() => {
-    const layout = layoutRef.current;
-    const video = videoRef.current;
-
-    if (!layout || !video || window.innerWidth < 1024) {
-      setLines([]);
-      return;
-    }
-
-    const layoutRect = layout.getBoundingClientRect();
-    const videoRect = video.getBoundingClientRect();
-    const nextLines: ConnectorLine[] = [];
-
-    const headY = videoRect.top + videoRect.height * 0.34 - layoutRect.top;
-    const attachLeftX = videoRect.left - layoutRect.left + videoRect.width * 0.46;
-    const attachRightX = videoRect.right - layoutRect.left - videoRect.width * 0.46;
-    const leftCount = leftPillRefs.current.filter(Boolean).length;
-    const rightCount = rightPillRefs.current.filter(Boolean).length;
-
-    leftPillRefs.current.forEach((pill, index) => {
-      if (!pill) return;
-      const pillRect = pill.getBoundingClientRect();
-      const y1 = pillRect.top + pillRect.height / 2 - layoutRect.top;
-      const x1 = pillRect.right - layoutRect.left + 4;
-      const y2 = y1 + (headY - y1) * 0.62;
-
-      nextLines.push({
-        d: connectorPath(x1, y1, attachLeftX, y2, index, leftCount),
-      });
-    });
-
-    rightPillRefs.current.forEach((pill, index) => {
-      if (!pill) return;
-      const pillRect = pill.getBoundingClientRect();
-      const y1 = pillRect.top + pillRect.height / 2 - layoutRect.top;
-      const x1 = pillRect.left - layoutRect.left - 4;
-      const y2 = y1 + (headY - y1) * 0.62;
-
-      nextLines.push({
-        d: connectorPath(x1, y1, attachRightX, y2, index, rightCount),
-      });
-    });
-
-    setLines(nextLines);
-  }, []);
-
-  useEffect(() => {
-    updateLines();
-
-    const layout = layoutRef.current;
-    if (!layout) return;
-
-    const observer = new ResizeObserver(updateLines);
-    observer.observe(layout);
-
-    window.addEventListener("resize", updateLines);
-    window.addEventListener("load", updateLines);
-
-    const timer = window.setTimeout(updateLines, 120);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", updateLines);
-      window.removeEventListener("load", updateLines);
-      window.clearTimeout(timer);
-    };
-  }, [updateLines]);
-
   return (
-    <section id="levels" className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 sm:py-10 md:py-10">
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="levels" className="relative w-full overflow-hidden bg-[#fdfbf7] py-10 sm:py-12 md:py-14">
+      <div
+        className="pointer-events-none absolute -left-24 top-12 h-[320px] w-[320px] rounded-full opacity-50 blur-[90px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(244, 114, 182, 0.3) 0%, rgba(192, 23, 99, 0.14) 45%, transparent 75%)",
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -right-24 bottom-8 h-[320px] w-[320px] rounded-full opacity-50 blur-[90px]"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(192, 132, 252, 0.28) 0%, rgba(192, 23, 99, 0.12) 45%, transparent 75%)",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-play text-2xl tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
-            Five levels. Start at zero.
+          <span
+            className="inline-flex items-center rounded-full px-4 py-1.5 font-dm text-[12px] font-medium text-slate-700 sm:text-[13px]"
+            style={{
+              background:
+                "linear-gradient(#fdfbf7, #fdfbf7) padding-box, linear-gradient(90deg, #c084fc, #f472b6, #fb7185) border-box",
+              border: "1.5px solid transparent",
+            }}
+          >
+            Built for real progress
+          </span>
+
+          <h2 className="mt-4 font-play text-2xl tracking-tight text-slate-950 sm:mt-5 sm:text-4xl md:text-5xl">
+            Five levels.{" "}
+            <span className="text-[#c01763]">Start at zero.</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl font-dm text-sm leading-relaxed text-slate-600 sm:text-base">
             Each level is small enough to finish and worth celebrating.
           </p>
         </div>
 
-        <div ref={layoutRef} className="relative mt-10 lg:mt-14">
-          {lines.length > 0 ? (
-            <svg
-              className="pointer-events-none absolute inset-0 z-0 hidden h-full w-full overflow-visible lg:block"
-              aria-hidden
-            >
-              {lines.map((line, index) => (
-                <path
-                  key={index}
-                  d={line.d}
-                  stroke="rgba(203, 213, 225, 0.95)"
-                  strokeWidth="1.75"
-                  strokeDasharray="4 7"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              ))}
-            </svg>
-          ) : null}
-
-          <div className="relative z-10 grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(200px,300px)_minmax(0,1fr)] lg:gap-4 xl:gap-6">
-            <div className="order-2 flex w-full flex-col gap-4 lg:order-1 lg:items-end lg:gap-5">
-              {leftPills.map((pill, index) => (
-                <div
-                  key={pill.title}
-                  ref={(el) => {
-                    leftPillRefs.current[index] = el;
-                  }}
-                  className="mx-auto w-full max-w-[400px] lg:mx-0"
-                >
-                  <LevelPill {...pill} />
-                </div>
-              ))}
-            </div>
-
-            <div className="order-1 flex justify-center lg:order-2">
-              <div ref={videoRef} className="relative w-full max-w-[280px] sm:max-w-[320px]">
-                <video
-                  src="/girl2.webm"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  onLoadedData={updateLines}
-                  className="relative z-10 h-auto w-full object-cover"
-                  style={{
-                    WebkitMaskImage:
-                      "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
-                    maskImage:
-                      "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
-                  }}
-                  aria-label="PurposeMint member preview"
-                />
-              </div>
-            </div>
-
-            <div className="order-3 flex w-full flex-col gap-4 lg:items-start lg:gap-5">
-              {rightPills.map((pill, index) => (
-                <div
-                  key={pill.title}
-                  ref={(el) => {
-                    rightPillRefs.current[index] = el;
-                  }}
-                  className="mx-auto w-full max-w-[400px] lg:mx-0"
-                >
-                  <LevelPill {...pill} />
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="mt-8 sm:mt-10 lg:mt-12">
+          <LevelJourneyPanel />
         </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes levelPillShimmer {
-          0% {
-            transform: translateX(-130%) skewX(-14deg);
-          }
-          100% {
-            transform: translateX(230%) skewX(-14deg);
-          }
-        }
-        .pill-shimmer-level {
-          background: linear-gradient(
-            105deg,
-            transparent 30%,
-            rgba(255, 255, 255, 0.75) 50%,
-            transparent 70%
-          );
-          animation: levelPillShimmer 5.5s ease-in-out infinite;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .pill-shimmer-level {
-            animation: none;
-          }
-        }
-      `}</style>
     </section>
   );
 }

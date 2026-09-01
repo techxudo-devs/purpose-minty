@@ -503,64 +503,6 @@ export default function PhonePreview() {
           }}
         />
       </div>
-
-      {/* Keyframe Transition Style */}
-      <style jsx global>{`
-        @keyframes screenFade {
-          0% {
-            opacity: 0;
-            transform: translateY(10px) scale(0.98);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-        .animate-screen-fade {
-          animation: screenFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes pillFloat {
-          0%,
-          100% {
-            transform: translateY(0) rotate(0deg);
-          }
-          35% {
-            transform: translateY(-7px) rotate(0.6deg);
-          }
-          70% {
-            transform: translateY(-13px) rotate(-0.4deg);
-          }
-        }
-        @keyframes pillShimmer {
-          0% {
-            transform: translateX(-130%) skewX(-14deg);
-          }
-          100% {
-            transform: translateX(230%) skewX(-14deg);
-          }
-        }
-        .pill-float {
-          animation-name: pillFloat;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-          will-change: transform;
-        }
-        .pill-shimmer {
-          background: linear-gradient(
-            105deg,
-            transparent 30%,
-            rgba(255, 255, 255, 0.75) 50%,
-            transparent 70%
-          );
-          animation: pillShimmer 5.5s ease-in-out infinite;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .pill-float,
-          .pill-shimmer {
-            animation: none;
-          }
-        }
-      `}</style>
     </div>
   );
 }
