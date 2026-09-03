@@ -542,6 +542,12 @@ function MonthlyRecapPreview() {
 function MoneyFeelsPreview() {
   const moods = ["😔", "😐", "🙂", "😄", "⭐"];
   const active = useCycleIndex(moods.length, 2000);
+  const feelings = [
+    "This week: less stress than last",
+    "Relief after the transfer landed",
+    "Calmer about money than before",
+  ];
+  const feeling = feelings[Math.floor(active / 2)];
 
   return (
     <div className="space-y-3 text-left">
@@ -559,9 +565,12 @@ function MoneyFeelsPreview() {
           </span>
         ))}
       </div>
-      <div className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 text-center font-dm text-[11px] font-medium text-slate-600">
-        20-second check-in
-      </div>
+      <p
+        key={feeling}
+        className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 text-center font-dm text-[11px] font-medium text-slate-600 transition-opacity duration-500"
+      >
+        {feeling}
+      </p>
     </div>
   );
 }
@@ -661,29 +670,41 @@ function CushionPreview() {
 }
 
 function VoicePreview() {
-  const moods = ["😔", "😐", "🙂", "😄", "⭐"];
-  const active = useCycleIndex(moods.length, 2000);
+  const messages = [
+    "🗣️ Hey, it's been a good week.",
+    "🎙️ Tap. Talk. Done.",
+    "✅ Logged: save $20 from lunch",
+  ];
+  const active = useCycleIndex(messages.length, 2600);
 
   return (
     <div className="space-y-3 text-left">
-      <div className="flex items-center justify-between gap-1">
-        {moods.map((emoji, i) => (
-          <span
-            key={emoji}
-            className={`flex h-9 w-9 items-center justify-center rounded-xl text-base transition-all duration-500 ${
-              i === active
-                ? "scale-110 bg-[#fff5f8] ring-2 ring-[#c01763]/40"
-                : "bg-slate-50"
-            }`}
-          >
-            {emoji}
-          </span>
-        ))}
+      <div className="flex items-center gap-2.5">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fff5f8] text-base ring-2 ring-[#c01763]/30">
+          🎙️
+        </span>
+        <div className="flex h-9 flex-1 items-center justify-center gap-[3px] rounded-xl border border-pink-100 bg-[#fff5f8] px-3">
+          {[22, 36, 26, 44, 30, 50, 34, 24, 40, 28, 48, 32].map((h, i) => (
+            <span
+              key={i}
+              className={`w-[3px] rounded-full bg-gradient-to-t from-[#c01763] to-[#7c3aed] transition-all duration-500 ${
+                i === active ? "scale-y-110 opacity-100" : "opacity-40"
+              }`}
+              style={{ height: `${h}%` }}
+            />
+          ))}
+        </div>
       </div>
-      <div className="relative overflow-hidden rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 text-center font-dm text-[11px] font-medium text-slate-600">
+      <div className="relative overflow-hidden rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 font-dm text-[11px] font-medium text-slate-600">
         <span className="relative z-10">20-second check-in</span>
         <span className="animate-voice-scan absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#c01763]/10 to-transparent" />
       </div>
+      <p
+        key={active}
+        className="font-dm text-[11px] font-medium text-[#c01763] transition-opacity duration-500"
+      >
+        {messages[active]}
+      </p>
     </div>
   );
 }

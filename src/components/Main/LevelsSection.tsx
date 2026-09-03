@@ -109,48 +109,106 @@ function LevelJourneyPanel() {
       const lineProgress = lineProgressRef.current;
       if (!panel || !lineProgress) return;
 
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const mm = gsap.matchMedia();
+      const stepsCount = journeySteps.length;
 
-      if (reducedMotion) {
-        gsap.set(lineProgress, { scaleY: 1 });
-        setActiveStep(journeySteps.length - 1);
-        return;
-      }
+      // Desktop (>= 768px): Horizontal Animation
+      mm.add("(min-width: 768px)", () => {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      gsap.set(lineProgress, { scaleY: 0, transformOrigin: "top center" });
-      setActiveStep(0);
+        if (reducedMotion) {
+          gsap.set(lineProgress, { scaleX: 1, scaleY: 1 });
+          setActiveStep(stepsCount - 1);
+          return;
+        }
 
-      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.7, paused: true });
+        gsap.set(lineProgress, { scaleX: 0, scaleY: 1, transformOrigin: "left center" });
+        setActiveStep(0);
 
-      journeySteps.forEach((_, index) => {
-        tl.to(
-          lineProgress,
-          {
-            scaleY: index / (journeySteps.length - 1),
-            duration: 0.45,
-            ease: "power2.inOut",
-          },
-          index === 0 ? 0 : "+=0.25",
-        );
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.7, paused: true });
 
-        tl.call(() => setActiveStep(index), [], "<0.08");
+        journeySteps.forEach((_, index) => {
+          tl.to(
+            lineProgress,
+            {
+              scaleX: index / (stepsCount - 1),
+              duration: 0.45,
+              ease: "power2.inOut",
+            },
+            index === 0 ? 0 : "+=0.25",
+          );
+
+          tl.call(() => setActiveStep(index), [], "<0.08");
+        });
+
+        tl.to({}, { duration: 0.6 });
+        tl.to(lineProgress, { scaleX: 0, duration: 0.3, ease: "power2.inOut" });
+        tl.call(() => setActiveStep(0), [], "-=0.08");
+
+        const scrollTrigger = ScrollTrigger.create({
+          trigger: panel,
+          start: "top 85%",
+          end: "bottom 15%",
+          onEnter: () => tl.play(),
+          onLeave: () => tl.pause(),
+          onEnterBack: () => tl.play(),
+          onLeaveBack: () => tl.pause(),
+        });
+
+        return () => {
+          scrollTrigger.kill();
+          tl.kill();
+        };
       });
 
-      tl.to({}, { duration: 0.6 });
-      tl.to(lineProgress, { scaleY: 0, duration: 0.3, ease: "power2.inOut" });
-      tl.call(() => setActiveStep(0), [], "-=0.08");
+      // Mobile (< 768px): Vertical Animation
+      mm.add("(max-width: 767px)", () => {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      const scrollTrigger = ScrollTrigger.create({
-        trigger: panel,
-        start: "top 85%",
-        end: "bottom 15%",
-        onEnter: () => tl.play(),
-        onLeave: () => tl.pause(),
-        onEnterBack: () => tl.play(),
-        onLeaveBack: () => tl.pause(),
+        if (reducedMotion) {
+          gsap.set(lineProgress, { scaleY: 1, scaleX: 1 });
+          setActiveStep(stepsCount - 1);
+          return;
+        }
+
+        gsap.set(lineProgress, { scaleY: 0, scaleX: 1, transformOrigin: "top center" });
+        setActiveStep(0);
+
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.7, paused: true });
+
+        journeySteps.forEach((_, index) => {
+          tl.to(
+            lineProgress,
+            {
+              scaleY: index / (stepsCount - 1),
+              duration: 0.45,
+              ease: "power2.inOut",
+            },
+            index === 0 ? 0 : "+=0.25",
+          );
+
+          tl.call(() => setActiveStep(index), [], "<0.08");
+        });
+
+        tl.to({}, { duration: 0.6 });
+        tl.to(lineProgress, { scaleY: 0, duration: 0.3, ease: "power2.inOut" });
+        tl.call(() => setActiveStep(0), [], "-=0.08");
+
+        const scrollTrigger = ScrollTrigger.create({
+          trigger: panel,
+          start: "top 85%",
+          end: "bottom 15%",
+          onEnter: () => tl.play(),
+          onLeave: () => tl.pause(),
+          onEnterBack: () => tl.play(),
+          onLeaveBack: () => tl.pause(),
+        });
+
+        return () => {
+          scrollTrigger.kill();
+          tl.kill();
+        };
       });
-
-      return () => scrollTrigger.kill();
     },
     { scope: panelRef },
   );
@@ -158,7 +216,7 @@ function LevelJourneyPanel() {
   return (
     <div
       ref={panelRef}
-      className="relative mx-auto w-full max-w-xl overflow-hidden rounded-2xl border border-pink-200/80 bg-white/90 backdrop-blur-sm sm:max-w-2xl lg:max-w-3xl"
+      className="relative mx-auto w-full max-w-xl overflow-hidden rounded-2xl border border-pink-200/80 bg-white/90 backdrop-blur-sm sm:max-w-2xl md:max-w-5xl lg:max-w-6xl"
     >
       <div
         className="relative px-5 py-4 text-center sm:px-6 sm:py-5"
@@ -185,17 +243,17 @@ function LevelJourneyPanel() {
         </div>
       </div>
 
-      <div className="px-5 py-7 sm:px-7 sm:py-9">
-        <ol className="relative">
+      <div className="px-5 py-7 sm:px-7 sm:py-9 md:px-8 md:py-10">
+        <ol className="relative flex flex-col md:grid md:grid-cols-6">
+          {/* Progress Line Track */}
           <div
-            className="pointer-events-none absolute bottom-5 left-[17px] top-5 w-px overflow-hidden sm:left-[19px]"
+            className="pointer-events-none absolute bottom-5 left-[17px] top-5 w-px overflow-hidden sm:left-[19px] md:bottom-auto md:left-[8.33%] md:right-[8.33%] md:top-[20px] md:h-px md:w-auto"
             aria-hidden
           >
             <div className="absolute inset-0 bg-slate-200" />
             <div
               ref={lineProgressRef}
-              className="absolute inset-0 bg-gradient-to-b from-[#c01763] via-[#b00f57] to-[#7c3aed]"
-              style={{ transform: "scaleY(0)", transformOrigin: "top center" }}
+              className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#7c3aed]"
             />
           </div>
 
@@ -209,9 +267,11 @@ function LevelJourneyPanel() {
             return (
               <li
                 key={step.title}
-                className={`relative flex gap-4 sm:gap-5 ${isLast ? "pb-0" : "pb-7 sm:pb-8"}`}
+                className={`relative flex flex-row gap-4 sm:gap-5 md:flex-col md:items-center md:text-center md:gap-3 ${
+                  isLast ? "pb-0" : "pb-7 sm:pb-8 md:pb-0"
+                }`}
               >
-                <div className="relative z-10 shrink-0 pt-0.5">
+                <div className="relative z-10 shrink-0 pt-0.5 md:pt-0">
                   <StepMarker
                     level={"level" in step ? step.level : undefined}
                     isStar={isStar}
@@ -219,9 +279,9 @@ function LevelJourneyPanel() {
                   />
                 </div>
 
-                <div className="min-w-0 flex-1 pt-0.5 text-left">
+                <div className="min-w-0 flex-1 pt-0.5 md:pt-1 text-left md:text-center">
                   <h3
-                    className={`font-play text-[15px] leading-snug transition-colors duration-500 sm:text-base md:text-[17px] ${
+                    className={`font-play text-[15px] leading-snug transition-colors duration-500 sm:text-base md:text-sm lg:text-[15px] ${
                       isActive
                         ? "text-[#c01763]"
                         : isReached
@@ -232,7 +292,7 @@ function LevelJourneyPanel() {
                     {step.title}
                   </h3>
                   <p
-                    className={`mt-1.5 font-dm text-[13px] leading-relaxed transition-colors duration-500 sm:mt-2 sm:text-sm md:text-[15px] ${
+                    className={`mt-1.5 font-dm text-[13px] leading-relaxed transition-colors duration-500 sm:mt-2 sm:text-sm md:text-xs lg:text-[13px] ${
                       isActive ? "text-slate-700" : isReached ? "text-slate-600" : "text-slate-400"
                     }`}
                   >
@@ -240,7 +300,7 @@ function LevelJourneyPanel() {
                   </p>
                   {"note" in step && step.note && (
                     <p
-                      className={`mt-1.5 font-dm text-[12px] font-medium transition-colors duration-500 sm:text-[13px] ${
+                      className={`mt-1.5 font-dm text-[12px] font-medium transition-colors duration-500 sm:text-[13px] md:text-[11px] lg:text-xs ${
                         isActive ? "text-[#c01763]" : isReached ? "text-[#c01763]/70" : "text-slate-400"
                       }`}
                     >
