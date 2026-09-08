@@ -42,9 +42,9 @@ const Hero: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
         
         {/* Rating Badge */}
-        <div className="mb-6 w-full max-w-[min(100%,22rem)] rounded-2xl border border-slate-300/60 bg-white/85 px-3 py-3 font-dm shadow-[0_8px_24px_-12px_rgba(15,23,42,0.12)] backdrop-blur-md sm:mb-8 sm:inline-flex sm:w-auto sm:max-w-none sm:flex-row sm:items-center sm:gap-3 sm:rounded-full sm:px-4 sm:py-1.5">
+        <div className="mb-6 flex w-fit items-center justify-center gap-3 rounded-full border border-slate-300/60 bg-white/85 px-4 py-2 font-dm shadow-[0_8px_24px_-12px_rgba(15,23,42,0.12)] backdrop-blur-md sm:mb-8 sm:inline-flex sm:w-auto">
           {/* Avatar Stack */}
-          <div className="flex items-center justify-center -space-x-1.5 sm:-space-x-2 sm:justify-start">
+          <div className="flex shrink-0 items-center justify-center -space-x-1.5 sm:-space-x-2 sm:justify-start">
             {avatars.map((url, index) => (
               <Image
                 key={index}
@@ -60,13 +60,11 @@ const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Waitlist Label & Text */}
-          <div className="mt-2.5 flex flex-col items-center gap-1.5 border-t border-slate-200/70 pt-2.5 sm:mt-0 sm:flex-row sm:items-center sm:gap-2 sm:border-0 sm:pt-0 sm:text-left">
-            <span className="text-sm font-dm font-medium text-slate-900">In Waitlist</span>
-            <span className="px-1 text-center text-[11px] leading-snug text-slate-600 sm:max-w-none sm:px-0 sm:text-left sm:text-sm pt-[2.2px]">
-              Most people start at zero. So can you.
-            </span>
-          </div>
+          {/* Waitlist Label */}
+          <span className="text-sm font-dm font-medium text-slate-900">In Waitlist</span>
+          <span className="hidden text-left px-1 text-[11px] leading-snug text-slate-600 sm:inline sm:max-w-none sm:text-sm">
+            Most people start at zero. So can you.
+          </span>
         </div>
 
         {/* Main Title */}

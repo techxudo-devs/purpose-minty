@@ -227,7 +227,7 @@ export default function PhonePreview() {
       {/* ================= HAND + SCREEN PREVIEW ================= */}
       <div className="relative mx-auto w-full max-w-[min(96vw,640px)] sm:max-w-[min(92vw,700px)]">
         <div
-          className="relative mx-auto w-full translate-x-[4%] sm:translate-x-[14%]"
+          className="relative mx-auto w-full translate-x-[13%] sm:translate-x-[14%]"
           style={{
             WebkitMaskImage:
               "linear-gradient(to bottom, #000 0%, #000 70%, rgba(0,0,0,0.5) 85%, transparent 100%)",
