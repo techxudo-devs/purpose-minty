@@ -124,13 +124,6 @@ function FloatingPill({
   );
 }
 
-const goals = [
-  { name: "Fresh Haircut Fund", now: "$38 of $50", pct: "76%", icon: "💇" },
-  { name: "Self-Care Sunday", now: "$42 of $50", pct: "84%", icon: "✨" },
-  { name: "Coffee Joy Runs", now: "$8 of $25", pct: "32%", icon: "☕" },
-  { name: "Emergency Rainy Day", now: "$160 of $200", pct: "80%", icon: "☔" },
-];
-
 /** Content is authored for ~280px-wide screens; scale down when the mockup is narrower. */
 const PHONE_SCREEN_BASE_WIDTH = 280;
 
@@ -164,176 +157,10 @@ function usePhoneScreenScale(
   return scale;
 }
 
-function GoalsScreen() {
-  return (
-    <div className="flex h-full flex-col bg-white">
-      <div className="flex items-center justify-between border-b border-pink-100 bg-white px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">Hey Queen 👑</span>
-        <span className="rounded-full bg-pink-100 px-3 py-1 text-[10px] font-medium font-dm text-[#c01763]">
-          You&apos;re doing amazing
-        </span>
-      </div>
-      <div className="flex-1 bg-white px-5 py-4">
-        <p className="text-[11px] font-medium font-dm tracking-wider uppercase text-slate-400">
-          Total Saved
-        </p>
-        <p className="mt-1 text-[32px] font-play leading-none text-[#2E0F3D]">$247.50</p>
-        <p className="mt-1.5 text-[13px] font-medium font-dm text-[#c01763]">+$12 this week!</p>
-
-        <p className="mt-5 text-[11px] font-medium font-dm tracking-wide uppercase text-slate-400">
-          Your Goals
-        </p>
-        <div className="mt-2 space-y-2.5">
-          {goals.map((goal) => (
-            <div
-              key={goal.name}
-              className="flex items-center justify-between rounded-2xl border border-pink-100 bg-[#fff5f8] px-3.5 py-2.5"
-            >
-              <div className="min-w-0 pr-2">
-                <p className="truncate text-[13px] font-play text-[#2E0F3D]">
-                  {goal.icon} {goal.name}
-                </p>
-                <p className="text-[11px] font-medium font-dm text-slate-500">{goal.now}</p>
-              </div>
-              <span className="shrink-0 text-[13px] font-medium font-dm text-[#c01763]">
-                {goal.pct}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AddGoalScreen() {
-  return (
-    <div className="flex h-full flex-col bg-white">
-      <div className="border-b border-pink-100 px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">Add a New Goal</span>
-      </div>
-      <div className="flex-1 px-5 py-5">
-        <p className="text-[13px] font-semibold text-slate-600">What are you saving for?</p>
-        <p className="mt-4 text-[11px] font-medium font-dm tracking-wide uppercase text-slate-400">
-          Goal name
-        </p>
-        <div className="mt-1.5 rounded-2xl border border-pink-100 bg-[#fff5f8] px-4 py-3 text-[13px] font-medium font-dm text-[#2E0F3D]">
-          Coffee Joy Runs ☕
-        </div>
-        <p className="mt-4 text-[11px] font-medium font-dm tracking-wide uppercase text-slate-400">
-          Target amount
-        </p>
-        <div className="mt-1.5 rounded-2xl border border-pink-100 bg-[#fff5f8] px-4 py-3 text-[13px] font-medium font-dm text-[#2E0F3D]">
-          $25.00
-        </div>
-        <div className="mt-6 h-11 rounded-full text-center text-[13px] font-medium font-dm leading-[44px] text-white bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] shadow-md shadow-pink-600/20">
-          Create Goal
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MapScreen() {
-  const rows = [
-    { label: "Money", hint: "Build stability", pct: "72%" },
-    { label: "Mindset", hint: "Grow confidence", pct: "58%" },
-    { label: "Motivation", hint: "Stay inspired", pct: "85%" },
-  ];
-  return (
-    <div className="flex h-full flex-col bg-white">
-      <div className="border-b border-pink-100 px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">Your PurposeMap™</span>
-      </div>
-      <div className="flex-1 px-5 py-5">
-        <p className="text-[13px] font-medium font-dm text-slate-600">
-          Align savings with your values
-        </p>
-        <div className="mt-5 space-y-4">
-          {rows.map((row) => (
-            <div key={row.label}>
-              <div className="flex justify-between text-[13px] font-medium font-dm text-[#2E0F3D]">
-                <span>{row.label}</span>
-                <span className="text-[#c01763]">{row.pct}</span>
-              </div>
-              <p className="text-[11px] font-dm text-slate-400">{row.hint}</p>
-              <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-pink-100">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#c01763] to-[#8d0543]"
-                  style={{ width: row.pct }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PathwaysScreen() {
-  const items = ["Auto", "Housing", "Childcare", "Workforce"];
-  return (
-    <div className="flex h-full flex-col bg-white">
-      <div className="border-b border-pink-100 px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">PurposeMint Pathways</span>
-      </div>
-      <div className="flex-1 px-5 py-5">
-        <p className="text-[11px] font-medium tracking-wide font-play uppercase text-[#c01763]">
-          Stability → Mobility
-        </p>
-        <p className="mt-1 text-[13px] font-medium font-dm text-slate-600">
-          Select your major goal
-        </p>
-        <div className="mt-4 grid grid-cols-2 gap-2.5">
-          {items.map((item) => (
-            <div
-              key={item}
-              className="rounded-2xl border border-pink-100 bg-[#fff5f8] px-4 py-3 text-center text-[13px] font-play text-[#2E0F3D]"
-            >
-              {item}
-            </div>
-          ))}
-        </div>
-        <p className="mt-5 text-center text-[11px] font-medium font-dm text-slate-400">
-          Build readiness. Connect with partners.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function PausedScreen() {
-  return (
-    <div className="flex h-full flex-col bg-white">
-      <div className="border-b border-pink-100 px-5 py-3">
-        <span className="text-[14px] font-play text-[#2E0F3D]">Goal Paused</span>
-      </div>
-      <div className="flex flex-1 flex-col items-center justify-center px-5 py-5 text-center">
-        <p className="text-[32px]" aria-hidden>
-          💜
-        </p>
-        <p className="mt-3 text-[17px] font-play leading-snug text-[#2E0F3D]">
-          No worries! Life happens.
-        </p>
-        <p className="mt-1.5 text-[12px] font-medium font-dm leading-snug text-slate-500">
-          Resume when you&apos;re ready. Need more time? That&apos;s okay.
-        </p>
-        <div className="mt-5 w-full h-11 rounded-full text-center text-[13px] font-medium leading-[44px] text-white bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] shadow-md font-dm shadow-pink-600/20">
-          Resume Saving
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const screens = [
-  { id: "goals" },
-  { id: "add" },
-  { id: "map" },
-  { id: "path" },
-  { id: "pause" },
-];
+const screens = Array.from({ length: 9 }, (_, i) => ({
+  id: `hero${i + 1}`,
+  src: `/images/purposeHero${i + 1}.jpeg`,
+}));
 
 /** Measured inset of the black screen area inside hand.png (1080×1599) */
 const HAND_SCREEN = {
@@ -344,68 +171,17 @@ const HAND_SCREEN = {
   radius: "9%",
 } as const;
 
-function StatusIcons() {
-  return (
-    <svg className="h-[10px] w-auto" viewBox="0 0 56 12" fill="none" aria-hidden>
-      <rect x="0" y="4" width="3" height="4" rx="0.6" fill="#2E0F3D" />
-      <rect x="5" y="2.5" width="3" height="5.5" rx="0.6" fill="#2E0F3D" />
-      <rect x="10" y="1" width="3" height="7" rx="0.6" fill="#2E0F3D" />
-      <rect
-        x="15"
-        y="0"
-        width="3"
-        height="8"
-        rx="0.6"
-        fill="#2E0F3D"
-        opacity="0.35"
-      />
-      <path
-        d="M24.5 3.2c1.7-1.5 4.3-1.5 6 0M26.1 5c.9-.8 2.4-.8 3.3 0"
-        stroke="#2E0F3D"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-      />
-      <circle cx="27.8" cy="7.6" r="1.15" fill="#2E0F3D" />
-      <rect
-        x="42"
-        y="1.2"
-        width="13"
-        height="8"
-        rx="2"
-        stroke="#2E0F3D"
-        strokeWidth="1.15"
-      />
-      <rect x="43.3" y="2.5" width="8.2" height="5.4" rx="1" fill="#c01763" />
-      <rect x="55.2" y="3.6" width="1.4" height="3.2" rx="0.5" fill="#2E0F3D" />
-    </svg>
-  );
-}
-
 function PhoneScreenAnimation({ index }: { index: number }) {
-  const screenNodes = [
-    <GoalsScreen key="goals" />,
-    <AddGoalScreen key="add" />,
-    <MapScreen key="map" />,
-    <PathwaysScreen key="path" />,
-    <PausedScreen key="pause" />,
-  ];
-
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden bg-white">
-      <div className="relative z-10 flex min-h-[18px] shrink-0 items-end justify-between bg-white px-[7%] pb-0.5">
-        <span className="text-[9px] font-dm tracking-tight text-[#2E0F3D]">9:41</span>
-        <StatusIcons />
-      </div>
-
-      <div className="relative min-h-0 flex-1 overflow-hidden bg-white">
-        <div key={screens[index].id} className="h-full animate-screen-fade">
-          {screenNodes[index]}
-        </div>
-      </div>
-
-      <div className="flex shrink-0 justify-center bg-white pb-1 pt-0.5">
-        <span className="h-1 w-[30%] rounded-full bg-[#2E0F3D]/20" />
-      </div>
+    <div className="relative h-full w-full overflow-hidden bg-white">
+      <Image
+        key={screens[index].id}
+        src={screens[index].src}
+        alt={`PurposeMint screen ${index + 1}`}
+        fill
+        sizes="(max-width: 640px) 45vw, 380px"
+        className="h-full w-full animate-screen-fade object-cover"
+      />
     </div>
   );
 }
@@ -422,7 +198,7 @@ export default function PhonePreview() {
     if (reduce) return;
     const timer = window.setInterval(() => {
       setIndex((value) => (value + 1) % screens.length);
-    }, 2800);
+    }, 3000);
     return () => window.clearInterval(timer);
   }, []);
 
