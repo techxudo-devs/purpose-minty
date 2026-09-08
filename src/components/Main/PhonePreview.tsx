@@ -174,14 +174,19 @@ const HAND_SCREEN = {
 function PhoneScreenAnimation({ index }: { index: number }) {
   return (
     <div className="relative h-full w-full overflow-hidden bg-white">
-      <Image
-        key={screens[index].id}
-        src={screens[index].src}
-        alt={`PurposeMint screen ${index + 1}`}
-        fill
-        sizes="(max-width: 640px) 45vw, 380px"
-        className="h-full w-full animate-screen-fade object-cover"
-      />
+      {screens.map((screen, i) => (
+        <Image
+          key={screen.id}
+          src={screen.src}
+          alt={`PurposeMint screen ${i + 1}`}
+          fill
+          priority={i === 0}
+          sizes="(max-width: 640px) 45vw, 380px"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+            i === index ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+          }`}
+        />
+      ))}
     </div>
   );
 }
