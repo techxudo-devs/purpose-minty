@@ -135,7 +135,8 @@ const Navbar: React.FC = () => {
 
           <div className="hidden shrink-0 items-center space-x-3 lg:flex">
             <a
-              href="#waitlist"
+              href="https://mailchi.mp/7f159b1e1549/purposemint-waitlist"
+              target="_blank"
               onClick={handleWaitlistClick}
               className="motion-btn-lift inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 text-sm font-semibold text-white hover:opacity-95"
             >
@@ -200,7 +201,8 @@ const Navbar: React.FC = () => {
             style={{ transitionDelay: mobileMenuOpen ? `${navItems.length * 45 + 80}ms` : "0ms" }}
           >
             <a
-              href="#waitlist"
+              href="https://mailchi.mp/7f159b1e1549/purposemint-waitlist"
+              target="_blank"
               onClick={handleWaitlistClick}
               className="motion-btn-lift inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] py-3 text-base font-semibold text-white hover:opacity-95"
             >

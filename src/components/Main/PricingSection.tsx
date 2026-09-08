@@ -184,16 +184,18 @@ export default function PricingSection() {
                     )}
                   </div>
 
-                  <button
-                    type="button"
-                    className={`motion-btn mt-6 w-full cursor-pointer rounded-xl bg-white py-3 text-[14px] font-semibold text-slate-950 ${
+                  <a
+                    href="https://minttoprosper.org/purposemint/demo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`motion-btn mt-6 block w-full cursor-pointer rounded-xl bg-white py-3 text-center text-[14px] font-semibold text-slate-950 ${
                       plan.featured
                         ? "hover:bg-pink-50 hover:text-[#8d0543]"
                         : "hover:bg-slate-50"
                     }`}
                   >
                     {plan.cta}
-                  </button>
+                  </a>
                 </div>
               </div>
 
