@@ -157,9 +157,19 @@ function usePhoneScreenScale(
   return scale;
 }
 
-const screens = Array.from({ length: 9 }, (_, i) => ({
-  id: `hero${i + 1}`,
-  src: `/images/purposeHero${i + 1}.jpeg`,
+const HERO_SCREEN_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+
+/** Bump when hero assets change to bust browser / Next image cache */
+const HERO_ASSET_VERSION = "4";
+
+function getHeroScreenSrc(num: (typeof HERO_SCREEN_NUMBERS)[number]) {
+  const extension = num === 1 ? "png" : "jpeg";
+  return `/images/purposeHero${num}.${extension}?v=${HERO_ASSET_VERSION}`;
+}
+
+const screens = HERO_SCREEN_NUMBERS.map((num) => ({
+  id: `hero${num}`,
+  src: getHeroScreenSrc(num),
 }));
 
 /** Measured inset of the black screen area inside hand.png (1080×1599) */
@@ -176,10 +186,11 @@ function PhoneScreenAnimation({ index }: { index: number }) {
     <div className="relative h-full w-full overflow-hidden bg-white">
       {screens.map((screen, i) => (
         <Image
-          key={screen.id}
+          key={screen.src}
           src={screen.src}
           alt={`PurposeMint screen ${i + 1}`}
           fill
+          unoptimized
           priority={i === 0}
           sizes="(max-width: 640px) 45vw, 380px"
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
