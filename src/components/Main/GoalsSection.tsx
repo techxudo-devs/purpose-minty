@@ -349,7 +349,7 @@ export default function GoalsSection() {
                   What you could save for
                 </p>
                 <p className="mt-1 font-dm text-[13px] text-pink-100/85">
-                  {goals.length} real-life goals, cycling live
+                  Real-life goals, cycling live
                 </p>
               </div>
             </div>

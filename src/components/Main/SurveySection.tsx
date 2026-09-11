@@ -155,8 +155,22 @@ function toggle(list: string[], id: string) {
   return list.includes(id) ? list.filter((item) => item !== id) : [...list, id];
 }
 
+const USER_STEP_TITLES = [
+  "Demo & UX Experience",
+  "Cultural Relevance & Motivation",
+  "Overall Impression",
+  "Ready to Share Your Voice?",
+] as const;
+
+const PARTNER_STEP_TITLES = [
+  "About Your Organization",
+  "Partnership Vision",
+  "Ready to Explore Partnership?",
+] as const;
+
 export default function SurveySection() {
   const [tab, setTab] = useState<"user" | "partner">("user");
+  const [step, setStep] = useState(0);
   const [sent, setSent] = useState(false);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -175,6 +189,15 @@ export default function SurveySection() {
   const [interests, setInterests] = useState<string[]>([]);
   const [vision, setVision] = useState("");
   const [challenges, setChallenges] = useState("");
+
+  const steps = tab === "user" ? USER_STEP_TITLES : PARTNER_STEP_TITLES;
+  const isLastStep = step === steps.length - 1;
+
+  function switchTab(nextTab: "user" | "partner") {
+    setTab(nextTab);
+    setStep(0);
+    setError("");
+  }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -264,7 +287,7 @@ export default function SurveySection() {
           <div className="inline-flex w-fit flex-row items-center gap-0 rounded-full border border-slate-200/80 bg-white/90 p-1">
             <button
               type="button"
-              onClick={() => setTab("user")}
+              onClick={() => switchTab("user")}
               className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm ${
                 tab === "user"
                   ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
@@ -276,7 +299,7 @@ export default function SurveySection() {
             </button>
             <button
               type="button"
-              onClick={() => setTab("partner")}
+              onClick={() => switchTab("partner")}
               className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 font-dm text-sm ${
                 tab === "partner"
                   ? "bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] text-white shadow-sm"
@@ -302,8 +325,26 @@ export default function SurveySection() {
           </div>
         ) : (
           <form className="mt-10 space-y-6" onSubmit={onSubmit}>
+            <div className="text-center">
+              <p className="font-dm text-[12px] font-medium uppercase tracking-[0.08em] text-[#c01763]">
+                Step {step + 1} of {steps.length}
+              </p>
+              <p className="mt-1 font-dm text-[14px] text-slate-600">{steps[step]}</p>
+              <div className="mx-auto mt-4 flex max-w-md justify-center gap-2">
+                {steps.map((_, index) => (
+                  <span
+                    key={`${tab}-step-${index}`}
+                    className={`h-1.5 flex-1 rounded-full transition-colors ${
+                      index <= step ? "bg-[#c01763]" : "bg-slate-200"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
             {tab === "user" ? (
               <>
+                {step === 0 && (
                 <div className={cardClass}>
                   <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
@@ -350,7 +391,9 @@ export default function SurveySection() {
                     className={field}
                   />
                 </div>
+                )}
 
+                {step === 1 && (
                 <div className={cardClass}>
                   <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
@@ -398,7 +441,9 @@ export default function SurveySection() {
                     className={`${field} resize-none`}
                   />
                 </div>
+                )}
 
+                {step === 2 && (
                 <div className={cardClass}>
                   <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
@@ -420,9 +465,11 @@ export default function SurveySection() {
                     ))}
                   </div>
                 </div>
+                )}
               </>
             ) : (
               <>
+                {step === 0 && (
                 <div className={cardClass}>
                   <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <FaBuilding className="h-5 w-5 text-[#c01763]" />
@@ -467,7 +514,9 @@ export default function SurveySection() {
                     ))}
                   </div>
                 </div>
+                )}
 
+                {step === 1 && (
                 <div className={cardClass}>
                   <h3 className="mb-6 flex items-center gap-2 font-play text-[16px] text-slate-900 sm:text-[18px]">
                     <HiOutlineSparkles className="h-5 w-5 text-[#c01763]" />
@@ -511,9 +560,31 @@ export default function SurveySection() {
                     className={`${field} resize-none`}
                   />
                 </div>
+                )}
               </>
             )}
 
+            {!isLastStep ? (
+              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+                <button
+                  type="button"
+                  onClick={() => setStep((current) => Math.max(0, current - 1))}
+                  disabled={step === 0}
+                  className="motion-btn cursor-pointer rounded-full border border-slate-200 bg-white px-6 py-3 font-dm text-sm text-slate-600 transition hover:border-pink-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))}
+                  className="motion-btn cursor-pointer rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-8 py-3 font-dm text-sm text-white hover:opacity-95 sm:ml-auto"
+                >
+                  Next
+                </button>
+              </div>
+            ) : null}
+
+            {isLastStep ? (
             <div className="rounded-[22px] border border-pink-100/80 bg-gradient-to-b from-[#fff5f8] to-white p-4 text-center sm:rounded-[28px] sm:p-6 md:p-10">
               <h3 className="font-play text-lg text-slate-950 sm:text-[20px] md:text-[24px]">
                 {tab === "user" ? "Ready to Share Your Voice?" : "Ready to Explore Partnership?"}
@@ -537,12 +608,21 @@ export default function SurveySection() {
                   className={field}
                 />
                 {error ? <p className="mt-2 text-left font-dm text-[12px] text-[#c01763]">{error}</p> : null}
-                <button
-                  type="submit"
-                  className="motion-btn mt-4 w-full cursor-pointer rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 font-dm text-sm text-white hover:opacity-95"
-                >
-                  Submit Feedback
-                </button>
+                <div className="mt-4 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setStep((current) => Math.max(0, current - 1))}
+                    className="motion-btn cursor-pointer rounded-full border border-slate-200 bg-white px-6 py-3 font-dm text-sm text-slate-600 transition hover:border-pink-200 hover:text-slate-900"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="motion-btn w-full cursor-pointer rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-6 py-3.5 font-dm text-sm text-white hover:opacity-95 sm:w-auto"
+                  >
+                    Submit Feedback
+                  </button>
+                </div>
               </div>
               <p className="mt-5 font-dm text-[13px] text-slate-600">
                 {tab === "user"
@@ -560,6 +640,7 @@ export default function SurveySection() {
                 </a>
               </p>
             </div>
+            ) : null}
           </form>
         )}
       </div>
