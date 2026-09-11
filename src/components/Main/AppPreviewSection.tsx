@@ -15,7 +15,7 @@ const phones = [
     featured: true,
   },
   {
-    src: "/images/image-copy.png",
+    src: "/images/image-copy.jpeg",
     alt: "PurposeMint Reflections screen with today's prompt and a recent journal entry connected to Security",
     featured: false,
   },

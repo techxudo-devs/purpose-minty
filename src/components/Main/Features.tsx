@@ -5,7 +5,7 @@ import type { IconType } from "react-icons";
 import { HiShieldCheck, HiChat, HiHeart, HiPause } from "react-icons/hi";
 import { links } from "./site";
 
-const PERSON_IMAGE = "/images/threepersons.png";
+const PERSON_IMAGE = "/images/Person3.png";
 
 const featureCards = [
   {
