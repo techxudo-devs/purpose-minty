@@ -1,7 +1,12 @@
 "use client";
 
 import { FormEvent, useState, type ReactNode } from "react";
-import { HiOutlineUser, HiOutlineSparkles } from "react-icons/hi";
+import {
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
+  HiOutlineSparkles,
+  HiOutlineUser,
+} from "react-icons/hi";
 import { FaBuilding } from "react-icons/fa";
 import { links } from "./site";
 
@@ -570,16 +575,18 @@ export default function SurveySection() {
                   type="button"
                   onClick={() => setStep((current) => Math.max(0, current - 1))}
                   disabled={step === 0}
-                  className="motion-btn cursor-pointer rounded-full border border-slate-200 bg-white px-6 py-3 font-dm text-sm text-slate-600 transition hover:border-pink-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="motion-btn inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white px-6 py-3 font-dm text-sm text-slate-600 transition hover:border-pink-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
                 >
+                  <HiOutlineChevronLeft className="h-4 w-4 shrink-0" aria-hidden />
                   Back
                 </button>
                 <button
                   type="button"
                   onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))}
-                  className="motion-btn cursor-pointer rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-8 py-3 font-dm text-sm text-white hover:opacity-95 sm:ml-auto"
+                  className="motion-btn inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-[#c01763] via-[#b00f57] to-[#8d0543] px-8 py-3 font-dm text-sm text-white hover:opacity-95 sm:ml-auto"
                 >
                   Next
+                  <HiOutlineChevronRight className="h-4 w-4 shrink-0" aria-hidden />
                 </button>
               </div>
             ) : null}
@@ -612,8 +619,9 @@ export default function SurveySection() {
                   <button
                     type="button"
                     onClick={() => setStep((current) => Math.max(0, current - 1))}
-                    className="motion-btn cursor-pointer rounded-full border border-slate-200 bg-white px-6 py-3 font-dm text-sm text-slate-600 transition hover:border-pink-200 hover:text-slate-900"
+                    className="motion-btn inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white px-6 py-3 font-dm text-sm text-slate-600 transition hover:border-pink-200 hover:text-slate-900"
                   >
+                    <HiOutlineChevronLeft className="h-4 w-4 shrink-0" aria-hidden />
                     Back
                   </button>
                   <button
