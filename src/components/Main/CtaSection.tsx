@@ -9,6 +9,7 @@ const trustItems = [
   { label: "Real, secure support", icon: LifeBuoy },
 ];
 
+
 export default function CtaSection() {
   return (
     <section
