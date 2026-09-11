@@ -14,30 +14,46 @@ const featureCards = [
     description:
       "You get a separate buffer for surprises, so one bad week doesn't wipe out your goal.",
     Icon: HiShieldCheck,
-    position: "left-[4%] top-[5%] -rotate-[4deg] lg:left-[6%] lg:top-[4%]",
+    position: "left-[2%] top-[6%] -rotate-[4deg] lg:left-[3%] lg:top-[5%]",
   },
   {
     id: "confusing-apps",
     title: "Confusing money apps",
     description: "No jargon, no rigid rules. Plain language and one clear next step.",
     Icon: HiChat,
-    position: "right-[4%] top-[5%] rotate-[4deg] lg:right-[6%] lg:top-[4%]",
+    position: "right-[2%] top-[6%] rotate-[4deg] lg:right-[3%] lg:top-[5%]",
   },
   {
     id: "feeling-unseen",
     title: "Feeling unseen",
     description: "Money you send home, your tithe, your people — all of it counts here.",
     Icon: HiHeart,
-    position: "left-[4%] bottom-[5%] -rotate-[3deg] lg:left-[6%] lg:bottom-[4%]",
+    position: "left-[2%] bottom-[6%] -rotate-[3deg] lg:left-[3%] lg:bottom-[5%]",
   },
   {
     id: "falling-behind",
     title: "Falling behind",
     description: "Miss a week? Paused, not failed. Pick up where you left off.",
     Icon: HiPause,
-    position: "right-[4%] bottom-[5%] rotate-[3deg] lg:right-[6%] lg:bottom-[4%]",
+    position: "right-[2%] bottom-[6%] rotate-[3deg] lg:right-[3%] lg:bottom-[5%]",
   },
 ];
+
+function CenterPeopleImage({ className = "" }: { className?: string }) {
+  return (
+    <div className={`relative overflow-hidden leading-none ${className}`}>
+      <Image
+        src={PERSON_IMAGE}
+        alt="People from the PurposeMint community"
+        width={612}
+        height={408}
+        className="block h-auto w-full [mask-image:linear-gradient(to_top,transparent_0%,black_26%)] [-webkit-mask-image:linear-gradient(to_top,transparent_0%,black_26%)]"
+        sizes="(min-width: 1280px) 520px, (min-width: 1024px) 400px, 90vw"
+        priority
+      />
+    </div>
+  );
+}
 
 function BrowserCard({
   title,
@@ -108,51 +124,23 @@ export default function Features() {
           </p>
         </div>
 
-        {/* Desktop: floating cards + center image */}
-        <div className="relative mx-auto mt-10 hidden h-[500px] w-full px-2 sm:px-4 lg:block xl:h-[540px]">
+        {/* Desktop: 4 corner cards + centered image */}
+        <div className="relative mx-auto mt-10 hidden h-[520px] w-full px-2 sm:px-4 lg:block xl:h-[560px]">
           {featureCards.map((card) => (
             <div key={card.id} className={`absolute z-20 ${card.position}`}>
               <BrowserCard title={card.title} description={card.description} Icon={card.Icon} />
             </div>
           ))}
 
-          <div className="pointer-events-none absolute bottom-28 left-1/2 z-10 h-[330px] w-[310px] -translate-x-1/2 lg:h-[360px] lg:w-[350px] xl:bottom-36 xl:h-[400px] xl:w-[480px]">
-            <Image
-              src={PERSON_IMAGE}
-              alt="People from the PurposeMint community"
-              fill
-              className="object-contain object-bottom mix-blend-screen"
-              style={{ objectPosition: "center bottom" }}
-              sizes="(min-width: 1280px) 480px, 350px"
-              priority
-            />
-            <div
-              className="absolute inset-x-0 bottom-0 h-36"
-              style={{
-                background:
-                  "linear-gradient(to top, #fbfcfd 8%, rgba(251,252,253,0.92) 45%, transparent 100%)",
-              }}
-            />
+          <div className="pointer-events-none absolute left-1/2 top-[42%] z-10 w-[min(92%,360px)] -translate-x-1/2 -translate-y-1/2 sm:w-[400px] lg:top-[40%] lg:w-[440px] xl:w-[520px]">
+            <CenterPeopleImage />
           </div>
         </div>
 
         {/* Mobile / tablet */}
         <div className="relative mx-auto mt-8 max-w-md lg:hidden">
-          <div className="relative mx-auto mb-6 h-[240px] w-[min(100%,340px)] sm:h-[280px] sm:w-[380px]">
-            <Image
-              src={PERSON_IMAGE}
-              alt="People from the PurposeMint community"
-              fill
-              className="object-contain object-bottom mix-blend-screen"
-              sizes="380px"
-            />
-            <div
-              className="absolute inset-x-0 bottom-0 h-24"
-              style={{
-                background:
-                  "linear-gradient(to top, #fbfcfd 10%, rgba(251,252,253,0.9) 50%, transparent 100%)",
-              }}
-            />
+          <div className="relative mx-auto mb-6 w-[min(100%,360px)] sm:w-[420px]">
+            <CenterPeopleImage />
           </div>
 
           <div className="flex flex-col gap-4 sm:gap-5">
